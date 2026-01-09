@@ -1,0 +1,55 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Test results
+test-results/
+playwright-report/
+screenshots/
+videos/
+
+# Allure
+allure-results/
+allure-report/
+.allure/
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# Configuration files with sensitive data
+src/test/resources/config.properties
+# Security - DO NOT commit plain text passwords
+# Encrypted passwords in pom.xml are machine-specific and safe to commit

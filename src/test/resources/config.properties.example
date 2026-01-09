@@ -1,0 +1,30 @@
+# Test configuration properties
+# Copy this file to config.properties and fill in your actual values
+
+# Base URLs
+base.url=https://www.google.com
+
+# Browser settings
+browser.headless=false
+browser.slowmo=50
+
+# Timeouts (in milliseconds)
+default.timeout=30000
+navigation.timeout=30000
+
+# Screenshots
+screenshot.on.failure=true
+screenshot.path=target/screenshots
+
+# Email configuration for MFA code retrieval
+# Gmail credentials for automated testing
+# IMPORTANT: Use Gmail App Password, not regular password
+# To generate App Password:
+# 1. Go to Google Account > Security
+# 2. Enable 2-Step Verification
+# 3. Go to App passwords
+# 4. Create password for "Mail"
+# 5. Copy the 16-character password (without spaces)
+test.email=your-test-email@gmail.com
+test.email.app.password=your-16-char-app-password
+
