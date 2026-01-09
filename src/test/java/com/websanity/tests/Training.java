@@ -4,6 +4,7 @@ import com.websanity.BaseTest;
 import com.websanity.enums.*;
 import com.websanity.models.UserParams;
 import com.websanity.teleadminPages.*;
+import io.qameta.allure.Story;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 
@@ -89,43 +90,49 @@ public class Training extends BaseTest {
 
     @Test
     @Order(2)
-    void myTrainingTest() {
+    @Story("User Status Management")
+    void suspendAndActivateUser() {
 
-        log.info("Starting test: WPC Settings - Signature - User Level");
+        log.info("Starting test: Suspend and Activate user");
 
         String username = user.getUsername();
 
-        TeleadminApplicationsSettingPage applicationsSettingPage = findUsersPage
+        teleadminMenuPage
+                .clickFindUsersButton()
                 .searchUser(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
-                .clickAndroidCaptureSettingsButton();
+                .selectStatus(UserStatus.SUSPENDED)
+                .clickUpdateStatusButton()
+                .waitForSuspendSuccessMessage();
 
-        log.info("Verifying RCS checkbox is unchecked by default");
-        assertFalse(applicationsSettingPage.isRcsSupportCheckboxSelected(), "RCS Support checkbox should be unchecked by default");
+        log.info("Verifying suspend success message is visible");
+        assertTrue(updateUserPage.isSuspendSuccessMessageVisible(), "Suspend success message should be visible");
 
-        log.info("Check RCS Support checkbox, save settings and verify success alert");
-        applicationsSettingPage
-                .clickRcsSupportCheckbox()
-                .clickSaveCompanyLevelSettingsButton()
-                .waitForSignatureSuccessAlert();
+        log.info("Verifying suspend success message text");
+        assertEquals("User(s) suspended successfully", updateUserPage.getSuspendSuccessMessageText(),
+                "Suspend success message text should match");
 
-        log.info("Verifying signature success alert is visible and RCS checkbox is checked");
-        assertTrue(applicationsSettingPage.isSignatureSuccessAlertVisible(), "Signature success alert should be visible after confirming action");
-        assertTrue(applicationsSettingPage.isRcsSupportCheckboxSelected(), "RCS Support checkbox should be checked");
+        log.info("Verifying user status is Suspended");
+        assertEquals(UserStatus.SUSPENDED, updateUserPage.getSelectedStatus(), "User status should be Suspended");
 
-        page.waitForTimeout(8000);
+        log.info("Selecting Active status");
+        updateUserPage
+                .selectStatus(UserStatus.ACTIVE)
+                .clickUpdateStatusButton()
+                .waitForActivateSuccessMessage();
 
-        log.info("Uncheck RCS Support checkbox, save settings and verify success alert");
-        applicationsSettingPage
-                .clickRcsSupportCheckbox()
-                .clickSaveCompanyLevelSettingsButton()
-                .waitForSignatureSuccessAlert();
+        log.info("Verifying activate success message is visible");
+        assertTrue(updateUserPage.isActivateSuccessMessageVisible(), "Activate success message should be visible");
 
-        log.info("Verifying signature success alert is visible and RCS checkbox is unchecked");
-        assertTrue(applicationsSettingPage.isSignatureSuccessAlertVisible(), "Signature success alert should be visible after confirming action");
-        assertFalse(applicationsSettingPage.isRcsSupportCheckboxSelected(), "RCS Support checkbox should be unchecked");
+        log.info("Verifying activate success message text");
+        assertEquals("User(s) activated successfully", updateUserPage.getActivateSuccessMessageText(),
+                "Activate success message text should match");
+
+        log.info("Verifying user status is Active");
+        assertEquals(UserStatus.ACTIVE, updateUserPage.getSelectedStatus(), "User status should be Active");
 
         log.info("Test completed successfully");
+
 
     }
 

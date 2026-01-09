@@ -1,40 +1,26 @@
 # WebSanityProd
 
-A Java-based web automation testing framework using Playwright.
+A Java-based web automation testing framework using Playwright with Docker support for parallel test execution.
 
-## 🔒 Security Features
+## Overview
 
-**Encrypted Password Protection**: This project uses AES-256 encryption to secure sensitive credentials. Passwords are encrypted using your machine's unique identifier (USERNAME + COMPUTERNAME), ensuring they can only be decrypted on the machine where they were encrypted.
-
-📖 **See [SECURE_PASSWORD_SETUP.md](SECURE_PASSWORD_SETUP.md) for password encryption instructions.**
-
-## Project Structure
-
-```
-WebSanityProd/
-├── src/
-│   ├── main/
-│   │   └── java/
-│   │       └── com/
-│   │           └── websanity/
-│   │               └── BaseTest.java
-│   └── test/
-│       ├── java/
-│       │   └── com/
-│       │       └── websanity/
-│       │           └── tests/
-│       │               └── SampleTest.java
-│       └── resources/
-├── pom.xml
-└── README.md
-```
+This framework provides two execution modes:
+- **Local Mode**: Run tests on your machine for quick development
+- **Docker Mode**: Run tests in parallel containers with automatic Allure reporting
 
 ## Prerequisites
 
-- Java JDK 17 or higher
-- Maven 3.6 or higher
+### For Local Execution
+- Java JDK 21 or higher
+- Maven 3.9 or higher
+- Playwright browsers installed
 
-## Getting Started
+### For Docker Execution
+- Docker Desktop installed and running
+- 4GB+ RAM available
+- Docker Compose support
+
+## Quick Start
 
 ### 1. Install Dependencies
 
@@ -50,64 +36,174 @@ mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="in
 
 ### 3. Run Tests
 
+#### Interactive Menu (Recommended)
 ```bash
-mvn test
+run-tests-menu.bat
+```
+
+This opens a menu with options for:
+- Local execution (no Allure report)
+- Docker parallel execution (with Allure report)
+- Build Docker images
+- Clean test results
+
+#### Direct Commands
+
+**Local Execution:**
+```bash
+run-tests-local.bat
+```
+
+**Docker Execution:**
+```bash
+run-tests-docker.bat
+```
+
+**Docker Execution with Auto-Open Report:**
+```bash
+run-tests-docker-with-report.bat
+```
+
+**Check Setup:**
+```bash
+test-setup.bat
+```
+
+## Execution Modes
+
+### Local Mode (`isLocalRun=true`)
+- Tests run on your local machine
+- Allure listener is **disabled** (no report overhead)
+- Results saved to `target/allure-results-local/`
+- No automatic report generation
+- Best for development and debugging
+
+### Docker Mode (`isLocalRun=false`)
+- Tests run in **parallel Docker containers**
+- Two containers execute simultaneously:
+  - `admin-portal-tests` → AdminPortalSanityTest
+  - `teleadmin-tests` → TeleadminSanityTest
+- Allure listener is **enabled**
+- Results automatically merged from both containers
+- Automatic Allure report generation
+- Best for full test runs and CI/CD
+
+### Switching Between Modes
+
+Edit `pom.xml` and change the `isLocalRun` value:
+
+```xml
+<properties>
+    <isLocalRun>true</isLocalRun>   <!-- Local: Run on your machine -->
+    <!-- or -->
+    <isLocalRun>false</isLocalRun>  <!-- Docker: Run in parallel containers -->
+</properties>
+```
+
+After changing the value, simply run tests from your IDE as usual. The framework will automatically:
+- Use local execution if `isLocalRun=true`
+- Use Docker parallel execution if `isLocalRun=false`
+
+**Optional: Override via command line**
+```bash
+mvn test -DisLocalRun=true   # Force local mode
+mvn test -DisLocalRun=false  # Force Docker mode
+```
+
+## Docker Parallel Execution
+
+The Docker mode runs **AdminPortalSanityTest** and **TeleadminSanityTest** in parallel, reducing total execution time.
+
+### Features
+- ✅ Parallel execution in isolated containers
+- ✅ Automatic result merging
+- ✅ Unified Allure report generation
+- ✅ Resource control (2GB RAM, 2 CPU per container)
+- ✅ Consistent test environment
+
+### How It Works
+```
+1. Build Docker image with tests
+2. Launch two containers simultaneously
+3. Each container runs one test class
+4. Results collected in separate volumes
+5. Results merged into target/allure-results/
+6. Allure report generated automatically
+```
+
+📖 **See [DOCKER_GUIDE.md](DOCKER_GUIDE.md) for detailed Docker instructions.**
+
+## Project Structure
+
+```
+WebSanityProd/
+├── src/
+│   ├── main/java/com/websanity/
+│   │   ├── BaseTest.java
+│   │   ├── AdminPortalBaseTest.java
+│   │   └── ...
+│   └── test/java/com/websanity/tests/
+│       ├── AdminPortalSanityTest.java
+│       └── TeleadminSanityTest.java
+├── target/
+│   ├── allure-results/              # Merged results (Docker)
+│   ├── allure-results-admin/        # AdminPortal results (Docker)
+│   ├── allure-results-teleadmin/    # Teleadmin results (Docker)
+│   └── allure-results-local/        # Local results
+├── Dockerfile
+├── docker-compose.yml
+└── pom.xml
 ```
 
 ## Features
 
-- **Playwright**: Modern web automation framework
+- **Playwright**: Modern browser automation
 - **JUnit 5**: Latest testing framework
-- **AssertJ**: Fluent assertion library
-- **Maven**: Project management and build tool
-- **Allure Report**: Beautiful and informative test reports
+- **AssertJ**: Fluent assertions
+- **Maven**: Project management
+- **Allure**: Beautiful test reports
+- **Docker**: Parallel execution support
+- **Lombok**: Reduced boilerplate code
 
-## 📊 Allure Report
+## Allure Reports
 
-This project is configured with Allure for generating beautiful test reports with graphs, timelines, and detailed step-by-step information.
-
-### Quick Start with Allure
-
-**Run tests and open report:**
+### Generate Report Manually
 ```bash
-run-tests-with-allure.bat
+mvn allure:report
 ```
 
-**Open existing report:**
+### View Report
 ```bash
+# Open existing report
 open-allure-report.bat
+
+# Or serve results directory
+allure serve target/allure-results
+
+# Or serve local results
+allure serve target/allure-results-local
 ```
 
-**Manual commands:**
-```bash
-# Run tests
-mvn clean test
-
-# Generate and open report
-mvn allure:serve
-```
-
-📖 **See [ALLURE_REPORT.md](ALLURE_REPORT.md) for detailed Allure instructions.**
+### Docker Mode
+Reports are generated automatically after test execution in `target/site/allure-maven-plugin/`.
 
 ## Configuration
 
-The project is configured with:
-- Java 17
-- Playwright 1.48.0
+### Security
+This project uses AES-256 encryption for credentials. Passwords are encrypted using your machine's unique identifier (USERNAME + COMPUTERNAME), ensuring they can only be decrypted on the same machine.
+
+### Browser Settings
+The framework is configured with:
+- Java 21
+- Playwright 1.57.0
 - JUnit 5.10.1
 - Chromium browser (default)
-- Headless mode disabled for debugging
-- Viewport size: 1920x1080
+- Headless mode disabled (for debugging)
+- Viewport: 1920x1080
 
 ## Writing Tests
 
-All test classes should extend `BaseTest` which provides:
-- Playwright instance initialization
-- Browser launching and closing
-- Page context management
-- Automatic cleanup after each test
-
-### Example Test
+Extend `BaseTest` or `AdminPortalBaseTest` depending on your needs:
 
 ```java
 package com.websanity.tests;
@@ -128,28 +224,67 @@ public class MyTest extends BaseTest {
 
 ## Running Specific Tests
 
-Run a specific test class:
 ```bash
-mvn test -Dtest=SampleTest
+# Run specific test class
+mvn test -Dtest=AdminPortalSanityTest
+
+# Run specific test method
+mvn test -Dtest=AdminPortalSanityTest#addProUser
+
+# Run with local mode
+mvn test -Dtest=AdminPortalSanityTest -DisLocalRun=true
 ```
 
-Run a specific test method:
+## Docker Commands
+
 ```bash
-mvn test -Dtest=SampleTest#testGoogleSearch
+# Build images
+docker compose build
+
+# Run tests
+docker compose up --abort-on-container-exit
+
+# View logs
+docker compose logs admin-portal-tests
+docker compose logs teleadmin-tests
+
+# Stop containers
+docker compose down
+
+# Clean everything
+docker compose down --rmi all --volumes
 ```
 
-## Browser Options
+## CI/CD Integration
 
-To run tests in headless mode, modify the `BaseTest.java`:
+A GitHub Actions workflow is included at `.github/workflows/docker-tests.yml` that:
+- Builds Docker images
+- Runs tests in parallel containers
+- Generates and publishes Allure reports
+- Uploads test artifacts
 
-```java
-browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
-        .setHeadless(true));
-```
+## Troubleshooting
 
-## Additional Resources
+### Docker Issues
+- Ensure Docker Desktop is running: `docker ps`
+- Check available resources (4GB+ RAM needed)
+- Rebuild images: `docker compose build --no-cache`
+
+### Test Failures
+- Check logs: `docker compose logs`
+- Verify environment variables in `docker-compose.yml`
+- Ensure Docker containers have sufficient resources
+
+### Allure Report Issues
+- Verify results exist: `dir target\allure-results` (Windows) or `ls target/allure-results` (Linux/Mac)
+- Generate manually: `mvn allure:report`
+- View report: `mvn allure:serve target/allure-results`
+
+## Resources
 
 - [Playwright Java Documentation](https://playwright.dev/java/)
 - [JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/)
 - [AssertJ Documentation](https://assertj.github.io/doc/)
+- [Allure Framework](https://docs.qameta.io/allure/)
+- [Docker Documentation](https://docs.docker.com/)
 

@@ -34,6 +34,9 @@ public class AdminPortalUserManagementPage extends BasePage {
     private final Locator confirmYesBtn;
     private final Locator errorMsg;
     private final Locator successMsg;
+    private final Locator languageSelect;
+    private final Locator timeZoneSelect;
+    private final Locator countrySelect;
 
     public AdminPortalUserManagementPage(Page page) {
         super(page);
@@ -62,6 +65,9 @@ public class AdminPortalUserManagementPage extends BasePage {
         this.confirmYesBtn = page.locator("#confirmYesBtn");
         this.errorMsg = page.locator("#errorMsg");
         this.successMsg = page.locator("#successMsg");
+        this.languageSelect = page.locator("#languageID");
+        this.timeZoneSelect = page.locator("#timeZone");
+        this.countrySelect = page.locator("#countryID");
     }
 
     /**
@@ -89,8 +95,6 @@ public class AdminPortalUserManagementPage extends BasePage {
         return this;
     }
 
-
-
     /**
      * Select service level by enum UserTypes
      * @param userType The usertype to select
@@ -100,6 +104,87 @@ public class AdminPortalUserManagementPage extends BasePage {
         serviceLevel.selectOption(userType.getValue());
         waitForLoadingToDisappear();
         return this;
+    }
+
+    /**
+     * Select language by enum Language
+     * @param language The language to select
+     */
+    public AdminPortalUserManagementPage selectLanguage(com.websanity.enums.Language language) {
+        log.info("Selecting language: {}", language.getDisplayName());
+        languageSelect.selectOption(language.getValue());
+        waitForLoadingToDisappear();
+        return this;
+    }
+
+    /**
+     * Get currently selected language from selectbox
+     * @return Language enum value
+     */
+    public com.websanity.enums.Language getSelectedLanguage() {
+        try {
+            String languageValue = languageSelect.inputValue();
+            com.websanity.enums.Language language = com.websanity.enums.Language.getByValue(languageValue);
+            log.info("Selected language: {}", language.getDisplayName());
+            return language;
+        } catch (Exception e) {
+            log.error("Failed to get selected language: {}", e.getMessage());
+            return com.websanity.enums.Language.EMPTY;
+        }
+    }
+
+    /**
+     * Select time zone by enum TimeZone
+     * @param timeZone The time zone to select
+     */
+    public AdminPortalUserManagementPage selectTimeZone(com.websanity.enums.TimeZone timeZone) {
+        log.info("Selecting time zone: {}", timeZone.getDisplayName());
+        timeZoneSelect.selectOption(timeZone.getValue());
+        waitForLoadingToDisappear();
+        return this;
+    }
+
+    /**
+     * Get currently selected time zone from selectbox
+     * @return TimeZone enum value
+     */
+    public com.websanity.enums.TimeZone getSelectedTimeZone() {
+        try {
+            String timeZoneValue = timeZoneSelect.inputValue();
+            com.websanity.enums.TimeZone timeZone = com.websanity.enums.TimeZone.getByValue(timeZoneValue);
+            log.info("Selected time zone: {}", timeZone.getDisplayName());
+            return timeZone;
+        } catch (Exception e) {
+            log.error("Failed to get selected time zone: {}", e.getMessage());
+            return com.websanity.enums.TimeZone.UTC;
+        }
+    }
+
+    /**
+     * Select country by enum Country
+     * @param country The country to select
+     */
+    public AdminPortalUserManagementPage selectCountry(com.websanity.enums.Country country) {
+        log.info("Selecting country: {}", country.getDisplayName());
+        countrySelect.selectOption(country.getCode());
+        waitForLoadingToDisappear();
+        return this;
+    }
+
+    /**
+     * Get currently selected country from selectbox
+     * @return Country enum value
+     */
+    public com.websanity.enums.Country getSelectedCountry() {
+        try {
+            String countryCode = countrySelect.inputValue();
+            com.websanity.enums.Country country = com.websanity.enums.Country.getByCode(countryCode);
+            log.info("Selected country: {}", country.getDisplayName());
+            return country;
+        } catch (Exception e) {
+            log.error("Failed to get selected country: {}", e.getMessage());
+            return com.websanity.enums.Country.ALL_COUNTRIES;
+        }
     }
 
     /**
@@ -329,6 +414,22 @@ public class AdminPortalUserManagementPage extends BasePage {
         } catch (Exception e) {
             log.error("Failed to get username: {}", e.getMessage());
             return "";
+        }
+    }
+
+    /**
+     * Click on username of the first user in the table
+     */
+    public AdminPortalUserManagementPage clickFirstUserUsername() {
+        try {
+            log.info("Clicking first user username");
+            // Get second tr (index 1) - first data row, then get 7th td (index 6) - Username column
+            contentTable.locator("tr").nth(1).locator("td").nth(6).click();
+            page.waitForTimeout(500);
+            return this;
+        } catch (Exception e) {
+            log.error("Failed to click username: {}", e.getMessage());
+            return this;
         }
     }
 

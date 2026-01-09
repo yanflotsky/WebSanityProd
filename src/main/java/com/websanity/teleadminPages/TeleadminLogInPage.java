@@ -22,7 +22,9 @@ public class TeleadminLogInPage extends BasePage {
 
     public TeleadminLogInPage open() {
         navigate(System.getProperty("env.url"));
-        page.waitForTimeout(1500);
+        page.waitForLoadState();
+        page.waitForTimeout(2000);
+        page.locator(logInBtn).waitFor(); // Wait for page to fully load
         return this;
     }
     public void enterUsername(String val) {
@@ -41,7 +43,16 @@ public class TeleadminLogInPage extends BasePage {
         page.waitForTimeout(500);
         enterPassword(password);
         page.waitForTimeout(500);
+
+        // Click login and wait for navigation to complete
+        log.info("Clicking login button and waiting for navigation...");
         clickLogInBtn();
+
+        // Wait for page to load after login (increased timeout for Docker)
+        page.waitForLoadState();
+        page.waitForTimeout(2000);  // Additional wait for frames to load
+
+        log.info("Login navigation completed");
         return new TeleadminFindUsersPage(page);
     }
 }

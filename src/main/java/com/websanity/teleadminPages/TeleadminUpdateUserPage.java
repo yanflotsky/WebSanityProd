@@ -97,7 +97,7 @@ public class TeleadminUpdateUserPage extends BasePage {
 
     /**
      * Check if Update User page is opened by verifying button visibility
-     * This method waits up to 30 seconds for the element to appear (Playwright auto-waiting)
+     * This method waits up to 60 seconds for the element to appear (increased for Docker)
      */
     public boolean isUpdateUserPageOpened() {
         try {
@@ -422,13 +422,13 @@ public class TeleadminUpdateUserPage extends BasePage {
 
     /**
      * Wait for success message to appear after suspend
-     * Waits up to 30 seconds for the message to be visible
+     * Waits up to 45 seconds for the message to be visible (increased for Docker)
      */
     public TeleadminUpdateUserPage waitForSuspendSuccessMessage() {
         log.info("Waiting for suspend success message to appear");
         successMessage.waitFor(new Locator.WaitForOptions()
                 .setState(WaitForSelectorState.VISIBLE)
-                .setTimeout(30000));
+                .setTimeout(45000));
         return this;
     }
 

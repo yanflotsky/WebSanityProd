@@ -66,8 +66,8 @@ public class ConfigLoader {
         }
 
         try {
-            // Try to decrypt - if it's encrypted
-            String decrypted = SecureConfig.decrypt(encryptedPassword);
+            // Try to decrypt - if it's encrypted, use gmail_password secret in Docker
+            String decrypted = SecureConfig.decryptSecret(encryptedPassword, "gmail_password");
             log.debug("Email app password decrypted successfully");
             return decrypted;
         } catch (Exception e) {

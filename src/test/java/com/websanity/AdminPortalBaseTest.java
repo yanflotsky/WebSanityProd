@@ -20,58 +20,29 @@ public abstract class AdminPortalBaseTest extends BaseTest {
 
     /**
      * Perform login once before all tests in the class
-     * Browser context and page are created by parent BaseTest
+     * Browser context and page are created by parent BaseTest in @BeforeAll
      */
     @BeforeAll
-    void setupAndLoginOnce() {
+    static void setupAndLoginOnce() {
         log.info("🔧 Setting up Admin Portal session - performing login once for all tests...");
 
-        // Create context and page (normally done in @BeforeEach)
-        createContextAndPage();
-
+        // page and context are already created in BaseTest.launchBrowser()
         // Initialize login page
         AdminPortalLogInPage loginPage = new AdminPortalLogInPage(page);
 
         // Perform automatic login with MFA
         menuPage = loginPage.loginToAdminPortalWithAutoUser()
-                .waitForUserManagementBtnToAppear()
-                .closePopUpsAfterLogin();
+                .closePopUpsAfterLogin();  // This method already waits for User Management button
 
         log.info("✅ Login completed successfully, session will be kept open for all tests");
     }
 
     /**
-     * Close context after all tests are completed
-     * Override parent's @AfterEach to prevent closing context after each test
+     * Cleanup after all tests are completed
      */
     @AfterAll
-    void closeContextAfterAllTests() {
+    static void tearDownAll() {
         log.info("🧹 Closing Admin Portal session after all tests...");
-        if (context != null) {
-            context.close();
-        }
-    }
-
-    /**
-     * Override parent's createContextAndPage to do nothing
-     * We create context once in setupAndLoginOnce
-     */
-    @Override
-    void createContextAndPage() {
-        if (context == null) {
-            // Only create if not yet created
-            super.createContextAndPage();
-        }
-    }
-
-    /**
-     * Override parent's closeContext to do nothing
-     * We keep context open between tests
-     */
-    @Override
-    void closeContext() {
-        // Do nothing - keep context open between tests
-        log.debug("Keeping context open between tests");
     }
 }
 

@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  admin-portal-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: admin-portal-tests
+    environment:
+      - MAVEN_OPTS=-Xmx2048m
+      - USE_DOCKER_SECRETS=true
+    command: >
+      mvn test 
+      -Dtest=AdminPortalSanityTest 
+      -DisLocalRun=false
+      -Denv.url=${ENV_URL:-https://secure.telemessage.com}
+      -Dteleadmin.username=${TELEADMIN_USERNAME:-yanteleadmin}
+    volumes:
+      - ./target/allure-results-admin:/app/target/allure-results
+    secrets:
+      - teleadmin_password
+      - gmail_password
+    networks:
+      - test-network
+    mem_limit: 2g
+    cpus: 2
+
+  teleadmin-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: teleadmin-tests
+    environment:
+      - MAVEN_OPTS=-Xmx2048m
+      - USE_DOCKER_SECRETS=true
+    command: >
+      mvn test 
+      -Dtest=TeleadminSanityTest 
+      -DisLocalRun=false
+      -Denv.url=${ENV_URL:-https://secure.telemessage.com}
+      -Dteleadmin.username=${TELEADMIN_USERNAME:-yanteleadmin}
+    volumes:
+      - ./target/allure-results-teleadmin:/app/target/allure-results
+    secrets:
+      - teleadmin_password
+    networks:
+      - test-network
+    mem_limit: 2g
+    cpus: 2
+
+networks:
+  test-network:
+    driver: bridge
+
+secrets:
+  teleadmin_password:
+    file: ./secrets/teleadmin_password.txt
+  gmail_password:
+    file: ./secrets/gmail_password.txt
+

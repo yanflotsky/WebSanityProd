@@ -1,0 +1,30 @@
+# Git
+.allure
+# Allure
+
+*.bat
+# Scripts
+
+ADMIN_PORTAL_TEST_ARCHITECTURE.md
+*.md
+# Documentation
+
+docker-compose.yml
+Dockerfile
+.dockerignore
+# Docker
+
+target/site
+target/allure-results-local
+target/allure-results-teleadmin
+target/allure-results-admin
+# Build artifacts
+
+.vscode
+*.iml
+.idea
+# IDE
+
+.gitignore
+.git
+

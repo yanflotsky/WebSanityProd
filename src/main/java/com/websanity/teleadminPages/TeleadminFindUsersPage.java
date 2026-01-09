@@ -34,20 +34,27 @@ public class TeleadminFindUsersPage extends BasePage {
 
     /**
      * Wait for Find Users page to load after login
-     * Waits for search button to appear (60 seconds timeout)
+     * Waits for search button to appear (90 seconds timeout for Docker)
      * @return true if page loaded successfully, false if timeout
      */
     public void waitForFindUsersPageToLoad() {
         log.info("Waiting for Find Users page to load after login...");
         try {
+            // First wait for the frame to be available
+            page.waitForTimeout(1000);
+
+            // Then wait for the search button in the frame
             searchButton.waitFor(new Locator.WaitForOptions()
-                    .setState(WaitForSelectorState. VISIBLE)
-                    .setTimeout(60000));
-            page.waitForTimeout(1500);
+                    .setState(WaitForSelectorState.VISIBLE)
+                    .setTimeout(90000));  // Increased timeout for Docker
+
+            // Additional wait to ensure frame is fully loaded
+            page.waitForTimeout(2000);
             log.info("Find Users page loaded successfully - search button is visible");
         } catch (Exception e) {
-            log.error("Failed to load Find Users page within 60 seconds", e);
-            throw e;
+            log.error("Failed to load Find Users page within 90 seconds", e);
+            log.error("Current URL: {}", page.url());
+            throw new RuntimeException("Teleadmin Find Users page did not load", e);
         }
     }
 
@@ -73,26 +80,40 @@ public class TeleadminFindUsersPage extends BasePage {
         log.info("Searching for user: {}", username);
         enterUsername(username);
         clickSearchButton();
+
+        // Wait for search to complete (increased for Docker)
+        page.waitForTimeout(1500);
         return this;
     }
 
     /**
      * Wait for table to have data (not empty and not showing "No data available")
      * Uses Playwright's auto-waiting with custom condition
+     * Timeout increased to 90 seconds for Docker environment
      */
     private void waitForTableToHaveData() {
-        // Wait for at least one row to appear
-        usersTable.locator("tbody tr").first().waitFor(new Locator.WaitForOptions()
-                .setState(WaitForSelectorState.VISIBLE)
-                .setTimeout(60000));
+        log.info("Waiting for table to load data...");
 
-        // Wait for "No data available" message to disappear (if it was there)
-        page.waitForCondition(() -> {
-            Locator rows = usersTable.locator("tbody tr");
-            if (rows.count() == 0) return false;
-            String firstRowText = rows.first().textContent();
-            return !firstRowText.contains("No data available in table");
-        }, new Page.WaitForConditionOptions().setTimeout(60000));
+        try {
+            // Wait for at least one row to appear
+            usersTable.locator("tbody tr").first().waitFor(new Locator.WaitForOptions()
+                    .setState(WaitForSelectorState.VISIBLE)
+                    .setTimeout(90000));  // Increased for Docker
+
+            // Wait for "No data available" message to disappear (if it was there)
+            page.waitForCondition(() -> {
+                Locator rows = usersTable.locator("tbody tr");
+                if (rows.count() == 0) return false;
+                String firstRowText = rows.first().textContent();
+                return !firstRowText.contains("No data available in table");
+            }, new Page.WaitForConditionOptions().setTimeout(90000));  // Increased for Docker
+
+            log.info("Table data loaded successfully");
+        } catch (Exception e) {
+            log.error("Failed to load table data within 90 seconds", e);
+            log.error("Current URL: {}", page.url());
+            throw new RuntimeException("Table data did not load", e);
+        }
     }
 
     /**

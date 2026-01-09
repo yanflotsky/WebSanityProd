@@ -156,8 +156,24 @@ public class AdminPortalLogInPage extends BasePage {
 
         waitForMfaPage();
         fillMfaCodeFromEmail(beforeEmailRequest); // Will wait for email in a loop until it arrives
+
+        // Click Continue and wait for navigation to complete
+        log.info("Clicking Continue button and waiting for navigation...");
         clickContinue(); // Click Continue button after MFA code
 
+        // Wait for navigation to complete - the page should redirect to the admin portal
+        // We wait for the URL to change away from the Auth0 login pages
+        try {
+            page.waitForURL(url -> !url.contains("auth.telemessage.com"),
+                new Page.WaitForURLOptions().setTimeout(30000));
+            log.info("Navigation completed, URL: {}", page.url());
+        } catch (Exception e) {
+            log.error("Navigation timeout or error after MFA. Current URL: {}", page.url());
+            throw new RuntimeException("Failed to navigate to Admin Portal after MFA login. Current URL: " + page.url(), e);
+        }
+
+        // Additional wait for any post-login redirects to settle
+        page.waitForLoadState();
         log.info("Login with MFA completed");
 
         return new AdminPortalMenuPage(page);

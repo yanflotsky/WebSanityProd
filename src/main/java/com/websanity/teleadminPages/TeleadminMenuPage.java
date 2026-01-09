@@ -63,8 +63,9 @@ public class TeleadminMenuPage extends BasePage {
     /**
      * Click on Find Users button
      */
-    public void clickFindUsersButton() {
+    public TeleadminFindUsersPage clickFindUsersButton() {
         findUsersButton.click();
+        return new TeleadminFindUsersPage(page);
     }
 
     /**

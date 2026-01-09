@@ -215,14 +215,23 @@ public class AdminPortalMenuPage extends BasePage {
     }
 
     /**
-     * Close all pop-ups that appear after login
-     * Waits for user management button to be visible and closes any popups that appear
+     * Wait for user management button to be visible after login
+     * Waits for user management button to be visible and verifies we're on the correct page
      */
     public AdminPortalMenuPage waitForUserManagementBtnToAppear() {
         log.info("Waiting for User Management button to be visible..");
-        userManagementBtn.waitFor(new Locator.WaitForOptions().setTimeout(30000));
-        log.info("User Management button is visible, continue test");
-        return  this;
+        log.info("Current URL: {}", page.url());
+
+        try {
+            userManagementBtn.waitFor(new Locator.WaitForOptions().setTimeout(30000));
+            log.info("User Management button is visible, continue test");
+        } catch (Exception e) {
+            log.error("Failed to find User Management button. Current URL: {}", page.url());
+            log.error("Page title: {}", page.title());
+            throw new RuntimeException("User Management button not found. Possible login failure. URL: " + page.url(), e);
+        }
+
+        return this;
     }
 
     /**

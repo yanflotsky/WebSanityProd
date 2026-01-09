@@ -23,6 +23,8 @@
         <!-- AES-256 encrypted password (machine-specific) - Run PasswordEncryptor to generate -->
         <!-- To encrypt: Open src/main/java/com/websanity/utils/PasswordEncryptor.java and run main() -->
         <teleadmin.password>RApg4UKShrGdWIH4GQEUIg==</teleadmin.password>
+        <!-- Control local vs Docker execution: true = local without Allure, false = Docker with Allure -->
+        <isLocalRun>false</isLocalRun>
     </properties>
 
     <dependencies>
@@ -50,6 +52,14 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- JUnit Platform Suite for test suite execution -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <version>1.10.1</version>
             <scope>test</scope>
         </dependency>
 
@@ -140,6 +150,7 @@
                         <env.url>${env.url}</env.url>
                         <teleadmin.username>${teleadmin.username}</teleadmin.username>
                         <teleadmin.password>${teleadmin.password}</teleadmin.password>
+                        <isLocalRun>${isLocalRun}</isLocalRun>
                     </systemPropertyVariables>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
