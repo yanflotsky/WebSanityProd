@@ -3,6 +3,8 @@ package com.websanity.tests;
 import com.websanity.AdminPortalBaseTest;
 import com.websanity.adminPortalPages.AdminPortalUserManagementPage;
 import com.websanity.enums.Country;
+import com.websanity.enums.Language;
+import com.websanity.enums.TimeZone;
 import com.websanity.enums.UserTypes;
 import com.websanity.models.UserParams;
 import io.qameta.allure.*;
@@ -79,7 +81,6 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
     }
 
-
     @Test
     @Order(2)
     @Story("User Management")
@@ -88,10 +89,59 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
     void updateUserDetails() {
 
         log.info("User Management - Update User Details");
+        String randnum = String.format("%07d", System.currentTimeMillis() % 10000000);
+        UserParams userParamsForUpd = UserParams.builder()
+                .firstName("wsupdfn"+randnum)
+                .lastName("wsupdln"+randnum)
+                .username("wsupdun"+randnum)
+                .language(Language.HEBREW)
+                .timeZone(TimeZone.EUROPE_LONDON)
+                .country(Country.UNITED_KINGDOM)
+                .email("wsudp"+randnum+"@gmail.com")
+                .build();
 
         userManagementPage = menuPage.clickUserManagement()
                 .fillSearchInp(userParams.getUsername())
+                .clickSearchBtn()
+                .clickFirstUserUsername()
+                .fillFirstName(userParamsForUpd.getFirstName())
+                .fillLastName(userParamsForUpd.getLastName())
+                .fillUsername(userParamsForUpd.getUsername())
+                .selectLanguage(userParamsForUpd.getLanguage())
+                .selectCountry(userParamsForUpd.getCountry())
+                .selectTimeZone(userParamsForUpd.getTimeZone())
+                .fillEmail(userParamsForUpd.getEmail())
+                .clickSaveBtn();
+
+        log.info("Search for edited user and verify data in table");
+        userManagementPage = menuPage.clickUserManagement()
+                .fillSearchInp(userParamsForUpd.getUsername())
                 .clickSearchBtn();
+
+        Assertions.assertEquals(userParamsForUpd.getFirstName(), userManagementPage.getFirstUserFirstName(), "First Name in table doesn't match");
+        Assertions.assertEquals(userParamsForUpd.getLastName(), userManagementPage.getFirstUserLastName(), "Last Name in table doesn't match");
+        Assertions.assertEquals(userParamsForUpd.getUsername(), userManagementPage.getFirstUserUsername(), "Username in table doesn't match");
+        Assertions.assertEquals(userParamsForUpd.getEmail(), userManagementPage.getFirstUserEmail(), "Email in table doesn't match");
+
+        userManagementPage = menuPage.clickUserManagement()
+                .fillSearchInp(userParamsForUpd.getUsername())
+                .clickSearchBtn()
+                .clickFirstUserUsername();
+
+        Assertions.assertEquals(userParamsForUpd.getLanguage(), userManagementPage.getSelectedLanguage(), "Language selected is not correct");
+        Assertions.assertEquals(userParamsForUpd.getCountry(), userManagementPage.getSelectedCountry(), "Country selected is not correct");
+        Assertions.assertEquals(userParamsForUpd.getTimeZone(), userManagementPage.getSelectedTimeZone(), "TimeZone selected is not correct");
+
+        // Update userParams with new values for next tests
+        userParams.setFirstName(userParamsForUpd.getFirstName());
+        userParams.setLastName(userParamsForUpd.getLastName());
+        userParams.setUsername(userParamsForUpd.getUsername());
+        userParams.setEmail(userParamsForUpd.getEmail());
+        userParams.setLanguage(userParamsForUpd.getLanguage());
+        userParams.setCountry(userParamsForUpd.getCountry());
+        userParams.setTimeZone(userParamsForUpd.getTimeZone());
+
+        log.info("✅ Test completed successfully");
 
     }
 
