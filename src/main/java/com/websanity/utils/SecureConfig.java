@@ -59,10 +59,48 @@ public class SecureConfig {
 
     /**
      * Decrypt an encrypted string
-     * @param encryptedText Base64 encoded encrypted string
+     * @param encryptedText Base64 encoded encrypted string (or path to secret file in Docker)
      * @return Decrypted plain text
      */
     public static String decrypt(String encryptedText) {
+        return decryptSecret(encryptedText, "teleadmin_password");
+    }
+
+    /**
+     * Decrypt a secret with a specific secret name
+     * @param encryptedText Base64 encoded encrypted string
+     * @param secretName Name of the Docker secret file (e.g., "gmail_password")
+     * @return Decrypted plain text
+     */
+    public static String decryptSecret(String encryptedText, String secretName) {
+        // Check if running in Docker with secrets
+        String useDockerSecrets = System.getenv("USE_DOCKER_SECRETS");
+        if ("true".equals(useDockerSecrets)) {
+            // Read password from Docker secret file
+            try {
+                String secretPath = "/run/secrets/" + secretName;
+                java.nio.file.Path path = java.nio.file.Paths.get(secretPath);
+                if (java.nio.file.Files.exists(path)) {
+                    String password = new String(java.nio.file.Files.readAllBytes(path), StandardCharsets.UTF_8).trim();
+                    System.out.println("Docker Secrets mode: " + secretName + " loaded from " + secretPath);
+                    return password;
+                } else {
+                    System.err.println("Docker secret file not found: " + secretPath);
+                }
+            } catch (Exception e) {
+                System.err.println("Failed to read Docker secret: " + e.getMessage());
+            }
+        }
+
+        // Check if running in Docker without secrets (fallback)
+        String computername = System.getenv("COMPUTERNAME");
+        if (computername == null && !"true".equals(useDockerSecrets)) {
+            // Running in Docker/Linux without secrets - try to use password as-is
+            System.out.println("Docker mode detected (no secrets) - using password as-is");
+            return encryptedText;
+        }
+
+        // Windows mode - decrypt as usual
         try {
             SecretKey key = generateKey();
             Cipher cipher = Cipher.getInstance(TRANSFORMATION);

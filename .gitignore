@@ -43,6 +43,19 @@ videos/
 allure-results/
 allure-report/
 .allure/
+target/allure-results-admin/
+target/allure-results-teleadmin/
+target/allure-results-local/
+target/site/
+
+# Docker
+.env
+
+# Secrets - NEVER commit password files!
+secrets/*.txt
+secrets/**/*.txt
+!secrets/README.md
+!secrets/.gitkeep
 
 # Temporary files
 *.tmp

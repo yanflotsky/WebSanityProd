@@ -1,0 +1,62 @@
+name: Run Tests in Docker
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build Docker images
+      run: docker compose build
+
+    - name: Run tests in parallel
+      run: |
+        mkdir -p target/allure-results-admin
+        mkdir -p target/allure-results-teleadmin
+        mkdir -p target/allure-results
+        docker compose up --abort-on-container-exit
+
+    - name: Merge Allure results
+      if: always()
+      run: |
+        cp -r target/allure-results-admin/* target/allure-results/ || true
+        cp -r target/allure-results-teleadmin/* target/allure-results/ || true
+
+    - name: Generate Allure Report
+      if: always()
+      uses: simple-elf/allure-report-action@master
+      with:
+        allure_results: target/allure-results
+        allure_history: allure-history
+
+    - name: Deploy Allure Report to GitHub Pages
+      if: always()
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: allure-history
+
+    - name: Upload Allure Results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: allure-results
+        path: target/allure-results
+        retention-days: 30
+
+    - name: Clean up Docker
+      if: always()
+      run: docker compose down
+
