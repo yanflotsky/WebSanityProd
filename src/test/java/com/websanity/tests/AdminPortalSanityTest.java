@@ -21,7 +21,7 @@ import org.junit.jupiter.api.*;
 public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
     private AdminPortalUserManagementPage userManagementPage;
-    private static String randnum = String.format("%07d", System.currentTimeMillis() % 10000000);
+    private static final String randnum = String.format("%07d", System.currentTimeMillis() % 10000000);
     private final UserParams userParams = UserParams.builder()
             .firstName("wsfn"+randnum)
             .lastName("wsln"+randnum)
@@ -82,6 +82,22 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
     @Test
     @Order(2)
+    @Story("User Management")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("User Management - Update User Details")
+    void updateUserDetails() {
+
+        log.info("User Management - Update User Details");
+
+        userManagementPage = menuPage.clickUserManagement()
+                .fillSearchInp(userParams.getUsername())
+                .clickSearchBtn();
+
+    }
+
+
+    @Test
+    @Order(3)
     @Story("User Management")
     @Severity(SeverityLevel.CRITICAL)
     @Description("User Management - Delete User")
