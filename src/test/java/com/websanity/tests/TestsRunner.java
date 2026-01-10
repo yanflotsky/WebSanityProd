@@ -18,6 +18,56 @@ import java.nio.file.Files;
  */
 public class TestsRunner {
 
+    // ════════════════════════════════════════════════════════════════════════════
+    // 📝 CENTRALIZED TEST CONFIGURATION - Add your test classes here!
+    // ════════════════════════════════════════════════════════════════════════════
+    // Format: "TestClassName:docker-service-name:allure-results-folder"
+    private static final String[] TEST_CLASSES = {
+        "AdminPortalSanityTest:admin-portal-tests:allure-results-admin",
+        "TeleadminSanityTest:teleadmin-tests:allure-results-teleadmin"
+        // Add more test classes here:
+        // "NewTestClass:new-service-name:allure-results-new"
+    };
+    // ════════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Get comma-separated list of test class names for Maven
+     * Example: "AdminPortalSanityTest,TeleadminSanityTest"
+     */
+    private static String getTestClassNames() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < TEST_CLASSES.length; i++) {
+            String className = TEST_CLASSES[i].split(":")[0];
+            if (i > 0) sb.append(",");
+            sb.append(className);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Get array of Docker service names
+     * Example: ["admin-portal-tests", "teleadmin-tests"]
+     */
+    private static String[] getServiceNames() {
+        String[] services = new String[TEST_CLASSES.length];
+        for (int i = 0; i < TEST_CLASSES.length; i++) {
+            services[i] = TEST_CLASSES[i].split(":")[1];
+        }
+        return services;
+    }
+
+    /**
+     * Get array of Allure results folder names
+     * Example: ["allure-results-admin", "allure-results-teleadmin"]
+     */
+    private static String[] getAllureResultsFolders() {
+        String[] folders = new String[TEST_CLASSES.length];
+        for (int i = 0; i < TEST_CLASSES.length; i++) {
+            folders[i] = TEST_CLASSES[i].split(":")[2];
+        }
+        return folders;
+    }
+
     public static void main(String[] args) {
         // Try to read from system property first (passed by Maven)
         String isLocalRun = System.getProperty("isLocalRun");
@@ -44,7 +94,7 @@ public class TestsRunner {
 
         if (!runLocally) {
             System.out.println("⚠ Docker mode detected!");
-            System.out.println("Tests will run in parallel Docker containers.");
+            System.out.println("Test classes will run in parallel Docker containers.");
             System.out.println("Make sure Docker Desktop is running.");
             System.out.println("───────────────────────────────────────────────────────────");
 
@@ -52,7 +102,7 @@ public class TestsRunner {
             runDockerTests();
         } else {
             System.out.println("Running tests locally...");
-            System.out.println("Tests: AdminPortalSanityTest, TeleadminSanityTest");
+            System.out.println("Tests: " + getTestClassNames());
             System.out.println("───────────────────────────────────────────────────────────");
 
             // Run tests locally via Maven
@@ -96,7 +146,7 @@ public class TestsRunner {
             System.out.println("Starting local test execution...");
 
             ProcessBuilder pb = new ProcessBuilder("mvn", "test",
-                "-Dtest=AdminPortalSanityTest,TeleadminSanityTest",
+                "-Dtest=" + getTestClassNames(),
                 "-DisLocalRun=true");
             pb.redirectErrorStream(true);
 
@@ -185,15 +235,21 @@ public class TestsRunner {
         try {
             System.out.println("Checking container exit codes...");
 
-            // Get exit codes for both containers
-            int adminExitCode = getContainerExitCode("admin-portal-tests");
-            int teleadminExitCode = getContainerExitCode("teleadmin-tests");
+            String[] serviceNames = getServiceNames();
+            boolean allSuccess = true;
 
-            System.out.println("  admin-portal-tests exit code: " + adminExitCode);
-            System.out.println("  teleadmin-tests exit code: " + teleadminExitCode);
+            // Get exit codes for all containers
+            for (String serviceName : serviceNames) {
+                int exitCode = getContainerExitCode(serviceName);
+                System.out.println("  " + serviceName + " exit code: " + exitCode);
+
+                if (exitCode != 0) {
+                    allSuccess = false;
+                }
+            }
 
             // If any container failed, return 1
-            if (adminExitCode != 0 || teleadminExitCode != 0) {
+            if (!allSuccess) {
                 System.out.println("⚠ One or more test containers failed!");
                 return 1;
             }
@@ -241,11 +297,15 @@ public class TestsRunner {
     private static void cleanAllureResults() {
         System.out.println("Cleaning previous Allure results...");
 
-        File[] dirsToClean = {
-            new File("target/allure-results"),
-            new File("target/allure-results-admin"),
-            new File("target/allure-results-teleadmin")
-        };
+        // Build dynamic list of directories to clean
+        String[] allureFolders = getAllureResultsFolders();
+        File[] dirsToClean = new File[allureFolders.length + 2]; // +2 for main allure-results and screenshots
+
+        dirsToClean[0] = new File("target/allure-results");
+        for (int i = 0; i < allureFolders.length; i++) {
+            dirsToClean[i + 1] = new File("target/" + allureFolders[i]);
+        }
+        dirsToClean[dirsToClean.length - 1] = new File("target/screenshots");
 
         for (File dir : dirsToClean) {
             if (dir.exists() && dir.isDirectory()) {
@@ -257,8 +317,13 @@ public class TestsRunner {
                             deletedCount++;
                         }
                     }
-                    System.out.println("  Cleaned " + deletedCount + " files from " + dir.getName());
+                    if (deletedCount > 0) {
+                        System.out.println("  Cleaned " + deletedCount + " files from " + dir.getName());
+                    }
                 }
+            } else if (!dir.exists()) {
+                // Create directory if it doesn't exist
+                dir.mkdirs();
             }
         }
 
@@ -268,16 +333,12 @@ public class TestsRunner {
 
     /**
      * Merges Allure results from Docker containers into a single folder.
-     * Copies all JSON files from:
-     * - target/allure-results-admin/
-     * - target/allure-results-teleadmin/
-     * Into: target/allure-results/
+     * Dynamically copies all JSON files from configured allure-results folders
+     * into: target/allure-results/
      */
     private static void mergeAllureResults() {
         try {
             File targetDir = new File("target/allure-results");
-            File adminDir = new File("target/allure-results-admin");
-            File teleadminDir = new File("target/allure-results-teleadmin");
 
             // Create target directory if it doesn't exist
             if (!targetDir.exists()) {
@@ -285,35 +346,28 @@ public class TestsRunner {
                 System.out.println("Created target/allure-results directory");
             }
 
-            int copiedFiles = 0;
+            int totalCopiedFiles = 0;
+            String[] allureFolders = getAllureResultsFolders();
+            String[] serviceNames = getServiceNames();
 
-            // Copy from admin results
-            if (adminDir.exists() && adminDir.isDirectory()) {
-                File[] adminFiles = adminDir.listFiles((dir, name) -> name.endsWith(".json"));
-                if (adminFiles != null) {
-                    for (File file : adminFiles) {
-                        Files.copy(file.toPath(), new File(targetDir, file.getName()).toPath(),
-                                java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-                        copiedFiles++;
+            // Copy from all configured result directories
+            for (int i = 0; i < allureFolders.length; i++) {
+                File sourceDir = new File("target/" + allureFolders[i]);
+
+                if (sourceDir.exists() && sourceDir.isDirectory()) {
+                    File[] files = sourceDir.listFiles((dir, name) -> name.endsWith(".json"));
+                    if (files != null && files.length > 0) {
+                        for (File file : files) {
+                            Files.copy(file.toPath(), new File(targetDir, file.getName()).toPath(),
+                                    java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                        }
+                        totalCopiedFiles += files.length;
+                        System.out.println("Copied " + files.length + " files from " + serviceNames[i]);
                     }
-                    System.out.println("Copied " + adminFiles.length + " files from admin-portal-tests");
                 }
             }
 
-            // Copy from teleadmin results
-            if (teleadminDir.exists() && teleadminDir.isDirectory()) {
-                File[] teleadminFiles = teleadminDir.listFiles((dir, name) -> name.endsWith(".json"));
-                if (teleadminFiles != null) {
-                    for (File file : teleadminFiles) {
-                        Files.copy(file.toPath(), new File(targetDir, file.getName()).toPath(),
-                                java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-                        copiedFiles++;
-                    }
-                    System.out.println("Copied " + teleadminFiles.length + " files from teleadmin-tests");
-                }
-            }
-
-            System.out.println("✅ Successfully merged " + copiedFiles + " Allure result files");
+            System.out.println("✅ Successfully merged " + totalCopiedFiles + " Allure result files");
 
         } catch (Exception e) {
             System.err.println("⚠ Warning: Could not merge Allure results: " + e.getMessage());
