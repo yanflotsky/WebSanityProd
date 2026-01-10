@@ -22,8 +22,14 @@ services:
       - gmail_password
     networks:
       - test-network
-    mem_limit: 2g
-    cpus: 2
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+          cpus: '2'
+        reservations:
+          memory: 1g
+          cpus: '1'
 
   teleadmin-tests:
     build:
@@ -45,8 +51,14 @@ services:
       - teleadmin_password
     networks:
       - test-network
-    mem_limit: 2g
-    cpus: 2
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+          cpus: '2'
+        reservations:
+          memory: 1g
+          cpus: '1'
 
 networks:
   test-network:
