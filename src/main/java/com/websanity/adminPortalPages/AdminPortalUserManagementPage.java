@@ -31,6 +31,8 @@ public class AdminPortalUserManagementPage extends BasePage {
     private final Locator searchBtn;
     private final Locator contentTable;
     private final Locator deleteBtn;
+    private final Locator suspendBtn;
+    private final Locator activateBtn;
     private final Locator confirmYesBtn;
     private final Locator errorMsg;
     private final Locator successMsg;
@@ -62,6 +64,8 @@ public class AdminPortalUserManagementPage extends BasePage {
         this.searchBtn = page.locator("#searchContactsSbm");
         this.contentTable = page.locator("#contentTable");
         this.deleteBtn = page.locator("#deleteBtn");
+        this.suspendBtn = page.locator("#suspendBtn");
+        this.activateBtn = page.locator("#activateBtn");
         this.confirmYesBtn = page.locator("#confirmYesBtn");
         this.errorMsg = page.locator("#errorMsg");
         this.successMsg = page.locator("#successMsg");
@@ -534,6 +538,26 @@ public class AdminPortalUserManagementPage extends BasePage {
     public AdminPortalUserManagementPage clickDeleteBtn() {
         log.info("Clicking Delete button");
         deleteBtn.click();
+        return this;
+    }
+
+    /**
+     * Click on Suspend button
+     */
+    public AdminPortalUserManagementPage clickSuspendBtn() {
+        log.info("Clicking Suspend button");
+        suspendBtn.click();
+        waitForLoadingToDisappear();
+        return this;
+    }
+
+    /**
+     * Click on Activate button
+     */
+    public AdminPortalUserManagementPage clickActivateBtn() {
+        log.info("Clicking Activate button");
+        activateBtn.click();
+        waitForLoadingToDisappear();
         return this;
     }
 

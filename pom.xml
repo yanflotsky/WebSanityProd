@@ -146,6 +146,13 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.2</version>
                 <configuration>
+                    <!-- Only run test classes ending with *Test -->
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/BaseTest.java</exclude>
+                    </excludes>
                     <systemPropertyVariables>
                         <env.url>${env.url}</env.url>
                         <teleadmin.username>${teleadmin.username}</teleadmin.username>
