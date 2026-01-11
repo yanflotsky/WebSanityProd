@@ -7,7 +7,8 @@ import com.websanity.BasePage;
 
 public class TeleadminMenuPage extends BasePage {
 
-    private final FrameLocator textFrame;
+    private final FrameLocator frameMenu;
+    private final FrameLocator frameText;
 
     // Locators
     private final Locator signUpButton;
@@ -17,17 +18,20 @@ public class TeleadminMenuPage extends BasePage {
     private final Locator findUsersButton;
     private final Locator setPermissionsButton;
     private final Locator signOutButton;
+    private final Locator usersTable;
 
     public TeleadminMenuPage(Page page) {
         super(page);
-        this.textFrame = page.frameLocator("frame[name='menu']");
-        this.signUpButton = textFrame.locator("#signup_page_menu");
-        this.signUpFromFileButton = textFrame.locator("#massreg_page_menu");
-        this.updateUsersFromFileButton = textFrame.locator("#massupd_page_menu");
-        this.deleteUsersFromFileButton = textFrame.locator("#massdelete_page_menu");
-        this.findUsersButton = textFrame.locator("#findusers_page_menu");
-        this.setPermissionsButton = textFrame.locator("#permissions_page_menu");
-        this.signOutButton = textFrame.locator("#signoff_page_menu");
+        this.frameMenu = page.frameLocator("frame[name='menu']");
+        this.frameText = page.frameLocator("frame[name='text']");
+        this.usersTable = frameText.locator("#personTable");
+        this.signUpButton = frameMenu.locator("#signup_page_menu");
+        this.signUpFromFileButton = frameMenu.locator("#massreg_page_menu");
+        this.updateUsersFromFileButton = frameMenu.locator("#massupd_page_menu");
+        this.deleteUsersFromFileButton = frameMenu.locator("#massdelete_page_menu");
+        this.findUsersButton = frameMenu.locator("#findusers_page_menu");
+        this.setPermissionsButton = frameMenu.locator("#permissions_page_menu");
+        this.signOutButton = frameMenu.locator("#signoff_page_menu");
     }
 
     /**
@@ -65,6 +69,8 @@ public class TeleadminMenuPage extends BasePage {
      */
     public TeleadminFindUsersPage clickFindUsersButton() {
         findUsersButton.click();
+        usersTable.waitFor();
+        page.waitForTimeout(1000);
         return new TeleadminFindUsersPage(page);
     }
 
