@@ -98,7 +98,7 @@ public class TeleadminFindUsersPage extends BasePage {
             // Wait for at least one row to appear
             usersTable.locator("tbody tr").first().waitFor(new Locator.WaitForOptions()
                     .setState(WaitForSelectorState.VISIBLE)
-                    .setTimeout(90000));  // Increased for Docker
+                    .setTimeout(60000));  // Increased for Docker
 
             // Wait for "No data available" message to disappear (if it was there)
             page.waitForCondition(() -> {
@@ -106,7 +106,7 @@ public class TeleadminFindUsersPage extends BasePage {
                 if (rows.count() == 0) return false;
                 String firstRowText = rows.first().textContent();
                 return !firstRowText.contains("No data available in table");
-            }, new Page.WaitForConditionOptions().setTimeout(90000));  // Increased for Docker
+            }, new Page.WaitForConditionOptions().setTimeout(60000));  // Increased for Docker
 
             log.info("Table data loaded successfully");
         } catch (Exception e) {

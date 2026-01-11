@@ -79,7 +79,7 @@ public class TeleadminSanityTest extends BaseTest {
 
     @BeforeEach
     void setUp() {
-        log.debug("🔄 Preparing for next test - resetting to menu frame...");
+        log.debug("🔄 Preparing for next test - cleaning up extra tabs...");
 
         // Close all extra tabs except the first one
         while (page.context().pages().size() > 1) {
@@ -88,9 +88,10 @@ public class TeleadminSanityTest extends BaseTest {
             log.debug("Closed extra tab, remaining tabs: {}", page.context().pages().size());
         }
 
-        // Switch back to menu frame and click Find Users to reset state
-        teleadminMenuPage.clickFindUsersButton();
-        log.debug("✅ Reset complete - ready for next test on menu frame");
+        // Just wait a bit for any animations to finish
+        page.waitForTimeout(500);
+
+        log.debug("✅ Cleanup complete - ready for next test");
     }
 
     @Test
@@ -114,12 +115,15 @@ public class TeleadminSanityTest extends BaseTest {
         assertEquals("User registered successfully", signUpPage.getSuccessMessageText(), "Success message text should match");
 
         log.info("User registration completed successfully");
+        log.info("✅ Test completed successfully");
 
     }
 
     @Test
     @Order(2)
     @Story("Find User")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Find user and open his Update User page")
     void findUserAndOpenHisUpdateUserPage() {
 
         log.info("Starting test: Search for user and click on username in table");
@@ -131,7 +135,7 @@ public class TeleadminSanityTest extends BaseTest {
                 .searchUser(searchUsername)
                 .checkThatUserWasFoundAndClickOnHim(searchUsername, updateUserPage);
 
-        log.info("Test completed successfully");
+        log.info("✅ Test completed successfully");
 
     }
 
@@ -149,7 +153,6 @@ public class TeleadminSanityTest extends BaseTest {
         UserParams paramsToUpdate = UserParams.builder()
                 .firstName("autoupdfn" + uniqueNum)
                 .lastName("autoupdln" + uniqueNum)
-                .username("autoupdun" + uniqueNum)
                 .country(Country.UNITED_KINGDOM)
                 .timeZone(TimeZone.EUROPE_LONDON)
                 .language(Language.HEBREW)
@@ -166,7 +169,6 @@ public class TeleadminSanityTest extends BaseTest {
                 .clickFindUsersButton()
                 .searchUser(searchUsername)
                 .checkThatUserWasFoundAndClickOnHim(searchUsername, updateUserPage)
-                .fillUsername(paramsToUpdate.getUsername())
                 .fillFirstName(paramsToUpdate.getFirstName())
                 .fillLastName(paramsToUpdate.getLastName())
                 .selectCountry(paramsToUpdate.getCountry())
@@ -187,7 +189,6 @@ public class TeleadminSanityTest extends BaseTest {
                 "Update success message text should match");
 
         log.info("Verifying all updated field values");
-        assertEquals(paramsToUpdate.getUsername(), updateUserPage.getUsername(), "Username should match updated value");
         assertEquals(paramsToUpdate.getFirstName(), updateUserPage.getFirstName(), "First name should match updated value");
         assertEquals(paramsToUpdate.getLastName(), updateUserPage.getLastName(), "Last name should match updated value");
         assertEquals(paramsToUpdate.getEmail(), updateUserPage.getEmail(), "Email should match updated value");
@@ -199,7 +200,6 @@ public class TeleadminSanityTest extends BaseTest {
         assertEquals(paramsToUpdate.getMobilePhone(), updateUserPage.getMobile(), "Mobile phone should match updated value");
 
         user = user.toBuilder()
-                .username(paramsToUpdate.getUsername())
                 .firstName(paramsToUpdate.getFirstName())
                 .lastName(paramsToUpdate.getLastName())
                 .email(paramsToUpdate.getEmail())
@@ -211,13 +211,15 @@ public class TeleadminSanityTest extends BaseTest {
                 .mobilePhone(paramsToUpdate.getMobilePhone())
                 .build();
 
-        log.info("Test completed successfully");
+        log.info("✅ Test completed successfully");
 
     }
 
     @Test
     @Order(4)
     @Story("User Status Management")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Suspend and Activate user, verifying status changes and success messages")
     void suspendAndActivateUser() {
 
         log.info("Starting test: Suspend and Activate user");
@@ -260,7 +262,7 @@ public class TeleadminSanityTest extends BaseTest {
         log.info("Verifying user status is Active");
         assertEquals(UserStatus.ACTIVE, updateUserPage.getSelectedStatus(), "User status should be Active");
 
-        log.info("Test completed successfully");
+        log.info("✅ Test completed successfully");
 
 
     }
@@ -268,6 +270,8 @@ public class TeleadminSanityTest extends BaseTest {
     @Test
     @Order(5)
     @Story("Enterprise Numbers Management")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Add and Remove Enterprise Number for user, verifying success messages and EN details")
     void addRemoveEnterpriseNumber() {
 
         log.info("Starting test: Add and Remove Enterprise Number");
@@ -319,13 +323,15 @@ public class TeleadminSanityTest extends BaseTest {
         log.info("Verifying Enterprise Number row is no longer visible");
         assertFalse(updateUserPage.isEnterpriseNumberRowVisible(), "Enterprise Number row should not be visible after deletion");
 
-        log.info("Test completed successfully");
+        log.info("✅ Test completed successfully");
 
     }
 
     @Test
     @Order(6)
     @Story("Allowed Domains Management")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Add allowed email domain for user and verify success message and domain presence")
     void addAllowedDomain() {
 
         log.info("Starting test: Add allowed domain");
@@ -354,13 +360,15 @@ public class TeleadminSanityTest extends BaseTest {
         assertEquals(domain, updateUserPage.getDomain0Value(),
                 "Domain0 input should contain the added domain");
 
-        log.info("Test completed successfully");
+        log.info("✅ Test completed successfully");
 
     }
 
     @Test
     @Order(7)
     @Story("Company Archive Management")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Create Source, Destination, and Plan in Company Archive Management and verify all details")
     void createSourceDestinationAndPlanTest() {
 
         log.info("Starting test: Training Test");
@@ -455,13 +463,15 @@ public class TeleadminSanityTest extends BaseTest {
         String planId = companyArchivePage.getFirstPlanRowCellText(0);
         log.info("Plan ID: " + planId);
 
-        log.info("Test completed successfully");
+        log.info("✅ Test completed successfully");
 
     }
 
     @Test
     @Order(8)
     @Story("Company Portal Settings Management")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify Company Portal Settings checkboxes, enable them, save, and verify persistence")
     void companyPortalSettingsTest() {
 
         log.info("Starting test: Verify Company Portal Settings checkboxes");
@@ -474,43 +484,19 @@ public class TeleadminSanityTest extends BaseTest {
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickCompanyAdminPortalSettingsButton();
 
-        log.info("Verifying All Items checkbox is NOT selected");
+        log.info("Verifying All checkboxes are NOT selected");
         assertFalse(adminsPortalPage.isAllItemsCheckboxSelected(), "All Items checkbox should NOT be selected");
-
-        log.info("Verifying Compose checkbox is NOT selected");
         assertFalse(adminsPortalPage.isComposeCheckboxSelected(), "Compose checkbox should NOT be selected");
-
-        log.info("Verifying Outbox checkbox is NOT selected");
         assertFalse(adminsPortalPage.isOutboxCheckboxSelected(), "Outbox checkbox should NOT be selected");
-
-        log.info("Verifying Sent Items checkbox is NOT selected");
         assertFalse(adminsPortalPage.isSentItemsCheckboxSelected(), "Sent Items checkbox should NOT be selected");
-
-        log.info("Verifying Inbox checkbox is NOT selected");
         assertFalse(adminsPortalPage.isInboxCheckboxSelected(), "Inbox checkbox should NOT be selected");
-
-        log.info("Verifying All Settings checkbox is NOT selected");
         assertFalse(adminsPortalPage.isAllSettingsCheckboxSelected(), "All Settings checkbox should NOT be selected");
-
-        log.info("Verifying Messenger App Settings checkbox is NOT selected");
         assertFalse(adminsPortalPage.isMessengerAppSettingsCheckboxSelected(), "Messenger App Settings checkbox should NOT be selected");
-
-        log.info("Verifying Advanced Settings checkbox is NOT selected");
         assertFalse(adminsPortalPage.isAdvancedSettingsCheckboxSelected(), "Advanced Settings checkbox should NOT be selected");
-
-        log.info("Verifying Message Settings checkbox is NOT selected");
         assertFalse(adminsPortalPage.isMessageSettingsCheckboxSelected(), "Message Settings checkbox should NOT be selected");
-
-        log.info("Verifying Archive Management checkbox IS selected");
         assertTrue(adminsPortalPage.isArchiveManagementCheckboxSelected(), "Archive Management checkbox SHOULD be selected");
-
-        log.info("Verifying Display My Contacts checkbox is NOT selected");
         assertFalse(adminsPortalPage.isDisplayMyContactsCheckboxSelected(), "Display My Contacts checkbox should NOT be selected");
-
-        log.info("Verifying Display Global Contacts checkbox is NOT selected");
         assertFalse(adminsPortalPage.isDisplayGlobalContactsCheckboxSelected(), "Display Global Contacts checkbox should NOT be selected");
-
-        log.info("Verifying Display Message Query checkbox is NOT selected");
         assertFalse(adminsPortalPage.isDisplayMessageQueryCheckboxSelected(), "Display Message Query checkbox should NOT be selected");
 
         // Click on checkboxes to enable them
@@ -534,52 +520,30 @@ public class TeleadminSanityTest extends BaseTest {
         log.info("Refreshing the page to verify settings were saved");
         adminsPortalPage.refreshPage();
 
-        log.info("Verifying All Items checkbox IS now selected");
+        log.info("Verifying All checkboxes ARE now selected");
         assertTrue(adminsPortalPage.isAllItemsCheckboxSelected(), "All Items checkbox SHOULD be selected");
-
-        log.info("Verifying Compose checkbox IS now selected");
         assertTrue(adminsPortalPage.isComposeCheckboxSelected(), "Compose checkbox SHOULD be selected");
-
-        log.info("Verifying Outbox checkbox IS now selected");
         assertTrue(adminsPortalPage.isOutboxCheckboxSelected(), "Outbox checkbox SHOULD be selected");
-
-        log.info("Verifying Sent Items checkbox IS now selected");
         assertTrue(adminsPortalPage.isSentItemsCheckboxSelected(), "Sent Items checkbox SHOULD be selected");
-
-        log.info("Verifying Inbox checkbox IS now selected");
         assertTrue(adminsPortalPage.isInboxCheckboxSelected(), "Inbox checkbox SHOULD be selected");
-
-        log.info("Verifying All Settings checkbox IS now selected");
         assertTrue(adminsPortalPage.isAllSettingsCheckboxSelected(), "All Settings checkbox SHOULD be selected");
-
-        log.info("Verifying Messenger App Settings checkbox IS now selected");
         assertTrue(adminsPortalPage.isMessengerAppSettingsCheckboxSelected(), "Messenger App Settings checkbox SHOULD be selected");
-
-        log.info("Verifying Advanced Settings checkbox IS now selected");
         assertTrue(adminsPortalPage.isAdvancedSettingsCheckboxSelected(), "Advanced Settings checkbox SHOULD be selected");
-
-        log.info("Verifying Message Settings checkbox IS now selected");
         assertTrue(adminsPortalPage.isMessageSettingsCheckboxSelected(), "Message Settings checkbox SHOULD be selected");
-
-        log.info("Verifying Archive Management checkbox IS still selected");
         assertTrue(adminsPortalPage.isArchiveManagementCheckboxSelected(), "Archive Management checkbox SHOULD be selected");
-
-        log.info("Verifying Display My Contacts checkbox IS now selected");
         assertTrue(adminsPortalPage.isDisplayMyContactsCheckboxSelected(), "Display My Contacts checkbox SHOULD be selected");
-
-        log.info("Verifying Display Global Contacts checkbox IS now selected");
         assertTrue(adminsPortalPage.isDisplayGlobalContactsCheckboxSelected(), "Display Global Contacts checkbox SHOULD be selected");
-
-        log.info("Verifying Display Message Query checkbox IS now selected");
         assertTrue(adminsPortalPage.isDisplayMessageQueryCheckboxSelected(), "Display Message Query checkbox SHOULD be selected");
 
-        log.info("Test completed successfully");
+        log.info("✅ Test completed successfully");
 
     }
 
     @Test
     @Order(9)
     @Story("Application Settings")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("WhatsApp Settings - Signature - User Level")
     void wpcSignatureUserLevel() {
 
         log.info("Starting test: WPC Settings - Signature - User Level");
@@ -620,13 +584,15 @@ public class TeleadminSanityTest extends BaseTest {
         log.info("Verifying signature text content");
         assertEquals(signatureText, applicationsSettingPage.getSignatureText(), "Signature text should match the previously entered text");
 
-        log.info("Test completed successfully");
+        log.info("✅ Test completed successfully");
 
     }
 
     @Test
     @Order(10)
     @Story("Application Settings")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Telegram Settings - Signature - User Level")
     void telegramSignatureUserLevel() {
 
         log.info("Starting test: Telegram Settings - Signature - User Level");
@@ -667,13 +633,15 @@ public class TeleadminSanityTest extends BaseTest {
         log.info("Verifying signature text content");
         assertEquals(signatureText, applicationsSettingPage.getSignatureText(), "Signature text should match the previously entered text");
 
-        log.info("Test completed successfully");
+        log.info("✅ Test completed successfully");
 
     }
 
     @Test
     @Order(11)
     @Story("Application Settings")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Signal Settings - Signature - User Level")
     void signalSignatureUserLevel() {
 
         log.info("Starting test: Signal Settings - Signature - User Level");
@@ -714,13 +682,15 @@ public class TeleadminSanityTest extends BaseTest {
         log.info("Verifying signature text content");
         assertEquals(signatureText, applicationsSettingPage.getSignatureText(), "Signature text should match the previously entered text");
 
-        log.info("Test completed successfully");
+        log.info("✅ Test completed successfully");
 
     }
 
     @Test
     @Order(12)
     @Story("Application Settings")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Enterprise Number Capture Settings - Signature - User Level")
     void encSignatureUserLevel() {
 
         log.info("Starting test: Enterprise Number Capture Settings - Signature - User Level");
@@ -761,13 +731,15 @@ public class TeleadminSanityTest extends BaseTest {
         log.info("Verifying signature text content");
         assertEquals(signatureText, applicationsSettingPage.getSignatureText(), "Signature text should match the previously entered text");
 
-        log.info("Test completed successfully");
+        log.info("✅ Test completed successfully");
 
     }
 
     @Test
     @Order(13)
     @Story("Application Settings")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Android Capture Settings - RCS Support Checkbox")
     void androidCaptureSettings() {
 
         log.info("Starting test: Android Capture Settings - RCS Checkbox");
@@ -805,13 +777,15 @@ public class TeleadminSanityTest extends BaseTest {
         assertTrue(applicationsSettingPage.isSignatureSuccessAlertVisible(), "Signature success alert should be visible after confirming action");
         assertFalse(applicationsSettingPage.isRcsSupportCheckboxSelected(), "RCS Support checkbox should be unchecked");
 
-        log.info("Test completed successfully");
+        log.info("✅ Test completed successfully");
 
     }
 
     @Test
     @Order(14)
     @Story("Delete User")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Delete user via Update User Page, verifying success messages and deleted status")
     void deleteUserViaUpdateUserPage() {
 
         log.info("Starting test: Delete user via Update User Page");

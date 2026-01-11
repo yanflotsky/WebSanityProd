@@ -110,6 +110,48 @@ public class TestsRunner {
         }
     }
 
+    /**
+     * Finds Maven command in the system.
+     * Tries multiple locations:
+     * 1. mvn.cmd in PATH
+     * 2. Common installation paths
+     * 3. Maven wrapper (mvnw.cmd)
+     */
+    private static String findMavenCommand() {
+        // Try standard mvn.cmd (might work if PATH is set)
+        try {
+            Process testProcess = new ProcessBuilder("mvn.cmd", "--version").start();
+            testProcess.waitFor();
+            if (testProcess.exitValue() == 0) {
+                return "mvn.cmd";
+            }
+        } catch (Exception ignored) {}
+
+        // Try common Maven installation paths on Windows
+        String[] possiblePaths = {
+            "C:\\Program Files\\Apache\\Maven\\bin\\mvn.cmd",
+            "C:\\Program Files\\Maven\\bin\\mvn.cmd",
+            "C:\\Maven\\bin\\mvn.cmd",
+            System.getenv("MAVEN_HOME") + "\\bin\\mvn.cmd",
+            System.getenv("M2_HOME") + "\\bin\\mvn.cmd"
+        };
+
+        for (String path : possiblePaths) {
+            if (path != null && new File(path).exists()) {
+                return path;
+            }
+        }
+
+        // Try Maven wrapper in project root
+        File mvnw = new File("mvnw.cmd");
+        if (mvnw.exists()) {
+            return "mvnw.cmd";
+        }
+
+        // Fallback to mvn and hope it works
+        return "mvn";
+    }
+
     private static String readIsLocalRunFromPom() {
         try {
             // Find pom.xml (go up from current directory)
@@ -145,7 +187,11 @@ public class TestsRunner {
         try {
             System.out.println("Starting local test execution...");
 
-            ProcessBuilder pb = new ProcessBuilder("mvn", "test",
+            // Find Maven executable
+            String mvnCommand = findMavenCommand();
+            System.out.println("Using Maven: " + mvnCommand);
+
+            ProcessBuilder pb = new ProcessBuilder(mvnCommand, "test",
                 "-Dtest=" + getTestClassNames(),
                 "-DisLocalRun=true");
             pb.redirectErrorStream(true);

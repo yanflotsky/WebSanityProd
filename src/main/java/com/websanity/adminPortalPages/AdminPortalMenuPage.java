@@ -82,11 +82,11 @@ public class AdminPortalMenuPage extends BasePage {
     /**
      * Click on Compose Message button
      */
-    public AdminPortalMenuPage clickComposeMessageBtn() {
+    public AdminPortalComposeMessagePage clickComposeMessageBtn() {
         log.info("Clicking Compose Message button");
         composeMessageBtn.click();
         waitForLoadingToDisappear();
-        return this;
+        return new AdminPortalComposeMessagePage(page);
     }
 
     /**
@@ -127,21 +127,21 @@ public class AdminPortalMenuPage extends BasePage {
     /**
      * Click on Sent Items menu item
      */
-    public AdminPortalMenuPage clickSentItems() {
+    public AdminPortalSentItemsPage clickSentItems() {
         log.info("Clicking Sent Items menu item");
         sentItemsBtn.click();
         waitForLoadingToDisappear();
-        return this;
+        return new AdminPortalSentItemsPage(page);
     }
 
     /**
      * Click on My Contacts menu item
      */
-    public AdminPortalMenuPage clickMyContacts() {
+    public AdminPortalMyContactsPage clickMyContacts() {
         log.info("Clicking My Contacts menu item");
         myContactsBtn.click();
         waitForLoadingToDisappear();
-        return this;
+        return new AdminPortalMyContactsPage(page);
     }
 
     /**

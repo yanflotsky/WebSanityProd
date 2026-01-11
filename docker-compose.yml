@@ -17,6 +17,7 @@ services:
       -Dteleadmin.username=${TELEADMIN_USERNAME:-yanteleadmin}
     volumes:
       - ./target/allure-results-admin:/app/target/allure-results
+      - ./target/screenshots:/app/target/screenshots
     secrets:
       - teleadmin_password
       - gmail_password
@@ -47,6 +48,7 @@ services:
       -Dteleadmin.username=${TELEADMIN_USERNAME:-yanteleadmin}
     volumes:
       - ./target/allure-results-teleadmin:/app/target/allure-results
+      - ./target/screenshots:/app/target/screenshots
     secrets:
       - teleadmin_password
     networks:
