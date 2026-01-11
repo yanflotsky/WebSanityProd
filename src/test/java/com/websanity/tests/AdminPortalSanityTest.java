@@ -220,7 +220,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
         Assertions.assertEquals("Your message has been sent.\n" +
                 "Click here to view message delivery progress.",composeMessagePage.getSuccessMsgText(), "Text of the success message is not correct");
 
-        page.waitForTimeout(15000); // Wait for 15 seconds to ensure message appears in Sent Items
+        page.waitForTimeout(20000); // Wait for 20 seconds to ensure message appears in Sent Items
 
         sentItemsPage = menuPage.clickSentItems()
                 .waitForMessagesListToLoad();

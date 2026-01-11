@@ -110,7 +110,7 @@ public class TeleadminFindUsersPage extends BasePage {
 
             log.info("Table data loaded successfully");
         } catch (Exception e) {
-            log.error("Failed to load table data within 90 seconds", e);
+            log.error("Failed to load table data within 60 seconds", e);
             log.error("Current URL: {}", page.url());
             throw new RuntimeException("Table data did not load", e);
         }
