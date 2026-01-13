@@ -69,7 +69,8 @@ public class TeleadminMenuPage extends BasePage {
      */
     public TeleadminFindUsersPage clickFindUsersButton() {
         findUsersButton.click();
-        usersTable.waitFor();
+        usersTable.waitFor(new Locator.WaitForOptions()
+                .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE));
         page.waitForTimeout(1000);
         return new TeleadminFindUsersPage(page);
     }

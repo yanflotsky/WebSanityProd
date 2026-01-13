@@ -39,6 +39,12 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     private final Locator showLocalAddressBookNamesSelectBox;
     private final Locator addPolicyButton;
     private final Locator addPlanButton;
+    // Manage Users modal/page elements
+    private final Locator assignUsersTable;
+    private final Locator assignUsersSearchInput;
+    private final Locator assignUsersSelectAllCheckbox;
+    private final Locator assignUsersApplyButton;
+    private final Locator confirmActionYesButton;
 
     public TeleadminCompanyArchiveManagementPage(Page page) {
         super(page);
@@ -72,6 +78,12 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
         this.showLocalAddressBookNamesSelectBox = page.locator("tr[data-param-id='67'] select.param-value");
         this.addPolicyButton = page.locator("#add-policy");
         this.addPlanButton = page.locator("#add-plan");
+        // Manage Users modal/page elements
+        this.assignUsersTable = page.locator("#assign-users");
+        this.assignUsersSearchInput = page.locator("input[aria-controls='assign-users'][type='search']");
+        this.assignUsersSelectAllCheckbox = page.locator("#users-checkbox-all");
+        this.assignUsersApplyButton = page.locator("#assign-users-apply");
+        this.confirmActionYesButton = page.locator("#confirm-action");
     }
 
     /**
@@ -741,6 +753,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     public TeleadminCompanyArchiveManagementPage clickFirstPlanRowManageUsersButton() {
         log.info("Clicking Manage Users button in first plan row");
         getFirstPlanRow().locator("button.manage-users").click();
+        page.waitForTimeout(1500);
         return this;
     }
 
@@ -819,6 +832,342 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
         log.info("Clicking Bulk Deprovisioning button for plan: " + planId);
         getPlanRowByPlanId(planId).locator("button.bulk-deprov").click();
         return this;
+    }
+
+    // ========== Manage Users Methods ==========
+
+    /**
+     * Wait for Assign Users table to be visible
+     * @return true if table is visible
+     */
+    public boolean waitForAssignUsersTableVisible() {
+        try {
+            assignUsersTable.waitFor(new Locator.WaitForOptions()
+                    .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE)
+                    .setTimeout(30000));
+            return true;
+        } catch (Exception e) {
+            log.error("Assign Users table did not appear: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Check if Assign Users table is visible
+     * @return true if table is visible
+     */
+    public boolean isAssignUsersTableVisible() {
+        try {
+            return assignUsersTable.isVisible();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Wait for Assign Users search input to be visible
+     * @return true if search input is visible
+     */
+    public boolean waitForAssignUsersSearchInputVisible() {
+        try {
+            assignUsersSearchInput.waitFor(new Locator.WaitForOptions()
+                    .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE)
+                    .setTimeout(30000));
+            return true;
+        } catch (Exception e) {
+            log.error("Assign Users search input did not appear: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Check if Assign Users search input is visible
+     * @return true if search input is visible
+     */
+    public boolean isAssignUsersSearchInputVisible() {
+        try {
+            return assignUsersSearchInput.isVisible();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Fill the Assign Users search input field
+     * @param searchText text to search for
+     */
+    public TeleadminCompanyArchiveManagementPage fillAssignUsersSearch(String searchText) {
+        log.info("Filling Assign Users search field with: " + searchText);
+        assignUsersSearchInput.clear();
+        assignUsersSearchInput.fill(searchText);
+        page.waitForTimeout(1000); // Wait for search to complete
+        return this;
+    }
+
+    /**
+     * Get the current value of Assign Users search input
+     * @return current search text
+     */
+    public String getAssignUsersSearchValue() {
+        return assignUsersSearchInput.inputValue();
+    }
+
+    /**
+     * Clear the Assign Users search input field
+     */
+    public TeleadminCompanyArchiveManagementPage clearAssignUsersSearch() {
+        log.info("Clearing Assign Users search field");
+        assignUsersSearchInput.clear();
+        page.waitForTimeout(1000); // Wait for search to clear
+        return this;
+    }
+
+    /**
+     * Get row count from Assign Users table
+     * @return number of rows in the table
+     */
+    public int getAssignUsersTableRowCount() {
+        return assignUsersTable.locator("tbody tr").count();
+    }
+
+    /**
+     * Get specific row from Assign Users table by index (0-based)
+     * @param rowIndex the row index
+     * @return Locator for the row
+     */
+    public Locator getAssignUsersRowByIndex(int rowIndex) {
+        return assignUsersTable.locator("tbody tr").nth(rowIndex);
+    }
+
+    /**
+     * Get first row from Assign Users table
+     * @return Locator for the first row
+     */
+    public Locator getFirstAssignUsersRow() {
+        return assignUsersTable.locator("tbody tr").first();
+    }
+
+    /**
+     * Click checkbox for the first user in Assign Users table
+     */
+    public TeleadminCompanyArchiveManagementPage clickFirstUserCheckbox() {
+        log.info("Clicking checkbox for first user in Assign Users table");
+        getFirstAssignUsersRow().locator("input.assign-plan-check").click();
+        page.waitForTimeout(500); // Wait for checkbox state to update
+        return this;
+    }
+
+    /**
+     * Click checkbox for specific user by data-id in Assign Users table
+     * @param userId the user ID (data-id attribute)
+     */
+    public TeleadminCompanyArchiveManagementPage clickUserCheckboxById(String userId) {
+        log.info("Clicking checkbox for user ID: " + userId);
+        assignUsersTable.locator("tr[data-id='" + userId + "'] input.assign-plan-check").click();
+        page.waitForTimeout(500); // Wait for checkbox state to update
+        return this;
+    }
+
+    /**
+     * Click checkbox for specific user by row index (0-based) in Assign Users table
+     * @param rowIndex the row index
+     */
+    public TeleadminCompanyArchiveManagementPage clickUserCheckboxByIndex(int rowIndex) {
+        log.info("Clicking checkbox for user at row index: " + rowIndex);
+        getAssignUsersRowByIndex(rowIndex).locator("input.assign-plan-check").click();
+        page.waitForTimeout(500); // Wait for checkbox state to update
+        return this;
+    }
+
+    /**
+     * Click the "Select All" checkbox in Assign Users table
+     */
+    public TeleadminCompanyArchiveManagementPage clickSelectAllUsersCheckbox() {
+        log.info("Clicking Select All checkbox in Assign Users table");
+        assignUsersSelectAllCheckbox.click();
+        page.waitForTimeout(500); // Wait for all checkboxes to update
+        return this;
+    }
+
+    /**
+     * Check if first user checkbox is checked in Assign Users table
+     * @return true if checkbox is checked
+     */
+    public boolean isFirstUserCheckboxChecked() {
+        return getFirstAssignUsersRow().locator("input.assign-plan-check").isChecked();
+    }
+
+    /**
+     * Check if user checkbox is checked by user ID in Assign Users table
+     * @param userId the user ID (data-id attribute)
+     * @return true if checkbox is checked
+     */
+    public boolean isUserCheckboxCheckedById(String userId) {
+        return assignUsersTable.locator("tr[data-id='" + userId + "'] input.assign-plan-check").isChecked();
+    }
+
+    /**
+     * Check if Select All checkbox is checked in Assign Users table
+     * @return true if checkbox is checked
+     */
+    public boolean isSelectAllCheckboxChecked() {
+        return assignUsersSelectAllCheckbox.isChecked();
+    }
+
+    /**
+     * Get username of the first user in Assign Users table
+     * @return username text
+     */
+    public String getFirstUserUsername() {
+        return getFirstAssignUsersRow().locator(".user-username").textContent().trim();
+    }
+
+    /**
+     * Get first name of the first user in Assign Users table
+     * @return first name text
+     */
+    public String getFirstUserFirstName() {
+        return getFirstAssignUsersRow().locator(".user-first-name").textContent().trim();
+    }
+
+    /**
+     * Get user ID (data-id) of the first user in Assign Users table
+     * @return user ID
+     */
+    public String getFirstUserId() {
+        return getFirstAssignUsersRow().getAttribute("data-id");
+    }
+
+    /**
+     * Get username by row index (0-based) in Assign Users table
+     * @param rowIndex the row index
+     * @return username text
+     */
+    public String getUserUsernameByIndex(int rowIndex) {
+        return getAssignUsersRowByIndex(rowIndex).locator(".user-username").textContent().trim();
+    }
+
+    /**
+     * Find and click checkbox for user by username in Assign Users table
+     * @param username the username to search for
+     * @return true if user was found and checkbox clicked, false otherwise
+     */
+    public boolean clickUserCheckboxByUsername(String username) {
+        log.info("Searching for user by username: " + username);
+        Locator allRows = assignUsersTable.locator("tbody tr");
+        int rowCount = allRows.count();
+
+        for (int i = 0; i < rowCount; i++) {
+            Locator row = allRows.nth(i);
+            String currentUsername = row.locator(".user-username").textContent().trim();
+
+            if (currentUsername.equals(username)) {
+                log.info("Found user " + username + " at row " + i + ", clicking checkbox");
+                row.locator("input.assign-plan-check").click();
+                page.waitForTimeout(500);
+                return true;
+            }
+        }
+
+        log.warn("User with username " + username + " not found in Assign Users table");
+        return false;
+    }
+
+    /**
+     * Click the Apply button in Manage Users modal
+     * Note: The button is only enabled when at least one checkbox state has changed
+     */
+    public TeleadminCompanyArchiveManagementPage clickAssignUsersApplyButton() {
+        log.info("Clicking Apply button in Manage Users modal");
+        assignUsersApplyButton.click();
+        page.waitForTimeout(1000); // Wait for modal to close and changes to apply
+        return this;
+    }
+
+    /**
+     * Check if Apply button is enabled in Manage Users modal
+     * @return true if button is enabled (clickable)
+     */
+    public boolean isAssignUsersApplyButtonEnabled() {
+        return assignUsersApplyButton.isEnabled();
+    }
+
+    /**
+     * Check if Apply button is visible in Manage Users modal
+     * @return true if button is visible
+     */
+    public boolean isAssignUsersApplyButtonVisible() {
+        try {
+            return assignUsersApplyButton.isVisible();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Wait for Apply button to be enabled in Manage Users modal
+     * Useful after checking/unchecking users
+     * @return this page object for method chaining
+     */
+    public TeleadminCompanyArchiveManagementPage waitForAssignUsersApplyButtonEnabled() {
+        try {
+            page.waitForCondition(() -> assignUsersApplyButton.isEnabled(),
+                    new Page.WaitForConditionOptions().setTimeout(10000));
+            log.info("Apply button is now enabled");
+        } catch (Exception e) {
+            log.error("Apply button did not become enabled: " + e.getMessage());
+        }
+        return this;
+    }
+
+    // ========== Confirmation Dialog Methods ==========
+
+    /**
+     * Click the Yes button in confirmation dialog
+     * Used to confirm actions like deletions or changes
+     */
+    public TeleadminCompanyArchiveManagementPage clickConfirmActionYesButton() {
+        log.info("Clicking Yes button in confirmation dialog");
+        confirmActionYesButton.click();
+        page.waitForTimeout(2000); // Wait for action to complete
+        return this;
+    }
+
+    /**
+     * Wait for Yes confirmation button to be visible
+     * @return true if button is visible
+     */
+    public boolean waitForConfirmActionYesButtonVisible() {
+        try {
+            confirmActionYesButton.waitFor(new Locator.WaitForOptions()
+                    .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE)
+                    .setTimeout(10000));
+            log.info("Yes confirmation button is now visible");
+            return true;
+        } catch (Exception e) {
+            log.error("Yes confirmation button did not appear: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Check if Yes confirmation button is visible
+     * @return true if button is visible
+     */
+    public boolean isConfirmActionYesButtonVisible() {
+        try {
+            return confirmActionYesButton.isVisible();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Check if Yes confirmation button is enabled
+     * @return true if button is enabled
+     */
+    public boolean isConfirmActionYesButtonEnabled() {
+        return confirmActionYesButton.isEnabled();
     }
 
 }

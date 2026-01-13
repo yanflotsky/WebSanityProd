@@ -463,6 +463,25 @@ public class TeleadminSanityTest extends BaseTest {
         String planId = companyArchivePage.getFirstPlanRowCellText(0);
         log.info("Plan ID: " + planId);
 
+        // Assign user to the plan
+        companyArchivePage
+                .clickFirstPlanRowManageUsersButton()
+                .fillAssignUsersSearch(user.getUsername())
+                .clickFirstUserCheckbox()
+                .waitForAssignUsersApplyButtonEnabled()
+                .clickAssignUsersApplyButton()
+                .clickConfirmActionYesButton();
+
+        log.info("Verifying that user has been assigned to the archive plan");
+
+        companyArchivePage
+                .clickFirstPlanRowManageUsersButton()
+                .fillAssignUsersSearch(user.getUsername());
+
+        log.info("Verifying that user checkbox is checked");
+        assertTrue(companyArchivePage.isFirstUserCheckboxChecked(), "User checkbox should be checked after assignment");
+
+
         log.info("✅ Test completed successfully");
 
     }
