@@ -1,10 +1,7 @@
 package com.websanity.tests;
 
 import com.websanity.AdminPortalBaseTest;
-import com.websanity.adminPortalPages.AdminPortalComposeMessagePage;
-import com.websanity.adminPortalPages.AdminPortalMyContactsPage;
-import com.websanity.adminPortalPages.AdminPortalSentItemsPage;
-import com.websanity.adminPortalPages.AdminPortalUserManagementPage;
+import com.websanity.adminPortalPages.*;
 import com.websanity.enums.Country;
 import com.websanity.enums.Language;
 import com.websanity.enums.TimeZone;
@@ -30,6 +27,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
     private AdminPortalComposeMessagePage composeMessagePage;
     private AdminPortalSentItemsPage sentItemsPage;
     private AdminPortalMyContactsPage myContactsPage;
+    private AdminPortalArchiveManagementPage archiveManagement;
 
     private static final String randnum = String.format("%07d", System.currentTimeMillis() % 10000000);
 
@@ -354,7 +352,95 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
         Assertions.assertEquals("Address book entry deleted", myContactsPage.getSuccessMsgText(), "Text of the success message after deletion is not correct");
         Assertions.assertTrue(myContactsPage.isContactsListEmpty(), "Contacts list should be empty after deleting the contact");
 
+        log.info("✅ Test completed successfully");
 
+    }
+
+    @Test
+    @Order(6)
+    @Story("Archive Management")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Archive Management - Assign/Unassign user to Archive Plan")
+    void archiveManagement() {
+
+        log.info("Archive Management - Assign/Unasssign User to Archive Plan");
+
+        archiveManagement = menuPage.clickArchiveManagement();
+
+        log.info("Verifying table headers...");
+        Assertions.assertTrue(archiveManagement.verifyAllHeadersOfArchivePlansTable(), "All table headers should match expected values");
+
+        log.info("Verifying first row cells contain expected data...");
+        Assertions.assertEquals("WhatsApp Phone Capture", archiveManagement.getSourceFromFirstRow(), "Source column should be 'WhatsApp Phone Capture'");
+        Assertions.assertEquals("Generic SMTP Archiver", archiveManagement.getDestinationFromFirstRow(), "Destination column should be 'Generic SMTP Archiver'");
+        Assertions.assertEquals("yanflotskysmarsh@gmail.com", archiveManagement.getEmailFromFirstRow(), "Email column should be 'yanflotskysmarsh@gmail.com'");
+        Assertions.assertEquals("0", archiveManagement.getNumberOfAssignedUsersFromFirstRow(), "Number of Assigned Users column should be '1'");
+
+        log.info("Verifying Assign and Unassign buttons exist...");
+        Assertions.assertTrue(archiveManagement.verifyActionButtonsExist(), "Both Assign and Unassign buttons should exist");
+
+        archiveManagement.clickAssignButton();
+
+        log.info("Verifying 'Users Assigned To This Plan' counter'");
+        Assertions.assertEquals("0", archiveManagement.getNumOfAssignedUsersCounter(), "Number of Assigned Users should be '0' before assignment");
+
+        archiveManagement.fillSearchInput(userParams.getUsername())
+                .clickSearchButton();
+
+        log.info("Verifying 'Assign Users' table data'");
+        Assertions.assertEquals(userParams.getFirstName(), archiveManagement.getFirstNameFromAssignActionFirstRow(), "First Name in Assign Action table should match");
+        Assertions.assertEquals(userParams.getLastName(), archiveManagement.getLastNameFromAssignActionFirstRow(), "Last Name in Assign Action table should match");
+        Assertions.assertEquals(userParams.getUsername(), archiveManagement.getUsernameFromAssignActionFirstRow(), "Username in Assign Action table should match");
+        Assertions.assertEquals(userParams.getEmail(), archiveManagement.getEmailFromAssignActionFirstRow(), "Email in Assign Action table should match");
+        Assertions.assertEquals(userParams.getMobileCountryCode().getDialingCode().substring(1) + userParams.getMobileArea() + userParams.getMobilePhone(), archiveManagement.getMobileFromAssignActionFirstRow(), "Mobile Number in Assign Action table should match");
+
+        archiveManagement.clickAssignActionFirstRowCheckbox()
+                .clickAssignUsersButton();
+
+        log.info("Verifying success message appears");
+        Assertions.assertTrue(archiveManagement.isSuccessMessageVisible(), "Success message should be visible");
+        Assertions.assertEquals("Success!1 users were assigned to the WhatsApp Phone Capture to Generic SMTP Archiver archive plan!",archiveManagement.getSuccessMessageText(), "Success message should contain 'Success!'");
+
+        log.info("Verifying 'Users Assigned To This Plan' counter'");
+        Assertions.assertEquals("1", archiveManagement.getNumOfAssignedUsersCounter(), "Number of Assigned Users should be '1' after assignment");
+
+        archiveManagement.fillSearchInput(userParams.getUsername())
+                .clickSearchButton();
+
+        log.info("Verifying there is no "+userParams.getUsername()+" in Assign Action table anymore");
+        Assertions.assertTrue(archiveManagement.isAssignActionUsersTableEmpty(), "Assign Action Users table should not contain assigned users");
+
+        archiveManagement = menuPage.clickArchiveManagement()
+                .clickUnassignButton();
+
+        log.info("Verifying 'Users Assigned To This Plan' counter'");
+        Assertions.assertEquals("1", archiveManagement.getNumOfAssignedUsersCounter(), "Number of Assigned Users should be '1' after assignment");
+
+        archiveManagement.fillSearchInput(userParams.getUsername())
+                .clickSearchButton();
+
+        log.info("Verifying 'Assign Users' table data'");
+        Assertions.assertEquals(userParams.getFirstName(), archiveManagement.getFirstNameFromUnassignActionFirstRow(), "First Name in Unassign Action table should match");
+        Assertions.assertEquals(userParams.getLastName(), archiveManagement.getLastNameFromUnassignActionFirstRow(), "Last Name in Unassign Action table should match");
+        Assertions.assertEquals(userParams.getUsername(), archiveManagement.getUsernameFromUnassignActionFirstRow(), "Username in Unassign Action table should match");
+        Assertions.assertEquals(userParams.getEmail(), archiveManagement.getEmailFromUnassignActionFirstRow(), "Email in Unassign Action table should match");
+        Assertions.assertEquals(userParams.getMobileCountryCode().getDialingCode().substring(1) + userParams.getMobileArea() + userParams.getMobilePhone(), archiveManagement.getMobileFromUnassignActionFirstRow(), "Mobile Number in Unassign Action table should match");
+
+        archiveManagement.clickUnassignActionFirstRowCheckbox()
+                .clickUnassignUsersButton();
+
+        log.info("Verifying success message appears");
+        Assertions.assertTrue(archiveManagement.isSuccessMessageVisible(), "Success message should be visible");
+        Assertions.assertEquals("Success!1 users were unassigned to the WhatsApp Phone Capture to Generic SMTP Archiver archive plan!",archiveManagement.getSuccessMessageText(), "Success message should contain 'Success!'");
+
+        archiveManagement.fillSearchInput(userParams.getUsername())
+                .clickSearchButton();
+
+        log.info("Verifying there is no "+userParams.getUsername()+" in Assign Action table anymore");
+        Assertions.assertTrue(archiveManagement.isUnassignActionUsersTableEmpty(), "Unassign Action Users table should not contain assigned users");
+
+        log.info("Verifying 'Users Assigned To This Plan' counter'");
+        Assertions.assertEquals("0", archiveManagement.getNumOfAssignedUsersCounter(), "Number of Assigned Users should be '1' after assignment");
 
         log.info("✅ Test completed successfully");
 
@@ -362,7 +448,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
 
     @Test
-    @Order(6)
+    @Order(7)
     @Story("User Management")
     @Severity(SeverityLevel.CRITICAL)
     @Description("User Management - Delete User")
