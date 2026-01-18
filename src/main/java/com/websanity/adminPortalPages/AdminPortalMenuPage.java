@@ -177,11 +177,12 @@ public class AdminPortalMenuPage extends BasePage {
     /**
      * Click on Archive Management menu item
      */
-    public AdminPortalMenuPage clickArchiveManagement() {
+    public AdminPortalArchiveManagementPage clickArchiveManagement() {
         log.info("Clicking Archive Management menu item");
         archiveManagementBtn.click();
         waitForLoadingToDisappear();
-        return this;
+        page.waitForTimeout(2000);
+        return new AdminPortalArchiveManagementPage(page);
     }
 
     /**
