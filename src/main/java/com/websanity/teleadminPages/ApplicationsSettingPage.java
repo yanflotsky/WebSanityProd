@@ -8,7 +8,7 @@ import com.websanity.enums.SignatureType;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class TeleadminApplicationsSettingPage extends BasePage {
+public class ApplicationsSettingPage extends BasePage {
 
     private final Locator signatureButton;
     private final Locator signaturePopUp;
@@ -22,7 +22,7 @@ public class TeleadminApplicationsSettingPage extends BasePage {
     private final Locator rcsSupportCheckbox;
     private final Locator saveCompanyLevelSettingsButton;
 
-    public TeleadminApplicationsSettingPage(Page page) {
+    public ApplicationsSettingPage(Page page) {
         super(page);
         this.signatureButton = page.locator("input[type='button'][value='Signature']");
         this.signaturePopUp = page.locator("#assign-signature");
@@ -40,7 +40,7 @@ public class TeleadminApplicationsSettingPage extends BasePage {
     /**
      * Click on Signature button
      */
-    public TeleadminApplicationsSettingPage clickSignatureButton() {
+    public ApplicationsSettingPage clickSignatureButton() {
         log.info("Clicking Signature button");
         signatureButton.click();
 
@@ -61,7 +61,7 @@ public class TeleadminApplicationsSettingPage extends BasePage {
      * Select signature type
      * @param signatureType SignatureType enum value
      */
-    public TeleadminApplicationsSettingPage selectSignatureType(SignatureType signatureType) {
+    public ApplicationsSettingPage selectSignatureType(SignatureType signatureType) {
         log.info("Selecting signature type: {}", signatureType.getDisplayName());
         signatureTypeSelectBox.selectOption(signatureType.getValue());
         return this;
@@ -91,7 +91,7 @@ public class TeleadminApplicationsSettingPage extends BasePage {
      * Select signature text inheritance type
      * @param signatureTextInheritance SignatureTextInheritance enum value
      */
-    public TeleadminApplicationsSettingPage selectSignatureTextInheritance(SignatureTextInheritance signatureTextInheritance) {
+    public ApplicationsSettingPage selectSignatureTextInheritance(SignatureTextInheritance signatureTextInheritance) {
         log.info("Selecting signature text inheritance: {}", signatureTextInheritance.getDisplayName());
         signatureTextTypesSelectBox.selectOption(signatureTextInheritance.getValue());
         return this;
@@ -121,7 +121,7 @@ public class TeleadminApplicationsSettingPage extends BasePage {
      * Fill signature text (clears existing text first)
      * @param text Text to enter in signature textarea
      */
-    public TeleadminApplicationsSettingPage fillSignatureText(String text) {
+    public ApplicationsSettingPage fillSignatureText(String text) {
         log.info("Filling signature text: {}", text);
         signatureTextArea.clear();
         signatureTextArea.fill(text);
@@ -139,7 +139,7 @@ public class TeleadminApplicationsSettingPage extends BasePage {
     /**
      * Click Apply button in signature popup
      */
-    public TeleadminApplicationsSettingPage clickApplySignatureButton() {
+    public ApplicationsSettingPage clickApplySignatureButton() {
         log.info("Clicking Apply Signature button");
         applySignatureButton.click();
         return this;
@@ -148,7 +148,7 @@ public class TeleadminApplicationsSettingPage extends BasePage {
     /**
      * Click Confirm Action (Yes) button
      */
-    public TeleadminApplicationsSettingPage clickConfirmActionButton() {
+    public ApplicationsSettingPage clickConfirmActionButton() {
         log.info("Clicking Confirm Action (Yes) button");
         confirmActionButton.click();
         return this;
@@ -157,7 +157,7 @@ public class TeleadminApplicationsSettingPage extends BasePage {
     /**
      * Wait for signature success alert to become visible
      */
-    public TeleadminApplicationsSettingPage waitForSignatureSuccessAlert() {
+    public ApplicationsSettingPage waitForSignatureSuccessAlert() {
         log.info("Waiting for signature success alert to appear");
         try {
             signatureAlertSuccess.waitFor(new Locator.WaitForOptions().setTimeout(30000));
@@ -184,7 +184,7 @@ public class TeleadminApplicationsSettingPage extends BasePage {
      * Search for signature users
      * @param searchText Text to search for users
      */
-    public TeleadminApplicationsSettingPage searchSignatureUsers(String searchText) {
+    public ApplicationsSettingPage searchSignatureUsers(String searchText) {
         log.info("Searching for signature users: {}", searchText);
         searchSignatureUsersInput.fill(searchText);
         return this;
@@ -193,7 +193,7 @@ public class TeleadminApplicationsSettingPage extends BasePage {
     /**
      * Click RCS Support checkbox
      */
-    public TeleadminApplicationsSettingPage clickRcsSupportCheckbox() {
+    public ApplicationsSettingPage clickRcsSupportCheckbox() {
         log.info("Clicking RCS Support checkbox");
         rcsSupportCheckbox.click();
         return this;
@@ -212,7 +212,7 @@ public class TeleadminApplicationsSettingPage extends BasePage {
     /**
      * Click Save Company Level Settings (Apply) button
      */
-    public TeleadminApplicationsSettingPage clickSaveCompanyLevelSettingsButton() {
+    public ApplicationsSettingPage clickSaveCompanyLevelSettingsButton() {
         log.info("Clicking Save Company Level Settings (Apply) button");
         saveCompanyLevelSettingsButton.click();
         return this;

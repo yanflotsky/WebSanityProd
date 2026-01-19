@@ -23,12 +23,12 @@ import org.junit.jupiter.api.*;
 @Feature("Admin Portal Features")
 public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
-    private AdminPortalUserManagementPage userManagementPage;
-    private AdminPortalComposeMessagePage composeMessagePage;
-    private AdminPortalSentItemsPage sentItemsPage;
-    private AdminPortalMyContactsPage myContactsPage;
-    private AdminPortalArchiveManagementPage archiveManagement;
-    private AdminPortalMessengerAppSettingsPage messengerAppSettingsPage;
+    private UserManagementPage userManagementPage;
+    private ComposeMessagePage composeMessagePage;
+    private SentItemsPage sentItemsPage;
+    private MyContactsPage myContactsPage;
+    private ArchiveManagementPage archiveManagement;
+    private MessengerAppSettingsPage messengerAppSettingsPage;
 
     private static final String randnum = String.format("%07d", System.currentTimeMillis() % 10000000);
 

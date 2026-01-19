@@ -8,14 +8,14 @@ import com.websanity.BasePage;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class TeleadminFindUsersPage extends BasePage {
+public class FindUsersPage extends BasePage {
 
     private final FrameLocator textFrame;
     private final Locator usernameInput;
     private final Locator  searchButton;
     private final Locator usersTable;
 
-    public TeleadminFindUsersPage(Page page) {
+    public FindUsersPage(Page page) {
         super(page);
         this.textFrame = page.frameLocator("frame[name='text']");
         this.usernameInput = textFrame.locator("input[name='userName']");
@@ -76,7 +76,7 @@ public class TeleadminFindUsersPage extends BasePage {
     /**
      * Search for user by username
      */
-    public TeleadminFindUsersPage searchUser(String username) {
+    public FindUsersPage searchUser(String username) {
         log.info("Searching for user: {}", username);
         enterUsername(username);
         clickSearchButton();
@@ -127,7 +127,7 @@ public class TeleadminFindUsersPage extends BasePage {
      * @param username - username to search for
      * @param updateUserPage - TeleadminUpdateUserPage instance to verify page opened
      */
-    public TeleadminUpdateUserPage checkThatUserWasFoundAndClickOnHim(String username, TeleadminUpdateUserPage updateUserPage) {
+    public UpdateUserPage checkThatUserWasFoundAndClickOnHim(String username, UpdateUserPage updateUserPage) {
         // Wait till the table will be not empty
         waitForTableToHaveData();
 
@@ -174,7 +174,7 @@ public class TeleadminFindUsersPage extends BasePage {
         } catch (Exception e) {
             System.out.println("Account Information of User " + username + " is opened.");
         }
-        return new TeleadminUpdateUserPage(page);
+        return new UpdateUserPage(page);
     }
 
     /**

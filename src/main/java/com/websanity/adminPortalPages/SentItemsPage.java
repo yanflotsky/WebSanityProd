@@ -6,7 +6,7 @@ import com.websanity.BasePage;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class AdminPortalSentItemsPage extends BasePage {
+public class SentItemsPage extends BasePage {
 
     private final Locator messagesList;
     private final Locator firstMessageRow;
@@ -28,7 +28,7 @@ public class AdminPortalSentItemsPage extends BasePage {
     private final Locator recipientNumber;
     private final Locator recipientStatusImg;
 
-    public AdminPortalSentItemsPage(Page page) {
+    public SentItemsPage(Page page) {
         super(page);
         this.messagesList = page.locator("#messagesList");
         this.confirmYesBtn = page.locator("#confirmYesBtn");
@@ -121,7 +121,7 @@ public class AdminPortalSentItemsPage extends BasePage {
      * Click on the first message to open it
      * @return AdminPortalSentItemsPage
      */
-    public AdminPortalSentItemsPage clickFirstMessage() {
+    public SentItemsPage clickFirstMessage() {
         log.info("Clicking on first message");
         firstMessageRow.locator("td").nth(5).locator("a").click();
         return this;
@@ -131,7 +131,7 @@ public class AdminPortalSentItemsPage extends BasePage {
      * Click on the first message checkbox
      * @return AdminPortalSentItemsPage
      */
-    public AdminPortalSentItemsPage clickFirstMessageCheckbox() {
+    public SentItemsPage clickFirstMessageCheckbox() {
         log.info("Clicking first message checkbox");
         firstMessageRow.locator("td").first().locator("div.checkbox_container").click();
         return this;
@@ -150,7 +150,7 @@ public class AdminPortalSentItemsPage extends BasePage {
      * Wait for messages list to be visible
      * @return AdminPortalSentItemsPage
      */
-    public AdminPortalSentItemsPage waitForMessagesListToLoad() {
+    public SentItemsPage waitForMessagesListToLoad() {
         log.info("Waiting for messages list to load");
         messagesList.waitFor(new Locator.WaitForOptions()
                 .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE));
@@ -183,7 +183,7 @@ public class AdminPortalSentItemsPage extends BasePage {
      * Click on Delete (Recycle Bin) button
      * @return AdminPortalSentItemsPage
      */
-    public AdminPortalSentItemsPage clickDeleteRecycleBinBtn() {
+    public SentItemsPage clickDeleteRecycleBinBtn() {
         log.info("Clicking Delete (Recycle Bin) button");
         deleteRecycleBinBtn.click();
         return this;
@@ -192,7 +192,7 @@ public class AdminPortalSentItemsPage extends BasePage {
     /**
      * Click on Confirm Yes button
      */
-    public AdminPortalSentItemsPage clickConfirmYesBtn() {
+    public SentItemsPage clickConfirmYesBtn() {
         log.info("Clicking Confirm Yes button");
         confirmYesBtn.click();
         waitForLoadingToDisappear();
@@ -204,7 +204,7 @@ public class AdminPortalSentItemsPage extends BasePage {
      * Click on Status button
      * @return AdminPortalSentItemsPage
      */
-    public AdminPortalSentItemsPage clickMessageStatusBtn() {
+    public SentItemsPage clickMessageStatusBtn() {
         log.info("Clicking Status button");
         messageStatusBtn.click();
         waitForLoadingToDisappear();
@@ -243,7 +243,7 @@ public class AdminPortalSentItemsPage extends BasePage {
      * Wait for message details table to be visible
      * @return AdminPortalSentItemsPage
      */
-    public AdminPortalSentItemsPage waitForMessageDetailsToLoad() {
+    public SentItemsPage waitForMessageDetailsToLoad() {
         log.info("Waiting for message details table to load");
         messageVisibleTable.waitFor(new Locator.WaitForOptions()
                 .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE));
@@ -331,7 +331,7 @@ public class AdminPortalSentItemsPage extends BasePage {
      * Wait for recipient table to be visible
      * @return AdminPortalSentItemsPage
      */
-    public AdminPortalSentItemsPage waitForRecipientTableToLoad() {
+    public SentItemsPage waitForRecipientTableToLoad() {
         log.info("Waiting for recipient table to load");
         recipientTable.waitFor(new Locator.WaitForOptions()
                 .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE));

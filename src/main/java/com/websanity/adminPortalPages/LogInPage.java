@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Date;
 
 @Slf4j
-public class AdminPortalLogInPage extends BasePage {
+public class LogInPage extends BasePage {
 
     private static final String MANAGER_PORTAL_URL = "https://secure.telemessage.com/members";
 
@@ -22,7 +22,7 @@ public class AdminPortalLogInPage extends BasePage {
     private final Locator mfaCodeInput;
     private final Locator continueButton;
 
-    public AdminPortalLogInPage(Page page) {
+    public LogInPage(Page page) {
         super(page);
         this.usernameInput = page.locator("input#username[name='username']");
         this.passwordInput = page.locator("input#password[name='password'][type='password']");
@@ -37,13 +37,13 @@ public class AdminPortalLogInPage extends BasePage {
             new Page.GetByRoleOptions().setName("Continue"));
     }
 
-    public AdminPortalLogInPage fillUsername(String username) {
+    public LogInPage fillUsername(String username) {
         log.info("Filling in username: {}", username);
         usernameInput.fill(username);
         return this;
     }
 
-    public AdminPortalLogInPage fillPassword(String password) {
+    public LogInPage fillPassword(String password) {
         log.info("Filling in password: ***********");
         passwordInput.fill(password);
         return this;
@@ -54,7 +54,7 @@ public class AdminPortalLogInPage extends BasePage {
         signInButton.click();
     }
 
-    public AdminPortalLogInPage waitForEmailButton() {
+    public LogInPage waitForEmailButton() {
         log.info("Waiting for Email button to appear...");
         emailButton.waitFor(new Locator.WaitForOptions().setTimeout(10000));
         return this;
@@ -78,7 +78,7 @@ public class AdminPortalLogInPage extends BasePage {
     /**
      * Fill MFA code manually
      */
-    public AdminPortalLogInPage fillMfaCode(String code) {
+    public LogInPage fillMfaCode(String code) {
         log.info("Filling in MFA code: {}", code);
         mfaCodeInput.fill(code);
         return this;
@@ -87,7 +87,7 @@ public class AdminPortalLogInPage extends BasePage {
     /**
      * Wait for MFA page to appear
      */
-    public AdminPortalLogInPage waitForMfaPage() {
+    public LogInPage waitForMfaPage() {
         log.info("Waiting for MFA code input page...");
         mfaCodeInput.waitFor(new Locator.WaitForOptions().setTimeout(10000));
         return this;
@@ -99,7 +99,7 @@ public class AdminPortalLogInPage extends BasePage {
      *
      * @param afterTimestamp Only search for emails received after this timestamp
      */
-    public AdminPortalLogInPage fillMfaCodeFromEmail(Date afterTimestamp) {
+    public LogInPage fillMfaCodeFromEmail(Date afterTimestamp) {
         log.info("📧 Retrieving MFA code from email...");
 
         String email = ConfigLoader.getTestEmail();
@@ -130,7 +130,7 @@ public class AdminPortalLogInPage extends BasePage {
     /**
      * Complete login with MFA - gets code from email automatically
      */
-    public AdminPortalMenuPage loginToAdminPortalWithAutoUser() {
+    public MenuPage loginToAdminPortalWithAutoUser() {
 
         String username = "websanityun";
         String password = "QAautoweb12345678!!";
@@ -176,7 +176,7 @@ public class AdminPortalLogInPage extends BasePage {
         page.waitForLoadState();
         log.info("Login with MFA completed");
 
-        return new AdminPortalMenuPage(page);
+        return new MenuPage(page);
     }
 
 }

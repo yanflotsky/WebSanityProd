@@ -6,7 +6,7 @@ import com.websanity.BasePage;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class AdminPortalArchiveManagementPage extends BasePage {
+public class ArchiveManagementPage extends BasePage {
 
     private final Locator archivePlansTable;
     private final Locator tableHeaders;
@@ -23,7 +23,7 @@ public class AdminPortalArchiveManagementPage extends BasePage {
     private final Locator unassignUsersButton;
     private final Locator successMessage;
 
-    public AdminPortalArchiveManagementPage(Page page) {
+    public ArchiveManagementPage(Page page) {
         super(page);
         this.loadingOverlay = page.locator("#fade");
         this.archivePlansTable = page.locator("#contentTable");
@@ -137,7 +137,7 @@ public class AdminPortalArchiveManagementPage extends BasePage {
     /**
      * Click the Assign button in the first row
      */
-    public AdminPortalArchiveManagementPage clickAssignButton() {
+    public ArchiveManagementPage clickAssignButton() {
         log.info("Clicking Assign button");
         firstRow.locator("input[value='Assign']").click();
         waitForLoadingToDisappear();
@@ -148,7 +148,7 @@ public class AdminPortalArchiveManagementPage extends BasePage {
     /**
      * Click the Unassign button in the first row
      */
-    public AdminPortalArchiveManagementPage clickUnassignButton() {
+    public ArchiveManagementPage clickUnassignButton() {
         log.info("Clicking Unassign button");
         firstRow.locator("input[value='Unassign']").click();
         waitForLoadingToDisappear();
@@ -170,7 +170,7 @@ public class AdminPortalArchiveManagementPage extends BasePage {
     /**
      * Fill the search input field
      */
-    public AdminPortalArchiveManagementPage fillSearchInput(String searchText) {
+    public ArchiveManagementPage fillSearchInput(String searchText) {
         searchInput.clear();
         searchInput.fill(searchText);
         return this;
@@ -179,7 +179,7 @@ public class AdminPortalArchiveManagementPage extends BasePage {
     /**
      * Clear the search input field
      */
-    public AdminPortalArchiveManagementPage clearSearchInput() {
+    public ArchiveManagementPage clearSearchInput() {
         searchInput.clear();
         return this;
     }
@@ -194,7 +194,7 @@ public class AdminPortalArchiveManagementPage extends BasePage {
     /**
      * Click the search submit button
      */
-    public AdminPortalArchiveManagementPage clickSearchButton() {
+    public ArchiveManagementPage clickSearchButton() {
         searchSubmitButton.click();
         page.waitForTimeout(1000);
         return this;
@@ -247,7 +247,7 @@ public class AdminPortalArchiveManagementPage extends BasePage {
     /**
      * Click the checkbox in the first row of assignAction users table
      */
-    public AdminPortalArchiveManagementPage clickAssignActionFirstRowCheckbox() {
+    public ArchiveManagementPage clickAssignActionFirstRowCheckbox() {
         assignActionFirstRow.locator("input[type='checkbox']").click();
         return this;
     }
@@ -277,7 +277,7 @@ public class AdminPortalArchiveManagementPage extends BasePage {
      * Click the "Assign users" button
      * Throws IllegalStateException if the button is disabled
      */
-    public AdminPortalArchiveManagementPage clickAssignUsersButton() {
+    public ArchiveManagementPage clickAssignUsersButton() {
         if (!assignUsersButton.isEnabled()) {
             throw new IllegalStateException("The 'Assign users' button is disabled and cannot be clicked");
         }
@@ -335,7 +335,7 @@ public class AdminPortalArchiveManagementPage extends BasePage {
     /**
      * Click the checkbox in the first row of unassignAction users table
      */
-    public AdminPortalArchiveManagementPage clickUnassignActionFirstRowCheckbox() {
+    public ArchiveManagementPage clickUnassignActionFirstRowCheckbox() {
         unassignActionFirstRow.locator("input[type='checkbox']").click();
         return this;
     }
@@ -365,7 +365,7 @@ public class AdminPortalArchiveManagementPage extends BasePage {
      * Click the "Unassign users" button
      * Throws IllegalStateException if the button is disabled
      */
-    public AdminPortalArchiveManagementPage clickUnassignUsersButton() {
+    public ArchiveManagementPage clickUnassignUsersButton() {
         if (!unassignUsersButton.isEnabled()) {
             throw new IllegalStateException("The 'Unassign users' button is disabled and cannot be clicked");
         }
@@ -400,7 +400,7 @@ public class AdminPortalArchiveManagementPage extends BasePage {
     /**
      * Wait for success message to appear and verify it's visible
      */
-    public AdminPortalArchiveManagementPage waitForSuccessMessage() {
+    public ArchiveManagementPage waitForSuccessMessage() {
         successMessage.waitFor(new Locator.WaitForOptions()
                 .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE)
                 .setTimeout(10000));

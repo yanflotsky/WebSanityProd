@@ -6,7 +6,7 @@ import com.websanity.BasePage;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class AdminPortalComposeMessagePage extends BasePage {
+public class ComposeMessagePage extends BasePage {
 
     private final Locator toInput;
     private final Locator messageInput;
@@ -19,7 +19,7 @@ public class AdminPortalComposeMessagePage extends BasePage {
     private final Locator moreAddSubject;
     private final Locator subjectInput;
 
-    public AdminPortalComposeMessagePage(Page page) {
+    public ComposeMessagePage(Page page) {
         super(page);
         this.toInput = page.locator("#to");
         this.loadingOverlay = page.locator("#fade");
@@ -38,7 +38,7 @@ public class AdminPortalComposeMessagePage extends BasePage {
      * @param recipient The recipient email or username
      * @return AdminPortalComposeMessagePage
      */
-    public AdminPortalComposeMessagePage fillToInput(String recipient) {
+    public ComposeMessagePage fillToInput(String recipient) {
         log.info("Filling To input: {}", recipient);
         toInput.fill(recipient);
 
@@ -55,7 +55,7 @@ public class AdminPortalComposeMessagePage extends BasePage {
      * Click on assist container div (autocomplete suggestion)
      * @return AdminPortalComposeMessagePage
      */
-    public AdminPortalComposeMessagePage clickAssistContainerDiv() {
+    public ComposeMessagePage clickAssistContainerDiv() {
         log.info("Clicking on assist container div");
         assistContainerDiv.first().click();
         return this;
@@ -66,7 +66,7 @@ public class AdminPortalComposeMessagePage extends BasePage {
      * @param message The message text
      * @return AdminPortalComposeMessagePage
      */
-    public AdminPortalComposeMessagePage fillMessageInput(String message) {
+    public ComposeMessagePage fillMessageInput(String message) {
         log.info("Filling Message input: {}", message);
         messageInput.fill(message);
         return this;
@@ -77,7 +77,7 @@ public class AdminPortalComposeMessagePage extends BasePage {
      * @param subject The subject text
      * @return AdminPortalComposeMessagePage
      */
-    public AdminPortalComposeMessagePage fillSubjectInput(String subject) {
+    public ComposeMessagePage fillSubjectInput(String subject) {
         log.info("Filling Subject input: {}", subject);
         subjectInput.fill(subject);
         return this;
@@ -87,7 +87,7 @@ public class AdminPortalComposeMessagePage extends BasePage {
      * Wait for Subject input to be visible
      * @return AdminPortalComposeMessagePage
      */
-    public AdminPortalComposeMessagePage waitForSubjectInputToBeVisible() {
+    public ComposeMessagePage waitForSubjectInputToBeVisible() {
         log.info("Waiting for Subject input to be visible");
         subjectInput.waitFor(new Locator.WaitForOptions()
                 .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE));
@@ -113,7 +113,7 @@ public class AdminPortalComposeMessagePage extends BasePage {
      * Click on Send button
      * @return AdminPortalComposeMessagePage
      */
-    public AdminPortalComposeMessagePage clickSendBtn() {
+    public ComposeMessagePage clickSendBtn() {
         log.info("Clicking Send button");
         sendBtn.click();
         waitForLoadingToDisappear();
@@ -124,7 +124,7 @@ public class AdminPortalComposeMessagePage extends BasePage {
      * Click on More button
      * @return AdminPortalComposeMessagePage
      */
-    public AdminPortalComposeMessagePage clickMoreBtn() {
+    public ComposeMessagePage clickMoreBtn() {
         log.info("Clicking More button");
         moreBtn.click();
         waitForLoadingToDisappear();
@@ -135,7 +135,7 @@ public class AdminPortalComposeMessagePage extends BasePage {
      * Click on More Label Up Menu Subject
      * @return AdminPortalComposeMessagePage
      */
-    public AdminPortalComposeMessagePage clickAddSubject() {
+    public ComposeMessagePage clickAddSubject() {
         log.info("Clicking More Label Up Menu Subject");
         moreAddSubject.click();
         return this;

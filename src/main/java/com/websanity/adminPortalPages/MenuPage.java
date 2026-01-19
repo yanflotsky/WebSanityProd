@@ -3,11 +3,10 @@ package com.websanity.adminPortalPages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.websanity.BasePage;
-import com.websanity.enums.UserTypes;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class AdminPortalMenuPage extends BasePage {
+public class MenuPage extends BasePage {
 
     private final Locator loadingOverlay;
     private final Locator userManagementBtn;
@@ -29,7 +28,7 @@ public class AdminPortalMenuPage extends BasePage {
     private final Locator messageSettingsBtn;
     private final Locator advancedSettingsBtn;
 
-    public AdminPortalMenuPage(Page page) {
+    public MenuPage(Page page) {
         super(page);
         this.userManagementBtn = page.locator("#users");
         this.popUpAfterLogin = page.locator(".aptr-carousel-engagement");
@@ -81,7 +80,7 @@ public class AdminPortalMenuPage extends BasePage {
     /**
      * Click close button on user experience popup
      */
-    public AdminPortalMenuPage clickCloseUserExperiencePopUpBtn() {
+    public MenuPage clickCloseUserExperiencePopUpBtn() {
         log.info("Clicking Close button of Experience Pop Up");
         closeUserExperiencePopUpBtn.click();
         return this;
@@ -90,11 +89,11 @@ public class AdminPortalMenuPage extends BasePage {
     /**
      * Click on Compose Message button
      */
-    public AdminPortalComposeMessagePage clickComposeMessageBtn() {
+    public ComposeMessagePage clickComposeMessageBtn() {
         log.info("Clicking Compose Message button");
         composeMessageBtn.click();
         waitForLoadingToDisappear();
-        return new AdminPortalComposeMessagePage(page);
+        return new ComposeMessagePage(page);
     }
 
     /**
@@ -115,7 +114,7 @@ public class AdminPortalMenuPage extends BasePage {
     /**
      * Click on Inbox menu item
      */
-    public AdminPortalMenuPage clickInbox() {
+    public MenuPage clickInbox() {
         log.info("Clicking Inbox menu item");
         inboxBtn.click();
         waitForLoadingToDisappear();
@@ -125,7 +124,7 @@ public class AdminPortalMenuPage extends BasePage {
     /**
      * Click on Outbox menu item
      */
-    public AdminPortalMenuPage clickOutbox() {
+    public MenuPage clickOutbox() {
         log.info("Clicking Outbox menu item");
         outboxBtn.click();
         waitForLoadingToDisappear();
@@ -135,27 +134,27 @@ public class AdminPortalMenuPage extends BasePage {
     /**
      * Click on Sent Items menu item
      */
-    public AdminPortalSentItemsPage clickSentItems() {
+    public SentItemsPage clickSentItems() {
         log.info("Clicking Sent Items menu item");
         sentItemsBtn.click();
         waitForLoadingToDisappear();
-        return new AdminPortalSentItemsPage(page);
+        return new SentItemsPage(page);
     }
 
     /**
      * Click on My Contacts menu item
      */
-    public AdminPortalMyContactsPage clickMyContacts() {
+    public MyContactsPage clickMyContacts() {
         log.info("Clicking My Contacts menu item");
         myContactsBtn.click();
         waitForLoadingToDisappear();
-        return new AdminPortalMyContactsPage(page);
+        return new MyContactsPage(page);
     }
 
     /**
      * Click on Reports menu item
      */
-    public AdminPortalMenuPage clickReports() {
+    public MenuPage clickReports() {
         log.info("Clicking Reports menu item");
         reportsBtn.click();
         waitForLoadingToDisappear();
@@ -165,7 +164,7 @@ public class AdminPortalMenuPage extends BasePage {
     /**
      * Click on Global Contacts menu item
      */
-    public AdminPortalMenuPage clickGlobalContacts() {
+    public MenuPage clickGlobalContacts() {
         log.info("Clicking Global Contacts menu item");
         globalContactsBtn.click();
         waitForLoadingToDisappear();
@@ -175,28 +174,28 @@ public class AdminPortalMenuPage extends BasePage {
     /**
      * Click on User Management menu item
      */
-    public AdminPortalUserManagementPage clickUserManagement() {
+    public UserManagementPage clickUserManagement() {
         log.info("Clicking User Management menu item");
         userManagementBtn.click();
         waitForLoadingToDisappear();
-        return new AdminPortalUserManagementPage(page);
+        return new UserManagementPage(page);
     }
 
     /**
      * Click on Archive Management menu item
      */
-    public AdminPortalArchiveManagementPage clickArchiveManagement() {
+    public ArchiveManagementPage clickArchiveManagement() {
         log.info("Clicking Archive Management menu item");
         archiveManagementBtn.click();
         waitForLoadingToDisappear();
         page.waitForTimeout(2000);
-        return new AdminPortalArchiveManagementPage(page);
+        return new ArchiveManagementPage(page);
     }
 
     /**
      * Click on Mailing Lists menu item
      */
-    public AdminPortalMenuPage clickMailingLists() {
+    public MenuPage clickMailingLists() {
         log.info("Clicking Mailing Lists menu item");
         mailingListsBtn.click();
         waitForLoadingToDisappear();
@@ -206,7 +205,7 @@ public class AdminPortalMenuPage extends BasePage {
     /**
      * Click on Message Query menu item
      */
-    public AdminPortalMenuPage clickMessageQuery() {
+    public MenuPage clickMessageQuery() {
         log.info("Clicking Message Query menu item");
         messageQueryBtn.click();
         waitForLoadingToDisappear();
@@ -216,7 +215,7 @@ public class AdminPortalMenuPage extends BasePage {
     /**
      * Click on WhatsApp API menu item
      */
-    public AdminPortalMenuPage clickWhatsAppAPI() {
+    public MenuPage clickWhatsAppAPI() {
         log.info("Clicking WhatsApp API menu item");
         whatsAppAPIBtn.click();
         waitForLoadingToDisappear();
@@ -226,7 +225,7 @@ public class AdminPortalMenuPage extends BasePage {
     /**
      * Click on Settings menu item
      */
-    public AdminPortalMenuPage clickSettings() {
+    public MenuPage clickSettings() {
         log.info("Clicking Settings menu item");
         settingsBtn.click();
         waitForLoadingToDisappear();
@@ -236,18 +235,18 @@ public class AdminPortalMenuPage extends BasePage {
     /**
      * Click on Messenger App Settings in dropdown
      */
-    public AdminPortalMessengerAppSettingsPage clickMessengerAppSettings() {
+    public MessengerAppSettingsPage clickMessengerAppSettings() {
         log.info("Clicking Messenger App Settings");
         messengerAppSettingsBtn.click();
         waitForLoadingToDisappear();
         page.waitForTimeout(3000);
-        return new AdminPortalMessengerAppSettingsPage(page);
+        return new MessengerAppSettingsPage(page);
     }
 
     /**
      * Click on Message Settings in dropdown
      */
-    public AdminPortalMenuPage clickMessageSettings() {
+    public MenuPage clickMessageSettings() {
         log.info("Clicking Message Settings");
         messageSettingsBtn.click();
         waitForLoadingToDisappear();
@@ -258,7 +257,7 @@ public class AdminPortalMenuPage extends BasePage {
     /**
      * Click on Advanced Settings in dropdown
      */
-    public AdminPortalMenuPage clickAdvancedSettings() {
+    public MenuPage clickAdvancedSettings() {
         log.info("Clicking Advanced Settings");
         advancedSettingsBtn.click();
         waitForLoadingToDisappear();
@@ -270,7 +269,7 @@ public class AdminPortalMenuPage extends BasePage {
      * Wait for user management button to be visible after login
      * Waits for user management button to be visible and verifies we're on the correct page
      */
-    public AdminPortalMenuPage waitForUserManagementBtnToAppear() {
+    public MenuPage waitForUserManagementBtnToAppear() {
         log.info("Waiting for User Management button to be visible..");
         log.info("Current URL: {}", page.url());
 
@@ -290,7 +289,7 @@ public class AdminPortalMenuPage extends BasePage {
      * Close all pop-ups that appear after login
      * Waits for user management button to be visible and closes any popups that appear
      */
-    public AdminPortalMenuPage closePopUpsAfterLogin() {
+    public MenuPage closePopUpsAfterLogin() {
         log.info("Starting popup close procedure...");
 
         // Wait for page to load

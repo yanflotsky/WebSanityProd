@@ -6,7 +6,7 @@ import com.websanity.BasePage;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class TeleadminCompanyArchiveManagementPage extends BasePage {
+public class CompanyArchiveManagementPage extends BasePage {
 
     // Locators
     private final Locator addNewSourceButton;
@@ -46,7 +46,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     private final Locator assignUsersApplyButton;
     private final Locator confirmActionYesButton;
 
-    public TeleadminCompanyArchiveManagementPage(Page page) {
+    public CompanyArchiveManagementPage(Page page) {
         super(page);
         this.addNewSourceButton = page.locator("#create-source");
         this.addNewPolicyButton = page.locator("#create-policy");
@@ -105,7 +105,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     /**
      * Click on Add New Source button and wait for form to load
      */
-    public TeleadminCompanyArchiveManagementPage clickAddNewSourceButton() {
+    public CompanyArchiveManagementPage clickAddNewSourceButton() {
         log.info("Clicking Add New Source button");
         addNewSourceButton.click();
 
@@ -120,7 +120,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     /**
      * Click on Add New Policy button
      */
-    public TeleadminCompanyArchiveManagementPage clickAddNewPolicyButton() {
+    public CompanyArchiveManagementPage clickAddNewPolicyButton() {
         log.info("Clicking Add New Policy button");
         addNewPolicyButton.click();
         return this;
@@ -129,7 +129,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     /**
      * Click on Add New Plan button
      */
-    public TeleadminCompanyArchiveManagementPage clickAddNewPlanButton() {
+    public CompanyArchiveManagementPage clickAddNewPlanButton() {
         log.info("Clicking Add New Plan button");
         addNewPlanButton.click();
         return this;
@@ -203,7 +203,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     /**
      * Click Edit button in the first row
      */
-    public TeleadminCompanyArchiveManagementPage clickFirstRowEditButton() {
+    public CompanyArchiveManagementPage clickFirstRowEditButton() {
         log.info("Clicking Edit button in first row");
         getFirstSourcePolicyRow().locator("button.edit-source-policy").click();
         return this;
@@ -212,7 +212,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     /**
      * Click Delete button in the first row
      */
-    public TeleadminCompanyArchiveManagementPage clickFirstRowDeleteButton() {
+    public CompanyArchiveManagementPage clickFirstRowDeleteButton() {
         log.info("Clicking Delete button in first row");
         getFirstSourcePolicyRow().locator("button.delete-source-policy").click();
         return this;
@@ -231,7 +231,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Click Edit button for specific source policy ID
      * @param sourcePolicyId the ID of the source policy
      */
-    public TeleadminCompanyArchiveManagementPage clickEditButtonForSourcePolicy(String sourcePolicyId) {
+    public CompanyArchiveManagementPage clickEditButtonForSourcePolicy(String sourcePolicyId) {
         log.info("Clicking Edit button for source policy: " + sourcePolicyId);
         getRowBySourcePolicyId(sourcePolicyId).locator("button.edit-source-policy").click();
         return this;
@@ -241,7 +241,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Click Delete button for specific source policy ID
      * @param sourcePolicyId the ID of the source policy
      */
-    public TeleadminCompanyArchiveManagementPage clickDeleteButtonForSourcePolicy(String sourcePolicyId) {
+    public CompanyArchiveManagementPage clickDeleteButtonForSourcePolicy(String sourcePolicyId) {
         log.info("Clicking Delete button for source policy: " + sourcePolicyId);
         getRowBySourcePolicyId(sourcePolicyId).locator("button.delete-source-policy").click();
         return this;
@@ -251,7 +251,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Select source type from dropdown
      * @param sourceType SourceType enum value
      */
-    public TeleadminCompanyArchiveManagementPage selectSourceType(com.websanity.enums.SourceType sourceType) {
+    public CompanyArchiveManagementPage selectSourceType(com.websanity.enums.SourceType sourceType) {
         log.info("Selecting source type: " + sourceType.getDisplayName());
         sourceTypesListSelectBox.selectOption(sourceType.getValue());
         return this;
@@ -261,7 +261,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Select network type from dropdown
      * @param networkType NetworkType enum value
      */
-    public TeleadminCompanyArchiveManagementPage selectNetworkType(com.websanity.enums.NetworkType networkType) {
+    public CompanyArchiveManagementPage selectNetworkType(com.websanity.enums.NetworkType networkType) {
         log.info("Selecting network type: " + networkType.getDisplayName());
         sourcesNetworkListSelectBox.selectOption(networkType.getValue());
         return this;
@@ -271,7 +271,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Fill source description input field
      * @param description description to fill
      */
-    public TeleadminCompanyArchiveManagementPage fillSourceDescription(String description) {
+    public CompanyArchiveManagementPage fillSourceDescription(String description) {
         log.info("Filling source description: " + description);
         sourceDescriptionInput.clear();
         sourceDescriptionInput.fill(description);
@@ -282,7 +282,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Select storage type from dropdown
      * @param storage Storage enum value
      */
-    public TeleadminCompanyArchiveManagementPage selectStorage(com.websanity.enums.Storage storage) {
+    public CompanyArchiveManagementPage selectStorage(com.websanity.enums.Storage storage) {
         log.info("Selecting storage: " + storage.getDisplayName());
         storageSelectBox.selectOption(storage.getValue());
         return this;
@@ -308,7 +308,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Fill storage description input field
      * @param description description to fill
      */
-    public TeleadminCompanyArchiveManagementPage fillStorageDescription(String description) {
+    public CompanyArchiveManagementPage fillStorageDescription(String description) {
         log.info("Filling storage description: " + description);
         storageDescriptionInput.clear();
         storageDescriptionInput.fill(description);
@@ -329,7 +329,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Select personal archive from dropdown
      * @param yesNo YesNo enum value
      */
-    public TeleadminCompanyArchiveManagementPage selectPersonalArchive(com.websanity.enums.YesNo yesNo) {
+    public CompanyArchiveManagementPage selectPersonalArchive(com.websanity.enums.YesNo yesNo) {
         log.info("Selecting personal archive: " + yesNo.getDisplayName());
         personalArchiveSelectBox.selectOption(yesNo.getValue());
         return this;
@@ -355,7 +355,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Fill storage destination email input field
      * @param email email to fill
      */
-    public TeleadminCompanyArchiveManagementPage fillStorageDestinationEmail(String email) {
+    public CompanyArchiveManagementPage fillStorageDestinationEmail(String email) {
         log.info("Filling storage destination email: " + email);
         storageDestinationEmailInput.clear();
         storageDestinationEmailInput.fill(email);
@@ -374,7 +374,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Select participant header format from dropdown
      * @param format ParticipantHeaderFormat enum value
      */
-    public TeleadminCompanyArchiveManagementPage selectParticipantHeaderFormat(com.websanity.enums.ParticipantHeaderFormat format) {
+    public CompanyArchiveManagementPage selectParticipantHeaderFormat(com.websanity.enums.ParticipantHeaderFormat format) {
         log.info("Selecting participant header format: " + format.getDisplayName());
         participantHeaderFormatSelectBox.selectOption(format.getValue());
         return this;
@@ -400,7 +400,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Select spoofing handling from dropdown
      * @param spoofingHandling SpoofingHandling enum value
      */
-    public TeleadminCompanyArchiveManagementPage selectSpoofingHandling(com.websanity.enums.SpoofingHandling spoofingHandling) {
+    public CompanyArchiveManagementPage selectSpoofingHandling(com.websanity.enums.SpoofingHandling spoofingHandling) {
         log.info("Selecting spoofing handling: " + spoofingHandling.getDisplayName());
         spoofingHandlingSelectBox.selectOption(spoofingHandling.getValue());
         return this;
@@ -426,7 +426,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Select show local address book names from dropdown
      * @param yesNo YesNo enum value
      */
-    public TeleadminCompanyArchiveManagementPage selectShowLocalAddressBookNames(com.websanity.enums.YesNo yesNo) {
+    public CompanyArchiveManagementPage selectShowLocalAddressBookNames(com.websanity.enums.YesNo yesNo) {
         log.info("Selecting show local address book names: " + yesNo.getDisplayName());
         showLocalAddressBookNamesSelectBox.selectOption(yesNo.getValue());
         return this;
@@ -451,7 +451,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     /**
      * Click on Add Policy button to submit the policy
      */
-    public TeleadminCompanyArchiveManagementPage clickAddPolicyButton() {
+    public CompanyArchiveManagementPage clickAddPolicyButton() {
         log.info("Clicking Add Policy button");
         addPolicyButton.click();
 
@@ -467,7 +467,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Fill plan description input field
      * @param description description to fill
      */
-    public TeleadminCompanyArchiveManagementPage fillPlanDescription(String description) {
+    public CompanyArchiveManagementPage fillPlanDescription(String description) {
         log.info("Filling plan description: " + description);
         planDescriptionInput.clear();
         planDescriptionInput.fill(description);
@@ -486,7 +486,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Select source policy from dropdown by source ID
      * @param sourceId the source policy ID to select
      */
-    public TeleadminCompanyArchiveManagementPage selectSourcePolicy(String sourceId) {
+    public CompanyArchiveManagementPage selectSourcePolicy(String sourceId) {
         log.info("Selecting source policy: " + sourceId);
         sourceIdSelectBox.selectOption(sourceId);
         return this;
@@ -504,7 +504,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Select policy ID from dropdown by policy ID
      * @param policyId the policy ID to select
      */
-    public TeleadminCompanyArchiveManagementPage selectPolicyId(String policyId) {
+    public CompanyArchiveManagementPage selectPolicyId(String policyId) {
         log.info("Selecting policy ID: " + policyId);
         policyIdSelectBox.selectOption(policyId);
         return this;
@@ -521,7 +521,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     /**
      * Click on Add Plan button to submit the plan
      */
-    public TeleadminCompanyArchiveManagementPage clickAddPlanButton() {
+    public CompanyArchiveManagementPage clickAddPlanButton() {
         log.info("Clicking Add Plan button");
         addPlanButton.click();
 
@@ -536,7 +536,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     /**
      * Click on Add Source button to submit the source
      */
-    public TeleadminCompanyArchiveManagementPage clickAddSourceButton() {
+    public CompanyArchiveManagementPage clickAddSourceButton() {
         log.info("Clicking Add Source button");
         addSourceButton.click();
 
@@ -618,7 +618,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     /**
      * Click Edit button in the first row of policies table
      */
-    public TeleadminCompanyArchiveManagementPage clickFirstPolicyRowEditButton() {
+    public CompanyArchiveManagementPage clickFirstPolicyRowEditButton() {
         log.info("Clicking Edit button in first policy row");
         getFirstPolicyRow().locator("button.edit-policy").click();
         return this;
@@ -627,7 +627,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     /**
      * Click Delete button in the first row of policies table
      */
-    public TeleadminCompanyArchiveManagementPage clickFirstPolicyRowDeleteButton() {
+    public CompanyArchiveManagementPage clickFirstPolicyRowDeleteButton() {
         log.info("Clicking Delete button in first policy row");
         getFirstPolicyRow().locator("button.delete-policy").click();
         return this;
@@ -646,7 +646,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Click Edit button for specific policy ID
      * @param policyId the ID of the policy
      */
-    public TeleadminCompanyArchiveManagementPage clickEditButtonForPolicy(String policyId) {
+    public CompanyArchiveManagementPage clickEditButtonForPolicy(String policyId) {
         log.info("Clicking Edit button for policy: " + policyId);
         getPolicyRowByPolicyId(policyId).locator("button.edit-policy").click();
         return this;
@@ -656,7 +656,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Click Delete button for specific policy ID
      * @param policyId the ID of the policy
      */
-    public TeleadminCompanyArchiveManagementPage clickDeleteButtonForPolicy(String policyId) {
+    public CompanyArchiveManagementPage clickDeleteButtonForPolicy(String policyId) {
         log.info("Clicking Delete button for policy: " + policyId);
         getPolicyRowByPolicyId(policyId).locator("button.delete-policy").click();
         return this;
@@ -732,7 +732,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     /**
      * Click Edit button in the first row of plans table
      */
-    public TeleadminCompanyArchiveManagementPage clickFirstPlanRowEditButton() {
+    public CompanyArchiveManagementPage clickFirstPlanRowEditButton() {
         log.info("Clicking Edit button in first plan row");
         getFirstPlanRow().locator("button.edit-plan").click();
         return this;
@@ -741,7 +741,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     /**
      * Click Delete button in the first row of plans table
      */
-    public TeleadminCompanyArchiveManagementPage clickFirstPlanRowDeleteButton() {
+    public CompanyArchiveManagementPage clickFirstPlanRowDeleteButton() {
         log.info("Clicking Delete button in first plan row");
         getFirstPlanRow().locator("button.delete-plan").click();
         return this;
@@ -750,7 +750,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     /**
      * Click Manage Users button in the first row of plans table
      */
-    public TeleadminCompanyArchiveManagementPage clickFirstPlanRowManageUsersButton() {
+    public CompanyArchiveManagementPage clickFirstPlanRowManageUsersButton() {
         log.info("Clicking Manage Users button in first plan row");
         getFirstPlanRow().locator("button.manage-users").click();
         page.waitForTimeout(1500);
@@ -760,7 +760,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     /**
      * Click Bulk Provisioning button in the first row of plans table
      */
-    public TeleadminCompanyArchiveManagementPage clickFirstPlanRowBulkProvisioningButton() {
+    public CompanyArchiveManagementPage clickFirstPlanRowBulkProvisioningButton() {
         log.info("Clicking Bulk Provisioning button in first plan row");
         getFirstPlanRow().locator("button.bulk-prov").click();
         return this;
@@ -769,7 +769,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     /**
      * Click Bulk Deprovisioning button in the first row of plans table
      */
-    public TeleadminCompanyArchiveManagementPage clickFirstPlanRowBulkDeprovisioningButton() {
+    public CompanyArchiveManagementPage clickFirstPlanRowBulkDeprovisioningButton() {
         log.info("Clicking Bulk Deprovisioning button in first plan row");
         getFirstPlanRow().locator("button.bulk-deprov").click();
         return this;
@@ -788,7 +788,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Click Edit button for specific plan ID
      * @param planId the ID of the plan
      */
-    public TeleadminCompanyArchiveManagementPage clickEditButtonForPlan(String planId) {
+    public CompanyArchiveManagementPage clickEditButtonForPlan(String planId) {
         log.info("Clicking Edit button for plan: " + planId);
         getPlanRowByPlanId(planId).locator("button.edit-plan").click();
         return this;
@@ -798,7 +798,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Click Delete button for specific plan ID
      * @param planId the ID of the plan
      */
-    public TeleadminCompanyArchiveManagementPage clickDeleteButtonForPlan(String planId) {
+    public CompanyArchiveManagementPage clickDeleteButtonForPlan(String planId) {
         log.info("Clicking Delete button for plan: " + planId);
         getPlanRowByPlanId(planId).locator("button.delete-plan").click();
         return this;
@@ -808,7 +808,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Click Manage Users button for specific plan ID
      * @param planId the ID of the plan
      */
-    public TeleadminCompanyArchiveManagementPage clickManageUsersButtonForPlan(String planId) {
+    public CompanyArchiveManagementPage clickManageUsersButtonForPlan(String planId) {
         log.info("Clicking Manage Users button for plan: " + planId);
         getPlanRowByPlanId(planId).locator("button.manage-users").click();
         return this;
@@ -818,7 +818,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Click Bulk Provisioning button for specific plan ID
      * @param planId the ID of the plan
      */
-    public TeleadminCompanyArchiveManagementPage clickBulkProvisioningButtonForPlan(String planId) {
+    public CompanyArchiveManagementPage clickBulkProvisioningButtonForPlan(String planId) {
         log.info("Clicking Bulk Provisioning button for plan: " + planId);
         getPlanRowByPlanId(planId).locator("button.bulk-prov").click();
         return this;
@@ -828,7 +828,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Click Bulk Deprovisioning button for specific plan ID
      * @param planId the ID of the plan
      */
-    public TeleadminCompanyArchiveManagementPage clickBulkDeprovisioningButtonForPlan(String planId) {
+    public CompanyArchiveManagementPage clickBulkDeprovisioningButtonForPlan(String planId) {
         log.info("Clicking Bulk Deprovisioning button for plan: " + planId);
         getPlanRowByPlanId(planId).locator("button.bulk-deprov").click();
         return this;
@@ -896,7 +896,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Fill the Assign Users search input field
      * @param searchText text to search for
      */
-    public TeleadminCompanyArchiveManagementPage fillAssignUsersSearch(String searchText) {
+    public CompanyArchiveManagementPage fillAssignUsersSearch(String searchText) {
         log.info("Filling Assign Users search field with: " + searchText);
         assignUsersSearchInput.clear();
         assignUsersSearchInput.fill(searchText);
@@ -915,7 +915,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     /**
      * Clear the Assign Users search input field
      */
-    public TeleadminCompanyArchiveManagementPage clearAssignUsersSearch() {
+    public CompanyArchiveManagementPage clearAssignUsersSearch() {
         log.info("Clearing Assign Users search field");
         assignUsersSearchInput.clear();
         page.waitForTimeout(1000); // Wait for search to clear
@@ -950,7 +950,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     /**
      * Click checkbox for the first user in Assign Users table
      */
-    public TeleadminCompanyArchiveManagementPage clickFirstUserCheckbox() {
+    public CompanyArchiveManagementPage clickFirstUserCheckbox() {
         log.info("Clicking checkbox for first user in Assign Users table");
         getFirstAssignUsersRow().locator("input.assign-plan-check").click();
         page.waitForTimeout(500); // Wait for checkbox state to update
@@ -961,7 +961,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Click checkbox for specific user by data-id in Assign Users table
      * @param userId the user ID (data-id attribute)
      */
-    public TeleadminCompanyArchiveManagementPage clickUserCheckboxById(String userId) {
+    public CompanyArchiveManagementPage clickUserCheckboxById(String userId) {
         log.info("Clicking checkbox for user ID: " + userId);
         assignUsersTable.locator("tr[data-id='" + userId + "'] input.assign-plan-check").click();
         page.waitForTimeout(500); // Wait for checkbox state to update
@@ -972,7 +972,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Click checkbox for specific user by row index (0-based) in Assign Users table
      * @param rowIndex the row index
      */
-    public TeleadminCompanyArchiveManagementPage clickUserCheckboxByIndex(int rowIndex) {
+    public CompanyArchiveManagementPage clickUserCheckboxByIndex(int rowIndex) {
         log.info("Clicking checkbox for user at row index: " + rowIndex);
         getAssignUsersRowByIndex(rowIndex).locator("input.assign-plan-check").click();
         page.waitForTimeout(500); // Wait for checkbox state to update
@@ -982,7 +982,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
     /**
      * Click the "Select All" checkbox in Assign Users table
      */
-    public TeleadminCompanyArchiveManagementPage clickSelectAllUsersCheckbox() {
+    public CompanyArchiveManagementPage clickSelectAllUsersCheckbox() {
         log.info("Clicking Select All checkbox in Assign Users table");
         assignUsersSelectAllCheckbox.click();
         page.waitForTimeout(500); // Wait for all checkboxes to update
@@ -1077,7 +1077,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Click the Apply button in Manage Users modal
      * Note: The button is only enabled when at least one checkbox state has changed
      */
-    public TeleadminCompanyArchiveManagementPage clickAssignUsersApplyButton() {
+    public CompanyArchiveManagementPage clickAssignUsersApplyButton() {
         log.info("Clicking Apply button in Manage Users modal");
         assignUsersApplyButton.click();
         page.waitForTimeout(1000); // Wait for modal to close and changes to apply
@@ -1109,7 +1109,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Useful after checking/unchecking users
      * @return this page object for method chaining
      */
-    public TeleadminCompanyArchiveManagementPage waitForAssignUsersApplyButtonEnabled() {
+    public CompanyArchiveManagementPage waitForAssignUsersApplyButtonEnabled() {
         try {
             page.waitForCondition(() -> assignUsersApplyButton.isEnabled(),
                     new Page.WaitForConditionOptions().setTimeout(10000));
@@ -1126,7 +1126,7 @@ public class TeleadminCompanyArchiveManagementPage extends BasePage {
      * Click the Yes button in confirmation dialog
      * Used to confirm actions like deletions or changes
      */
-    public TeleadminCompanyArchiveManagementPage clickConfirmActionYesButton() {
+    public CompanyArchiveManagementPage clickConfirmActionYesButton() {
         log.info("Clicking Yes button in confirmation dialog");
         confirmActionYesButton.click();
         page.waitForTimeout(2000); // Wait for action to complete

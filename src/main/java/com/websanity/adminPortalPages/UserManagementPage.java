@@ -7,7 +7,7 @@ import com.websanity.enums.UserTypes;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class AdminPortalUserManagementPage extends BasePage {
+public class UserManagementPage extends BasePage {
 
     private final Locator loadingOverlay;
     private final Locator addUserBtn;
@@ -40,7 +40,7 @@ public class AdminPortalUserManagementPage extends BasePage {
     private final Locator timeZoneSelect;
     private final Locator countrySelect;
 
-    public AdminPortalUserManagementPage(Page page) {
+    public UserManagementPage(Page page) {
         super(page);
         this.addUserBtn = page.locator(".addUserSubmenu");
         this.loadingOverlay = page.locator("#fade");
@@ -92,7 +92,7 @@ public class AdminPortalUserManagementPage extends BasePage {
     /**
      * Click on Add User button
      */
-    public AdminPortalUserManagementPage clickAddUser() {
+    public UserManagementPage clickAddUser() {
         log.info("Clicking Add User button");
         addUserBtn.click();
         waitForLoadingToDisappear();
@@ -103,7 +103,7 @@ public class AdminPortalUserManagementPage extends BasePage {
      * Select service level by enum UserTypes
      * @param userType The usertype to select
      */
-    public AdminPortalUserManagementPage selectServiceLevel(UserTypes userType) {
+    public UserManagementPage selectServiceLevel(UserTypes userType) {
         log.info("Selecting service level: {}", userType.getDisplayName());
         serviceLevel.selectOption(userType.getValue());
         waitForLoadingToDisappear();
@@ -114,7 +114,7 @@ public class AdminPortalUserManagementPage extends BasePage {
      * Select language by enum Language
      * @param language The language to select
      */
-    public AdminPortalUserManagementPage selectLanguage(com.websanity.enums.Language language) {
+    public UserManagementPage selectLanguage(com.websanity.enums.Language language) {
         log.info("Selecting language: {}", language.getDisplayName());
         languageSelect.selectOption(language.getValue());
         waitForLoadingToDisappear();
@@ -141,7 +141,7 @@ public class AdminPortalUserManagementPage extends BasePage {
      * Select time zone by enum TimeZone
      * @param timeZone The time zone to select
      */
-    public AdminPortalUserManagementPage selectTimeZone(com.websanity.enums.TimeZone timeZone) {
+    public UserManagementPage selectTimeZone(com.websanity.enums.TimeZone timeZone) {
         log.info("Selecting time zone: {}", timeZone.getDisplayName());
         timeZoneSelect.selectOption(timeZone.getValue());
         waitForLoadingToDisappear();
@@ -168,7 +168,7 @@ public class AdminPortalUserManagementPage extends BasePage {
      * Select country by enum Country
      * @param country The country to select
      */
-    public AdminPortalUserManagementPage selectCountry(com.websanity.enums.Country country) {
+    public UserManagementPage selectCountry(com.websanity.enums.Country country) {
         log.info("Selecting country: {}", country.getDisplayName());
         countrySelect.selectOption(country.getCode());
         waitForLoadingToDisappear();
@@ -195,7 +195,7 @@ public class AdminPortalUserManagementPage extends BasePage {
      * Fill in first name
      * @param firstName The first name to fill in
      */
-    public AdminPortalUserManagementPage fillFirstName(String firstName) {
+    public UserManagementPage fillFirstName(String firstName) {
         log.info("Filling first name: {}", firstName);
         firstNameInput.clear();
         firstNameInput.fill(firstName);
@@ -206,7 +206,7 @@ public class AdminPortalUserManagementPage extends BasePage {
      * Fill in last name
      * @param lastName The last name to fill in
      */
-    public AdminPortalUserManagementPage fillLastName(String lastName) {
+    public UserManagementPage fillLastName(String lastName) {
         log.info("Filling last name: {}", lastName);
         lastNameInput.clear();
         lastNameInput.fill(lastName);
@@ -218,7 +218,7 @@ public class AdminPortalUserManagementPage extends BasePage {
      * @param country The country enum to select
      * @param phoneNumber The phone number to fill in
      */
-    public AdminPortalUserManagementPage fillMobilePhone(com.websanity.enums.Country country, String phoneNumber) {
+    public UserManagementPage fillMobilePhone(com.websanity.enums.Country country, String phoneNumber) {
         log.info("Filling mobile phone: {} - {}", country.getDisplayName(), phoneNumber);
         mobileCountrySelect.selectOption(country.getCode());
         mobileTelephoneInput.clear();
@@ -230,7 +230,7 @@ public class AdminPortalUserManagementPage extends BasePage {
      * Fill in communication email
      * @param email The email address to fill in
      */
-    public AdminPortalUserManagementPage fillEmail(String email) {
+    public UserManagementPage fillEmail(String email) {
         log.info("Filling communication email: {}", email);
         communicationEmailInput.clear();
         communicationEmailInput.fill(email);
@@ -241,7 +241,7 @@ public class AdminPortalUserManagementPage extends BasePage {
      * Fill in username
      * @param username The username to fill in
      */
-    public AdminPortalUserManagementPage fillUsername(String username) {
+    public UserManagementPage fillUsername(String username) {
         log.info("Filling username: {}", username);
         usernameInput.clear();
         usernameInput.fill(username);
@@ -252,7 +252,7 @@ public class AdminPortalUserManagementPage extends BasePage {
      * Fill in password
      * @param password The password to fill in
      */
-    public AdminPortalUserManagementPage fillPassword(String password) {
+    public UserManagementPage fillPassword(String password) {
         log.info("Filling password");
         passwordInput.clear();
         passwordInput.fill(password);
@@ -263,7 +263,7 @@ public class AdminPortalUserManagementPage extends BasePage {
      * Fill in UCC (User Cost Center)
      * @param ucc The UCC value to fill in
      */
-    public AdminPortalUserManagementPage fillUcc(String ucc) {
+    public UserManagementPage fillUcc(String ucc) {
         log.info("Filling UCC: {}", ucc);
         uccInput.clear();
         uccInput.fill(ucc);
@@ -273,7 +273,7 @@ public class AdminPortalUserManagementPage extends BasePage {
     /**
      * Click on Sub Manager checkbox
      */
-    public AdminPortalUserManagementPage clickSubManagerCheckbox() {
+    public UserManagementPage clickSubManagerCheckbox() {
         log.info("Clicking Sub Manager checkbox");
         subManagerCheckbox.click();
         return this;
@@ -282,7 +282,7 @@ public class AdminPortalUserManagementPage extends BasePage {
     /**
      * Click on Add to Global Address Book checkbox
      */
-    public AdminPortalUserManagementPage clickAddToGlobalAddressBookCheckbox() {
+    public UserManagementPage clickAddToGlobalAddressBookCheckbox() {
         log.info("Clicking Add to Global Address Book checkbox");
         addToGlobalAddressBookCheckbox.click();
         return this;
@@ -291,7 +291,7 @@ public class AdminPortalUserManagementPage extends BasePage {
     /**
      * Click on Save button
      */
-    public AdminPortalUserManagementPage clickSaveBtn() {
+    public UserManagementPage clickSaveBtn() {
         log.info("Clicking Save button");
         saveBtn.click();
         page.waitForTimeout(1000);
@@ -346,7 +346,7 @@ public class AdminPortalUserManagementPage extends BasePage {
     /**
      * Click on Close Errors Summary button
      */
-    public AdminPortalUserManagementPage clickCloseErrorsSummaryBtn() {
+    public UserManagementPage clickCloseErrorsSummaryBtn() {
         log.info("Clicking Close Errors Summary button");
         closeErrorsSummaryBtn.click();
         return this;
@@ -356,7 +356,7 @@ public class AdminPortalUserManagementPage extends BasePage {
      * Fill in search input
      * @param searchText The text to search for
      */
-    public AdminPortalUserManagementPage fillSearchInp(String searchText) {
+    public UserManagementPage fillSearchInp(String searchText) {
         log.info("Filling search input: {}", searchText);
         searchInp.clear();
         searchInp.fill(searchText);
@@ -366,7 +366,7 @@ public class AdminPortalUserManagementPage extends BasePage {
     /**
      * Click on Search Contacts Submit button
      */
-    public AdminPortalUserManagementPage clickSearchBtn() {
+    public UserManagementPage clickSearchBtn() {
         log.info("Clicking Search Contacts Submit button");
         searchBtn.click();
         page.waitForTimeout(1000);
@@ -424,7 +424,7 @@ public class AdminPortalUserManagementPage extends BasePage {
     /**
      * Click on username of the first user in the table
      */
-    public AdminPortalUserManagementPage clickFirstUserUsername() {
+    public UserManagementPage clickFirstUserUsername() {
         try {
             log.info("Clicking first user username");
             // Get second tr (index 1) - first data row, then get 7th td (index 6) - Username column
@@ -505,7 +505,7 @@ public class AdminPortalUserManagementPage extends BasePage {
     /**
      * Click on checkbox for the first user in the table
      */
-    public AdminPortalUserManagementPage clickFirstUserCheckbox() {
+    public UserManagementPage clickFirstUserCheckbox() {
         try {
             log.info("Clicking first user checkbox");
             // Get second tr (index 1) - first data row, then get 1st td (index 0) - Checkbox column
@@ -535,7 +535,7 @@ public class AdminPortalUserManagementPage extends BasePage {
     /**
      * Click on Delete button
      */
-    public AdminPortalUserManagementPage clickDeleteBtn() {
+    public UserManagementPage clickDeleteBtn() {
         log.info("Clicking Delete button");
         deleteBtn.click();
         return this;
@@ -544,7 +544,7 @@ public class AdminPortalUserManagementPage extends BasePage {
     /**
      * Click on Suspend button
      */
-    public AdminPortalUserManagementPage clickSuspendBtn() {
+    public UserManagementPage clickSuspendBtn() {
         log.info("Clicking Suspend button");
         suspendBtn.click();
         waitForLoadingToDisappear();
@@ -554,7 +554,7 @@ public class AdminPortalUserManagementPage extends BasePage {
     /**
      * Click on Activate button
      */
-    public AdminPortalUserManagementPage clickActivateBtn() {
+    public UserManagementPage clickActivateBtn() {
         log.info("Clicking Activate button");
         activateBtn.click();
         waitForLoadingToDisappear();
@@ -564,7 +564,7 @@ public class AdminPortalUserManagementPage extends BasePage {
     /**
      * Click on Confirm Yes button
      */
-    public AdminPortalUserManagementPage clickConfirmYesBtn() {
+    public UserManagementPage clickConfirmYesBtn() {
         log.info("Clicking Confirm Yes button");
         confirmYesBtn.click();
         waitForLoadingToDisappear();

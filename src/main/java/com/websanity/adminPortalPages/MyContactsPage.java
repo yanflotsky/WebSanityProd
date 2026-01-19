@@ -7,7 +7,7 @@ import com.websanity.enums.Country;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class AdminPortalMyContactsPage extends BasePage {
+public class MyContactsPage extends BasePage {
 
     private final Locator newBtn;
     private final Locator loadingOverlay;
@@ -46,7 +46,7 @@ public class AdminPortalMyContactsPage extends BasePage {
     private final Locator moreBtn;
     private final Locator deleteSelectedContactBtn;
 
-    public AdminPortalMyContactsPage(Page page) {
+    public MyContactsPage(Page page) {
         super(page);
         this.newBtn = page.locator("li.createNewSubMenu, li.newSubmenu");
         this.loadingOverlay = page.locator("#fade");
@@ -90,7 +90,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * Click on New button
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage clickNewBtn() {
+    public MyContactsPage clickNewBtn() {
         log.info("Clicking New button");
         newBtn.click();
         return this;
@@ -100,7 +100,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * Click on New Contact from dropdown menu
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage clickNewContact() {
+    public MyContactsPage clickNewContact() {
         log.info("Clicking New Contact");
         newContactLink.click();
         waitForLoadingToDisappear();
@@ -112,7 +112,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * @param firstName First name value
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage fillFirstName(String firstName) {
+    public MyContactsPage fillFirstName(String firstName) {
         log.info("Filling First Name: {}", firstName);
         firstNameInput.fill(firstName);
         return this;
@@ -123,7 +123,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * @param lastName Last name value
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage fillLastName(String lastName) {
+    public MyContactsPage fillLastName(String lastName) {
         log.info("Filling Last Name: {}", lastName);
         lastNameInput.fill(lastName);
         return this;
@@ -134,7 +134,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * @param jobTitle Job title value
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage fillJobTitle(String jobTitle) {
+    public MyContactsPage fillJobTitle(String jobTitle) {
         log.info("Filling Job Title: {}", jobTitle);
         jobTitleInput.fill(jobTitle);
         return this;
@@ -145,7 +145,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * @param country Country enum value
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage selectMobileCountry(Country country) {
+    public MyContactsPage selectMobileCountry(Country country) {
         log.info("Selecting Mobile Country: {}", country.getDisplayName());
         mobileCountry1Select.selectOption(country.getDisplayName());
         return this;
@@ -156,7 +156,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * @param country Country enum value
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage selectHomeCountry(Country country) {
+    public MyContactsPage selectHomeCountry(Country country) {
         log.info("Selecting Home Country: {}", country.getDisplayName());
         homeCountry1Select.selectOption(country.getDisplayName());
         return this;
@@ -167,7 +167,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * @param country Country enum value
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage selectBusinessCountry(Country country) {
+    public MyContactsPage selectBusinessCountry(Country country) {
         log.info("Selecting Business Country: {}", country.getDisplayName());
         businessCountry1Select.selectOption(country.getDisplayName());
         return this;
@@ -178,7 +178,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * @param country Country enum value
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage selectFaxCountry(Country country) {
+    public MyContactsPage selectFaxCountry(Country country) {
         log.info("Selecting Fax Country: {}", country.getDisplayName());
         faxCountry1Select.selectOption(country.getDisplayName());
         return this;
@@ -189,7 +189,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * @param telephone Mobile telephone number
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage fillMobileTelephone(String telephone) {
+    public MyContactsPage fillMobileTelephone(String telephone) {
         log.info("Filling Mobile Telephone: {}", telephone);
         mobileTelephone1Input.fill(telephone);
         return this;
@@ -200,7 +200,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * @param telephone Home telephone number
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage fillHomeTelephone(String telephone) {
+    public MyContactsPage fillHomeTelephone(String telephone) {
         log.info("Filling Home Telephone: {}", telephone);
         homeTelephone1Input.fill(telephone);
         return this;
@@ -211,7 +211,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * @param telephone Business telephone number
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage fillBusinessTelephone(String telephone) {
+    public MyContactsPage fillBusinessTelephone(String telephone) {
         log.info("Filling Business Telephone: {}", telephone);
         businessTelephone1Input.fill(telephone);
         return this;
@@ -222,7 +222,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * @param extension Business extension number
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage fillBusinessExt(String extension) {
+    public MyContactsPage fillBusinessExt(String extension) {
         log.info("Filling Business Extension: {}", extension);
         businessExt1Input.fill(extension);
         return this;
@@ -233,7 +233,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * @param telephone Fax telephone number
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage fillFaxTelephone(String telephone) {
+    public MyContactsPage fillFaxTelephone(String telephone) {
         log.info("Filling Fax Telephone: {}", telephone);
         faxTelephone1Input.fill(telephone);
         return this;
@@ -244,7 +244,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * @param email Communication email address
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage fillCommunicationEmail(String email) {
+    public MyContactsPage fillCommunicationEmail(String email) {
         log.info("Filling Communication Email: {}", email);
         communicationEmailInput.fill(email);
         return this;
@@ -255,7 +255,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * @param company Company name
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage fillCompany(String company) {
+    public MyContactsPage fillCompany(String company) {
         log.info("Filling Company: {}", company);
         companyInput.fill(company);
         return this;
@@ -266,7 +266,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * @param department Department name
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage fillDepartment(String department) {
+    public MyContactsPage fillDepartment(String department) {
         log.info("Filling Department: {}", department);
         departmentInput.fill(department);
         return this;
@@ -276,7 +276,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * Click on Save button
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage clickSaveBtn() {
+    public MyContactsPage clickSaveBtn() {
         log.info("Clicking Save button");
         saveBtn.click();
         page.waitForTimeout(1000);
@@ -292,7 +292,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * @param searchText Text to search for
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage fillSearchInp(String searchText) {
+    public MyContactsPage fillSearchInp(String searchText) {
         log.info("Filling Search input: {}", searchText);
         searchInp.fill(searchText);
         return this;
@@ -302,7 +302,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * Click on Search Contacts Submit button
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage clickSearchBtn() {
+    public MyContactsPage clickSearchBtn() {
         log.info("Clicking Search Contacts Submit button");
         searchBtn.click();
         return this;
@@ -312,7 +312,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * Click on More Contacts button
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage clickMoreBtn() {
+    public MyContactsPage clickMoreBtn() {
         log.info("Clicking More button");
         moreBtn.click();
         return this;
@@ -322,7 +322,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * Click on Delete Selected Contact button
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage clickDeleteSelectedContactBtn() {
+    public MyContactsPage clickDeleteSelectedContactBtn() {
         log.info("Clicking Delete Selected Contact button");
         deleteSelectedContactBtn.click();
         waitForLoadingToDisappear();
@@ -337,7 +337,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * Wait for contacts list table to be visible
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage waitForContactsListToLoad() {
+    public MyContactsPage waitForContactsListToLoad() {
         log.info("Waiting for contacts list table to load");
         contactsListTable.waitFor(new Locator.WaitForOptions()
                 .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE));
@@ -348,7 +348,7 @@ public class AdminPortalMyContactsPage extends BasePage {
      * Click on the first contact checkbox (column 0)
      * @return AdminPortalMyContactsPage
      */
-    public AdminPortalMyContactsPage clickFirstContactCheckbox() {
+    public MyContactsPage clickFirstContactCheckbox() {
         log.info("Clicking first contact checkbox");
         firstContactRow.locator("td").first().locator("div.checkbox_container").click();
         return this;
@@ -376,7 +376,7 @@ public class AdminPortalMyContactsPage extends BasePage {
     /**
      * Click on Confirm Yes button
      */
-    public AdminPortalMyContactsPage clickConfirmYesBtn() {
+    public MyContactsPage clickConfirmYesBtn() {
         log.info("Clicking Confirm Yes button");
         confirmYesBtn.click();
         waitForLoadingToDisappear();

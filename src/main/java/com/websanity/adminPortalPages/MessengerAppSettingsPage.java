@@ -6,7 +6,7 @@ import com.websanity.BasePage;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class AdminPortalMessengerAppSettingsPage extends BasePage {
+public class MessengerAppSettingsPage extends BasePage {
 
     private final Locator loadingOverlay;
     private final Locator saveBtn;
@@ -23,7 +23,7 @@ public class AdminPortalMessengerAppSettingsPage extends BasePage {
     private final Locator disableBackUpAndRestoreCheckbox;
     private final Locator disableDistributionOfNewVersions;
 
-    public AdminPortalMessengerAppSettingsPage(Page page) {
+    public MessengerAppSettingsPage(Page page) {
         super(page);
         this.loadingOverlay = page.locator("#fade");
         this.saveBtn = page.locator("#updateBtn");
@@ -42,7 +42,7 @@ public class AdminPortalMessengerAppSettingsPage extends BasePage {
     /**
      * Click on Disable Screen Capture checkbox
      */
-    public AdminPortalMessengerAppSettingsPage clickDisableScreenCapture() {
+    public MessengerAppSettingsPage clickDisableScreenCapture() {
         log.info("Clicking Disable Screen Capture checkbox");
         disableScreenCaptureCheckbox.click();
         return this;
@@ -51,7 +51,7 @@ public class AdminPortalMessengerAppSettingsPage extends BasePage {
     /**
      * Click on Disable Copy checkbox
      */
-    public AdminPortalMessengerAppSettingsPage clickDisableCopy() {
+    public MessengerAppSettingsPage clickDisableCopy() {
         log.info("Clicking Disable Copy checkbox");
         disableCopyCheckbox.click();
         return this;
@@ -60,7 +60,7 @@ public class AdminPortalMessengerAppSettingsPage extends BasePage {
     /**
      * Click on Disable Share Media checkbox
      */
-    public AdminPortalMessengerAppSettingsPage clickDisableShareMedia() {
+    public MessengerAppSettingsPage clickDisableShareMedia() {
         log.info("Clicking Disable Share Media checkbox");
         disableShareMediaCheckbox.click();
         return this;
@@ -69,7 +69,7 @@ public class AdminPortalMessengerAppSettingsPage extends BasePage {
     /**
      * Click on Disable Notification's Preview checkbox
      */
-    public AdminPortalMessengerAppSettingsPage clickDisableNotificationPreview() {
+    public MessengerAppSettingsPage clickDisableNotificationPreview() {
         log.info("Clicking Disable Notification's Preview checkbox");
         disableNotificationPreviewCheckbox.click();
         return this;
@@ -78,7 +78,7 @@ public class AdminPortalMessengerAppSettingsPage extends BasePage {
     /**
      * Click on Disable Attachments checkbox
      */
-    public AdminPortalMessengerAppSettingsPage clickDisableAttachments() {
+    public MessengerAppSettingsPage clickDisableAttachments() {
         log.info("Clicking Disable Attachments checkbox");
         disableAttachmentsCheckbox.click();
         return this;
@@ -87,7 +87,7 @@ public class AdminPortalMessengerAppSettingsPage extends BasePage {
     /**
      * Click on Disable Local Contacts checkbox
      */
-    public AdminPortalMessengerAppSettingsPage clickDisableLocalContacts() {
+    public MessengerAppSettingsPage clickDisableLocalContacts() {
         log.info("Clicking Disable Local Contacts checkbox");
         disableLocalContactsCheckbox.click();
         return this;
@@ -96,7 +96,7 @@ public class AdminPortalMessengerAppSettingsPage extends BasePage {
     /**
      * Click on Disable Native Phone Dialer checkbox
      */
-    public AdminPortalMessengerAppSettingsPage clickDisableNativePhoneDialer() {
+    public MessengerAppSettingsPage clickDisableNativePhoneDialer() {
         log.info("Clicking Disable Native Phone Dialer checkbox");
         disableNativePhoneDialerCheckbox.click();
         return this;
@@ -105,7 +105,7 @@ public class AdminPortalMessengerAppSettingsPage extends BasePage {
     /**
      * Click on Disable Back Up and Restore checkbox
      */
-    public AdminPortalMessengerAppSettingsPage clickDisableBackUpAndRestore() {
+    public MessengerAppSettingsPage clickDisableBackUpAndRestore() {
         log.info("Clicking Disable Back Up and Restore checkbox");
         disableBackUpAndRestoreCheckbox.click();
         return this;
@@ -114,7 +114,7 @@ public class AdminPortalMessengerAppSettingsPage extends BasePage {
     /**
      * Click on Disable Distribution of New Versions checkbox
      */
-    public AdminPortalMessengerAppSettingsPage clickDisableDistributionOfNewVersions() {
+    public MessengerAppSettingsPage clickDisableDistributionOfNewVersions() {
         log.info("Clicking Disable Distribution of New Versions checkbox");
         disableDistributionOfNewVersions.click();
         return this;
@@ -193,7 +193,7 @@ public class AdminPortalMessengerAppSettingsPage extends BasePage {
     /**
      * Disable all checkboxes if they are enabled and save settings
      */
-    public AdminPortalMessengerAppSettingsPage disableAllCheckboxes() {
+    public MessengerAppSettingsPage disableAllCheckboxes() {
         log.info("Disabling all checkboxes if they are enabled");
         boolean anyCheckboxWasDisabled = false;
 
@@ -265,7 +265,7 @@ public class AdminPortalMessengerAppSettingsPage extends BasePage {
     /**
      * Click on Save button
      */
-    public AdminPortalMessengerAppSettingsPage clickSave() {
+    public MessengerAppSettingsPage clickSave() {
         log.info("Clicking Save button");
         page.waitForTimeout(3000);
         saveBtn.click();
@@ -283,7 +283,7 @@ public class AdminPortalMessengerAppSettingsPage extends BasePage {
     /**
      * Wait for success message to be visible
      */
-    public AdminPortalMessengerAppSettingsPage waitForSuccessMessage() {
+    public MessengerAppSettingsPage waitForSuccessMessage() {
         log.info("Waiting for success message to appear");
         successMsg.waitFor(new Locator.WaitForOptions().setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE).setTimeout(10000));
         page.waitForTimeout(500); // Additional wait to ensure settings are persisted

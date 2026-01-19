@@ -7,7 +7,7 @@ import com.websanity.enums.UserStatus;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class TeleadminUpdateUserPage extends BasePage {
+public class UpdateUserPage extends BasePage {
 
     private final FrameLocator textFrame;
 
@@ -51,7 +51,7 @@ public class TeleadminUpdateUserPage extends BasePage {
     private final Locator updateArchivingDomainButton;
     private final Locator domain0Input;
 
-    public TeleadminUpdateUserPage(Page page) {
+    public UpdateUserPage(Page page) {
         super(page);
         this.textFrame = page.frameLocator("frame[name='text']");
         this.usernameInput = textFrame.locator("#userid");
@@ -114,7 +114,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Fill username input field
      * @param username username to fill
      */
-    public TeleadminUpdateUserPage fillUsername(String username) {
+    public UpdateUserPage fillUsername(String username) {
         usernameInput.clear();
         usernameInput.fill(username);
         return this;
@@ -132,7 +132,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Fill password input field
      * @param password password to fill
      */
-    public TeleadminUpdateUserPage fillPassword(String password) {
+    public UpdateUserPage fillPassword(String password) {
         passwordInput.clear();
         passwordInput.fill(password);
         return this;
@@ -150,7 +150,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Fill first name input field
      * @param firstName first name to fill
      */
-    public TeleadminUpdateUserPage fillFirstName(String firstName) {
+    public UpdateUserPage fillFirstName(String firstName) {
         firstNameInput.clear();
         firstNameInput.fill(firstName);
         return this;
@@ -168,7 +168,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Fill last name input field
      * @param lastName last name to fill
      */
-    public TeleadminUpdateUserPage fillLastName(String lastName) {
+    public UpdateUserPage fillLastName(String lastName) {
         lastNameInput.clear();
         lastNameInput.fill(lastName);
         return this;
@@ -186,7 +186,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Fill email input field
      * @param email email to fill
      */
-    public TeleadminUpdateUserPage fillEmail(String email) {
+    public UpdateUserPage fillEmail(String email) {
         emailInput.clear();
         emailInput.fill(email);
         return this;
@@ -204,7 +204,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Fill mobile area input field
      * @param mobileArea mobile area code to fill
      */
-    public TeleadminUpdateUserPage fillMobileArea(String mobileArea) {
+    public UpdateUserPage fillMobileArea(String mobileArea) {
         mobileAreaInput.clear();
         mobileAreaInput.fill(mobileArea);
         return this;
@@ -222,7 +222,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Fill mobile input field
      * @param mobile mobile number to fill
      */
-    public TeleadminUpdateUserPage fillMobile(String mobile) {
+    public UpdateUserPage fillMobile(String mobile) {
         mobileInput.clear();
         mobileInput.fill(mobile);
         return this;
@@ -240,7 +240,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * select time zone input selectbox
      * @param timeZone time zone to fill
      */
-    public TeleadminUpdateUserPage selectTimeZone(com.websanity.enums.TimeZone timeZone) {
+    public UpdateUserPage selectTimeZone(com.websanity.enums.TimeZone timeZone) {
         timeZoneSelectBox.selectOption(timeZone.getValue());
         return this;
     }
@@ -249,7 +249,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * select language selectbox field
      * @param language time zone to fill
      */
-    public TeleadminUpdateUserPage selectLanguage(com.websanity.enums.Language language) {
+    public UpdateUserPage selectLanguage(com.websanity.enums.Language language) {
         languageSelectBox.selectOption(language.getValue());
         return this;
     }
@@ -274,7 +274,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Select country from dropdown
      * @param country Country enum value
      */
-    public TeleadminUpdateUserPage selectCountry(com.websanity.enums.Country country) {
+    public UpdateUserPage selectCountry(com.websanity.enums.Country country) {
         countrySelectBox.selectOption(country.getCode());
         return this;
     }
@@ -291,7 +291,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Select mobile country code from dropdown
      * @param country Country enum value
      */
-    public TeleadminUpdateUserPage selectMobileCountryCode(com.websanity.enums.Country country) {
+    public UpdateUserPage selectMobileCountryCode(com.websanity.enums.Country country) {
         mobileCountryCodeSelectbox.selectOption(country.getCode());
         return this;
     }
@@ -308,7 +308,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Select user status from dropdown
      * @param status UserStatus enum value
      */
-    public TeleadminUpdateUserPage selectStatus(UserStatus status) {
+    public UpdateUserPage selectStatus(UserStatus status) {
         statusSelectBox.selectOption(status.getValue());
         return this;
     }
@@ -339,7 +339,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Click on Update Status button and handle any alerts that appear
      * Automatically accepts confirmation alerts and enters "autoqa" as reason if prompted
      */
-    public TeleadminUpdateUserPage clickUpdateStatusButton() {
+    public UpdateUserPage clickUpdateStatusButton() {
         setupAlertHandler();
         updateStatusButton.click();
         page.waitForTimeout(1000);
@@ -349,7 +349,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Click on Update Account Information button and handle any alerts that appear
      * Automatically accepts confirmation alerts and enters "autoqa" as reason if prompted
      */
-    public TeleadminUpdateUserPage clickUpdateAccountInformationButton() {
+    public UpdateUserPage clickUpdateAccountInformationButton() {
         setupAlertHandler();
         updateAccountInformationButton.click();
         page.waitForTimeout(1000);
@@ -360,7 +360,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Wait for success message to appear after deletion
      * Waits up to 30 seconds for the message to be visible
      */
-    public TeleadminUpdateUserPage waitForDeleteSuccessMessage() {
+    public UpdateUserPage waitForDeleteSuccessMessage() {
         log.info("Waiting for delete success message to appear");
         successMessage.waitFor(new Locator.WaitForOptions()
                 .setState(WaitForSelectorState.VISIBLE)
@@ -392,7 +392,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Wait for success message to appear after profile update
      * Waits up to 30 seconds for the message to be visible
      */
-    public TeleadminUpdateUserPage waitForUpdateSuccessMessage() {
+    public UpdateUserPage waitForUpdateSuccessMessage() {
         log.info("Waiting for update success message to appear");
         successMessage.waitFor(new Locator.WaitForOptions()
                 .setState(WaitForSelectorState.VISIBLE)
@@ -424,7 +424,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Wait for success message to appear after suspend
      * Waits up to 45 seconds for the message to be visible (increased for Docker)
      */
-    public TeleadminUpdateUserPage waitForSuspendSuccessMessage() {
+    public UpdateUserPage waitForSuspendSuccessMessage() {
         log.info("Waiting for suspend success message to appear");
         successMessage.waitFor(new Locator.WaitForOptions()
                 .setState(WaitForSelectorState.VISIBLE)
@@ -456,7 +456,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Wait for success message to appear after activate
      * Waits up to 30 seconds for the message to be visible
      */
-    public TeleadminUpdateUserPage waitForActivateSuccessMessage() {
+    public UpdateUserPage waitForActivateSuccessMessage() {
         log.info("Waiting for activate success message to appear");
         successMessage.waitFor(new Locator.WaitForOptions()
                 .setState(WaitForSelectorState.VISIBLE)
@@ -508,7 +508,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Select EN country from dropdown
      * @param country Country enum value
      */
-    public TeleadminUpdateUserPage selectEnCountry(com.websanity.enums.Country country) {
+    public UpdateUserPage selectEnCountry(com.websanity.enums.Country country) {
         enCountrySelectBox.selectOption(country.getCode());
         return this;
     }
@@ -525,7 +525,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Select incoming provider from dropdown
      * @param provider Provider enum value
      */
-    public TeleadminUpdateUserPage selectIncomingProvider(com.websanity.enums.Provider provider) {
+    public UpdateUserPage selectIncomingProvider(com.websanity.enums.Provider provider) {
         enIncToProviderSelectBox.selectOption(provider.getValue());
         return this;
     }
@@ -542,7 +542,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Select outgoing provider from dropdown
      * @param provider OutgoingProvider enum value
      */
-    public TeleadminUpdateUserPage selectOutgoingProvider(com.websanity.enums.OutgoingProvider provider) {
+    public UpdateUserPage selectOutgoingProvider(com.websanity.enums.OutgoingProvider provider) {
         enOutViaProviderSelectBox.selectOption(provider.getValue());
         return this;
     }
@@ -559,7 +559,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Fill EN input field
      * @param enValue EN value to fill
      */
-    public TeleadminUpdateUserPage fillEnInput(String enValue) {
+    public UpdateUserPage fillEnInput(String enValue) {
         enInput.clear();
         enInput.fill(enValue);
         return this;
@@ -576,7 +576,7 @@ public class TeleadminUpdateUserPage extends BasePage {
     /**
      * Click on EN Update button
      */
-    public TeleadminUpdateUserPage clickEnUpdateButton() {
+    public UpdateUserPage clickEnUpdateButton() {
         log.info("Clicking EN Update button");
         enUpdateButton.click();
         return this;
@@ -585,7 +585,7 @@ public class TeleadminUpdateUserPage extends BasePage {
     /**
      * Wait for EN success message to appear
      */
-    public TeleadminUpdateUserPage waitForEnSuccessMessage() {
+    public UpdateUserPage waitForEnSuccessMessage() {
         log.info("Waiting for EN success message to appear");
         try {
             enSuccessMessage.waitFor(new Locator.WaitForOptions()
@@ -653,7 +653,7 @@ public class TeleadminUpdateUserPage extends BasePage {
     /**
      * Click on EN delete checkbox to mark it for deletion
      */
-    public TeleadminUpdateUserPage clickEnDeleteCheckbox() {
+    public UpdateUserPage clickEnDeleteCheckbox() {
         log.info("Clicking EN delete checkbox");
         enDeleteCheckbox.check();
         return this;
@@ -675,7 +675,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Click on Company Archive Management button (opens new tab)
      * @return TeleadminCompanyArchiveManagementPage instance for the new tab
      */
-    public TeleadminCompanyArchiveManagementPage clickCompanyArchiveManagementButton() {
+    public CompanyArchiveManagementPage clickCompanyArchiveManagementButton() {
         log.info("Clicking Company Archive Management button");
 
         // Wait for new page/tab to open
@@ -683,13 +683,13 @@ public class TeleadminUpdateUserPage extends BasePage {
 
         log.info("New tab opened, switching to Company Archive Management page");
         newPage.waitForTimeout(2000);
-        return new TeleadminCompanyArchiveManagementPage(newPage);
+        return new CompanyArchiveManagementPage(newPage);
     }
 
     /**
      * Click on Manage allowed email/domain button
      */
-    public TeleadminUpdateUserPage clickManageAllowedEmailDomainButton() {
+    public UpdateUserPage clickManageAllowedEmailDomainButton() {
         log.info("Clicking Manage allowed email/domain button");
         manageAllowedEmailDomainButton.click();
         return this;
@@ -699,7 +699,7 @@ public class TeleadminUpdateUserPage extends BasePage {
      * Click on Company Admin's Portal Settings button (opens new tab)
      * @return TeleadminAdminsPortalSettingsPage instance for the new tab
      */
-    public TeleadminAdminsPortalSettingsPage clickCompanyAdminPortalSettingsButton() {
+    public AdminsPortalSettingsPage clickCompanyAdminPortalSettingsButton() {
         log.info("Clicking Company Admin's Portal Settings button");
 
         // Wait for new page/tab to open
@@ -707,14 +707,14 @@ public class TeleadminUpdateUserPage extends BasePage {
 
         log.info("New tab opened, switching to Admins Portal Settings page");
         newPage.waitForTimeout(2000);
-        return new TeleadminAdminsPortalSettingsPage(newPage);
+        return new AdminsPortalSettingsPage(newPage);
     }
 
     /**
      * Click on WhatsApp Phone Capture Settings button (opens new tab)
      * @return TeleadminApplicationsSettingPage instance for the new tab
      */
-    public TeleadminApplicationsSettingPage clickWhatsAppPhoneCaptureSettingsButton() {
+    public ApplicationsSettingPage clickWhatsAppPhoneCaptureSettingsButton() {
         log.info("Clicking WhatsApp Phone Capture Settings button");
 
         // Wait for new page/tab to open
@@ -722,14 +722,14 @@ public class TeleadminUpdateUserPage extends BasePage {
 
         log.info("New tab opened, switching to Applications Setting page");
         newPage.waitForTimeout(2000);
-        return new TeleadminApplicationsSettingPage(newPage);
+        return new ApplicationsSettingPage(newPage);
     }
 
     /**
      * Click on WhatsApp Cloud Capture Settings button (opens new tab)
      * @return TeleadminApplicationsSettingPage instance for the new tab
      */
-    public TeleadminApplicationsSettingPage clickWhatsAppCloudCaptureSettingsButton() {
+    public ApplicationsSettingPage clickWhatsAppCloudCaptureSettingsButton() {
         log.info("Clicking WhatsApp Cloud Capture Settings button");
 
         // Wait for new page/tab to open
@@ -737,14 +737,14 @@ public class TeleadminUpdateUserPage extends BasePage {
 
         log.info("New tab opened, switching to Applications Setting page");
         newPage.waitForTimeout(2000);
-        return new TeleadminApplicationsSettingPage(newPage);
+        return new ApplicationsSettingPage(newPage);
     }
 
     /**
      * Click on Telegram Capture Settings button (opens new tab)
      * @return TeleadminApplicationsSettingPage instance for the new tab
      */
-    public TeleadminApplicationsSettingPage clickTelegramCaptureSettingsButton() {
+    public ApplicationsSettingPage clickTelegramCaptureSettingsButton() {
         log.info("Clicking Telegram Capture Settings button");
 
         // Wait for new page/tab to open
@@ -752,14 +752,14 @@ public class TeleadminUpdateUserPage extends BasePage {
 
         log.info("New tab opened, switching to Applications Setting page");
         newPage.waitForTimeout(2000);
-        return new TeleadminApplicationsSettingPage(newPage);
+        return new ApplicationsSettingPage(newPage);
     }
 
     /**
      * Click on Signal Capture Settings button (opens new tab)
      * @return TeleadminApplicationsSettingPage instance for the new tab
      */
-    public TeleadminApplicationsSettingPage clickSignalCaptureSettingsButton() {
+    public ApplicationsSettingPage clickSignalCaptureSettingsButton() {
         log.info("Clicking Signal Capture Settings button");
 
         // Wait for new page/tab to open
@@ -767,14 +767,14 @@ public class TeleadminUpdateUserPage extends BasePage {
 
         log.info("New tab opened, switching to Applications Setting page");
         newPage.waitForTimeout(2000);
-        return new TeleadminApplicationsSettingPage(newPage);
+        return new ApplicationsSettingPage(newPage);
     }
 
     /**
      * Click on Enterprise Number Capture Settings button (opens new tab)
      * @return TeleadminApplicationsSettingPage instance for the new tab
      */
-    public TeleadminApplicationsSettingPage clickEnterpriseNumberCaptureSettingsButton() {
+    public ApplicationsSettingPage clickEnterpriseNumberCaptureSettingsButton() {
         log.info("Clicking Enterprise Number Capture Settings button");
 
         // Wait for new page/tab to open
@@ -782,14 +782,14 @@ public class TeleadminUpdateUserPage extends BasePage {
 
         log.info("New tab opened, switching to Applications Setting page");
         newPage.waitForTimeout(2000);
-        return new TeleadminApplicationsSettingPage(newPage);
+        return new ApplicationsSettingPage(newPage);
     }
 
     /**
      * Click on Android Capture Settings button (opens new tab)
      * @return TeleadminApplicationsSettingPage instance for the new tab
      */
-    public TeleadminApplicationsSettingPage clickAndroidCaptureSettingsButton() {
+    public ApplicationsSettingPage clickAndroidCaptureSettingsButton() {
         log.info("Clicking Android Capture Settings button");
 
         // Wait for new page/tab to open
@@ -797,14 +797,14 @@ public class TeleadminUpdateUserPage extends BasePage {
 
         log.info("New tab opened, switching to Applications Setting page");
         newPage.waitForTimeout(2000);
-        return new TeleadminApplicationsSettingPage(newPage);
+        return new ApplicationsSettingPage(newPage);
     }
 
     /**
      * Fill domain input field
      * @param domain domain to fill
      */
-    public TeleadminUpdateUserPage fillDomain(String domain) {
+    public UpdateUserPage fillDomain(String domain) {
         log.info("Filling domain: " + domain);
         domainInput.clear();
         domainInput.fill(domain);
@@ -822,7 +822,7 @@ public class TeleadminUpdateUserPage extends BasePage {
     /**
      * Click on Add Domain button
      */
-    public TeleadminUpdateUserPage clickAddDomainButton() {
+    public UpdateUserPage clickAddDomainButton() {
         log.info("Clicking Add Domain button");
         addDomainButton.click();
         return this;
@@ -831,7 +831,7 @@ public class TeleadminUpdateUserPage extends BasePage {
     /**
      * Click on Update Archiving Domain button
      */
-    public TeleadminUpdateUserPage clickUpdateArchivingDomainButton() {
+    public UpdateUserPage clickUpdateArchivingDomainButton() {
         log.info("Clicking Update Archiving Domain button");
         updateArchivingDomainButton.click();
         return this;
@@ -840,7 +840,7 @@ public class TeleadminUpdateUserPage extends BasePage {
     /**
      * Wait for Allowed Archiving Domains success message to appear
      */
-    public TeleadminUpdateUserPage waitForAllowedDomainSuccessMessage() {
+    public UpdateUserPage waitForAllowedDomainSuccessMessage() {
         log.info("Waiting for Allowed Archiving Domains success message to appear");
         Locator successMessage = textFrame.locator("span.sysMsg");
         successMessage.waitFor(new Locator.WaitForOptions()

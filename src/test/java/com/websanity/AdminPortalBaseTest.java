@@ -1,7 +1,7 @@
 package com.websanity;
 
-import com.websanity.adminPortalPages.AdminPortalLogInPage;
-import com.websanity.adminPortalPages.AdminPortalMenuPage;
+import com.websanity.adminPortalPages.LogInPage;
+import com.websanity.adminPortalPages.MenuPage;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.TestInstance;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class AdminPortalBaseTest extends BaseTest {
 
-    protected static AdminPortalMenuPage menuPage;
+    protected static MenuPage menuPage;
 
     /**
      * Perform login once before all tests in the class
@@ -28,7 +28,7 @@ public abstract class AdminPortalBaseTest extends BaseTest {
 
         // page and context are already created in BaseTest.launchBrowser()
         // Initialize login page
-        AdminPortalLogInPage loginPage = new AdminPortalLogInPage(page);
+        LogInPage loginPage = new LogInPage(page);
 
         // Perform automatic login with MFA
         menuPage = loginPage.loginToAdminPortalWithAutoUser()
