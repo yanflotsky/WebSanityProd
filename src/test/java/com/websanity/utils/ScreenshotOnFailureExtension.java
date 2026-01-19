@@ -26,11 +26,23 @@ public class ScreenshotOnFailureExtension implements TestWatcher {
 
         try {
             // Use reflection to get the 'page' field from BaseTest
-            java.lang.reflect.Field pageField = testInstance.getClass().getSuperclass().getDeclaredField("page");
-            pageField.setAccessible(true);
-            Page page = (Page) pageField.get(testInstance);
+            // Need to traverse up the class hierarchy to find the field
+            Page page = null;
+            Class<?> currentClass = testInstance.getClass();
 
-            if (page != null) {
+            while (currentClass != null && page == null) {
+                try {
+                    java.lang.reflect.Field pageField = currentClass.getDeclaredField("page");
+                    pageField.setAccessible(true);
+                    page = (Page) pageField.get(testInstance);
+                    break;
+                } catch (NoSuchFieldException e) {
+                    // Field not found in this class, try parent
+                    currentClass = currentClass.getSuperclass();
+                }
+            }
+
+            if (page != null && !page.isClosed()) {
                 String testName = context.getTestMethod()
                         .map(java.lang.reflect.Method::getName)
                         .orElse("unknown");
@@ -61,9 +73,12 @@ public class ScreenshotOnFailureExtension implements TestWatcher {
                 // Attach to Allure report
                 Allure.addAttachment("Screenshot: " + testName + " (FAILED)", "image/png",
                         new ByteArrayInputStream(screenshot), "png");
+            } else {
+                System.err.println("⚠️ Page is null or closed, cannot take screenshot");
             }
         } catch (Exception e) {
             System.err.println("⚠️ Failed to take screenshot: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

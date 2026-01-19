@@ -24,6 +24,10 @@ public class AdminPortalMenuPage extends BasePage {
     private final Locator mailingListsBtn;
     private final Locator messageQueryBtn;
     private final Locator whatsAppAPIBtn;
+    private final Locator settingsBtn;
+    private final Locator messengerAppSettingsBtn;
+    private final Locator messageSettingsBtn;
+    private final Locator advancedSettingsBtn;
 
     public AdminPortalMenuPage(Page page) {
         super(page);
@@ -44,6 +48,10 @@ public class AdminPortalMenuPage extends BasePage {
         this.mailingListsBtn = page.locator("#mailing_lists");
         this.messageQueryBtn = page.locator("#messages");
         this.whatsAppAPIBtn = page.locator("#wapi_connect");
+        this.settingsBtn = page.locator("li.clickSettings.upMenuSettings");
+        this.messengerAppSettingsBtn = page.locator("#settingsMenuDropdown >> text='Messenger App Settings'");
+        this.messageSettingsBtn = page.locator("#settingsMenuDropdown >> text='Message Settings'");
+        this.advancedSettingsBtn = page.locator("#settingsMenuDropdown >> text='Advanced Settings'");
     }
 
     /**
@@ -212,6 +220,49 @@ public class AdminPortalMenuPage extends BasePage {
         log.info("Clicking WhatsApp API menu item");
         whatsAppAPIBtn.click();
         waitForLoadingToDisappear();
+        return this;
+    }
+
+    /**
+     * Click on Settings menu item
+     */
+    public AdminPortalMenuPage clickSettings() {
+        log.info("Clicking Settings menu item");
+        settingsBtn.click();
+        waitForLoadingToDisappear();
+        return this;
+    }
+
+    /**
+     * Click on Messenger App Settings in dropdown
+     */
+    public AdminPortalMessengerAppSettingsPage clickMessengerAppSettings() {
+        log.info("Clicking Messenger App Settings");
+        messengerAppSettingsBtn.click();
+        waitForLoadingToDisappear();
+        page.waitForTimeout(3000);
+        return new AdminPortalMessengerAppSettingsPage(page);
+    }
+
+    /**
+     * Click on Message Settings in dropdown
+     */
+    public AdminPortalMenuPage clickMessageSettings() {
+        log.info("Clicking Message Settings");
+        messageSettingsBtn.click();
+        waitForLoadingToDisappear();
+        page.waitForTimeout(1000);
+        return this;
+    }
+
+    /**
+     * Click on Advanced Settings in dropdown
+     */
+    public AdminPortalMenuPage clickAdvancedSettings() {
+        log.info("Clicking Advanced Settings");
+        advancedSettingsBtn.click();
+        waitForLoadingToDisappear();
+        page.waitForTimeout(1000);
         return this;
     }
 

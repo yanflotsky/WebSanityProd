@@ -28,6 +28,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
     private AdminPortalSentItemsPage sentItemsPage;
     private AdminPortalMyContactsPage myContactsPage;
     private AdminPortalArchiveManagementPage archiveManagement;
+    private AdminPortalMessengerAppSettingsPage messengerAppSettingsPage;
 
     private static final String randnum = String.format("%07d", System.currentTimeMillis() % 10000000);
 
@@ -446,9 +447,85 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
     }
 
-
     @Test
     @Order(7)
+    @Story("Settings")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Messenger App Settings - Security Options")
+    void messengerAppSettingsSecurityOptions() {
+
+        log.info("Messenger App Settings - Security Options");
+
+        log.info("Before starting the test, ensure that all checkboxes in Messenger App Settings are unchecked");
+        messengerAppSettingsPage = menuPage.clickSettings()
+                .clickMessengerAppSettings()
+                .disableAllCheckboxes();
+
+        messengerAppSettingsPage
+                .clickDisableScreenCapture()
+                .clickDisableCopy()
+                .clickDisableShareMedia()
+                .clickDisableNotificationPreview()
+                .clickDisableAttachments()
+                .clickDisableLocalContacts()
+                .clickDisableNativePhoneDialer()
+                .clickDisableBackUpAndRestore()
+                .clickDisableDistributionOfNewVersions()
+                .clickSave();
+
+        log.info("Check success message is displayed");
+        Assertions.assertTrue(messengerAppSettingsPage.isSuccessMessageVisible(), "Success message is not visible after saving Messenger App Settings");
+        Assertions.assertEquals("Your Messaging App Settings were changed successfully.", messengerAppSettingsPage.getSuccessMessageText(), "Success message text is incorrect");
+
+        log.info("Reopen Messenger App Settings page and check that all checked checkboxes are enabled");
+        messengerAppSettingsPage = menuPage.clickSettings().clickMessengerAppSettings();
+
+        Assertions.assertTrue(messengerAppSettingsPage.isDisableScreenCaptureChecked(), "Disable Screen Capture (Android only) is not enabled");
+        Assertions.assertTrue(messengerAppSettingsPage.isDisableCopyChecked(), "Disable Copy is not enabled");
+        Assertions.assertTrue(messengerAppSettingsPage.isDisableShareMediaChecked(), "Disable Share Media is not enabled");
+        Assertions.assertTrue(messengerAppSettingsPage.isDisableNotificationPreviewChecked(), "Disable Notification Preview is not enabled");
+        Assertions.assertTrue(messengerAppSettingsPage.isDisableAttachmentsChecked(), "Disable Attachments is not enabled");
+        Assertions.assertTrue(messengerAppSettingsPage.isDisableLocalContactsChecked(), "Disable Local Contacts is not enabled");
+        Assertions.assertTrue(messengerAppSettingsPage.isDisableNativePhoneDialerChecked(), "Disable Native Phone Dialer is not enabled");
+        Assertions.assertTrue(messengerAppSettingsPage.isDisableBackUpAndRestoreChecked(), "Disable Back Up and Restore is not enabled");
+        Assertions.assertTrue(messengerAppSettingsPage.isDisableDistributionOfNewVersionsChecked(), "Disable Distribution of New Versions is not enabled");
+
+        log.info("Uncheck all checkboxes and Save");
+        messengerAppSettingsPage
+                .clickDisableScreenCapture()
+                .clickDisableCopy()
+                .clickDisableShareMedia()
+                .clickDisableNotificationPreview()
+                .clickDisableAttachments()
+                .clickDisableLocalContacts()
+                .clickDisableNativePhoneDialer()
+                .clickDisableBackUpAndRestore()
+                .clickDisableDistributionOfNewVersions()
+                .clickSave();
+
+        log.info("Check success message is displayed");
+        Assertions.assertTrue(messengerAppSettingsPage.isSuccessMessageVisible(), "Success message is not visible after saving Messenger App Settings");
+        Assertions.assertEquals("Your Messaging App Settings were changed successfully.", messengerAppSettingsPage.getSuccessMessageText(), "Success message text is incorrect");
+
+        log.info("Reopen Messenger App Settings page and check that all checked checkboxes are enabled");
+        messengerAppSettingsPage = menuPage.clickSettings().clickMessengerAppSettings();
+
+        Assertions.assertFalse(messengerAppSettingsPage.isDisableScreenCaptureChecked(), "Disable Screen Capture (Android only) is still enabled");
+        Assertions.assertFalse(messengerAppSettingsPage.isDisableCopyChecked(), "Disable Copy is still enabled");
+        Assertions.assertFalse(messengerAppSettingsPage.isDisableShareMediaChecked(), "Disable Share Media is still enabled");
+        Assertions.assertFalse(messengerAppSettingsPage.isDisableNotificationPreviewChecked(), "Disable Notification Preview is still enabled");
+        Assertions.assertFalse(messengerAppSettingsPage.isDisableAttachmentsChecked(), "Disable Attachments is still enabled");
+        Assertions.assertFalse(messengerAppSettingsPage.isDisableLocalContactsChecked(), "Disable Local Contacts is still enabled");
+        Assertions.assertFalse(messengerAppSettingsPage.isDisableNativePhoneDialerChecked(), "Disable Native Phone Dialer is still enabled");
+        Assertions.assertFalse(messengerAppSettingsPage.isDisableBackUpAndRestoreChecked(), "Disable Back Up and Restore is still enabled");
+        Assertions.assertFalse(messengerAppSettingsPage.isDisableDistributionOfNewVersionsChecked(), "Disable Distribution of New Versions is still enabled");
+
+        log.info("✅ Test completed successfully");
+
+    }
+
+    @Test
+    @Order(8)
     @Story("User Management")
     @Severity(SeverityLevel.CRITICAL)
     @Description("User Management - Delete User")
