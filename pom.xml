@@ -100,6 +100,18 @@
             <version>24.0.1</version>
         </dependency>
 
+        <!-- Apache POI for Excel file generation -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.5</version>
+        </dependency>
+
         <!-- Allure JUnit 5 -->
         <dependency>
             <groupId>io.qameta.allure</groupId>

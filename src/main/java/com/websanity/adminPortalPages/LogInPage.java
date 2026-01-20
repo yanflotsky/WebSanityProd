@@ -5,6 +5,7 @@ import com.microsoft.playwright.Page;
 import com.websanity.BasePage;
 import com.websanity.utils.ConfigLoader;
 import com.websanity.utils.EmailHelper;
+import com.websanity.utils.TestUsers;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
@@ -132,16 +133,13 @@ public class LogInPage extends BasePage {
      */
     public MenuPage loginToAdminPortalWithAutoUser() {
 
-        String username = "websanityun";
-        String password = "QAautoweb12345678!!";
-
-        log.info("Starting login with MFA for user: {}", username);
+        log.info("Starting login with MFA for user: {}", TestUsers.getAdminPortalSanityManager().getUsername());
 
         // Navigate to Manager Portal
         page.navigate(MANAGER_PORTAL_URL);
 
-        fillUsername(username);
-        fillPassword(password);
+        fillUsername(TestUsers.getAdminPortalSanityManager().getUsername());
+        fillPassword(TestUsers.getAdminPortalSanityManager().getPassword());
         clickSignIn();
 
         // Wait for Email button to appear and click it to select email verification method

@@ -24,7 +24,8 @@ public class TestsRunner {
     // Format: "TestClassName:docker-service-name:allure-results-folder"
     private static final String[] TEST_CLASSES = {
         "AdminPortalSanityTest:admin-portal-tests:allure-results-admin",
-        "TeleadminSanityTest:teleadmin-tests:allure-results-teleadmin"
+        "TeleadminSanityTest:teleadmin-tests:allure-results-teleadmin",
+        "TeleadminLFFSanityTest:teleadmin-lff-tests:allure-results-teleadmin-lff"
         // Add more test classes here:
         // "NewTestClass:new-service-name:allure-results-new"
     };

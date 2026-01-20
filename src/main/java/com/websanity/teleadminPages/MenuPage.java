@@ -4,7 +4,9 @@ import com.microsoft.playwright.FrameLocator;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.websanity.BasePage;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class MenuPage extends BasePage {
 
     private final FrameLocator frameMenu;
@@ -46,8 +48,10 @@ public class MenuPage extends BasePage {
     /**
      * Click on Sign Up From File button
      */
-    public void clickSignUpFromFileButton() {
+    public LFFPage clickSignUpFromFileButton() {
+        log.info("Click Sign Up Users From File Button");
         signUpFromFileButton.click();
+        return new LFFPage(page);
     }
 
     /**
@@ -60,8 +64,10 @@ public class MenuPage extends BasePage {
     /**
      * Click on Delete Users From File button
      */
-    public void clickDeleteUsersFromFileButton() {
+    public DFFPage clickDeleteUsersFromFileButton() {
+        log.info("Click Delete Users From File Button");
         deleteUsersFromFileButton.click();
+        return new DFFPage(page);
     }
 
     /**

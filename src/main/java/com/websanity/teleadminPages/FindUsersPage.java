@@ -14,6 +14,8 @@ public class FindUsersPage extends BasePage {
     private final Locator usernameInput;
     private final Locator  searchButton;
     private final Locator usersTable;
+    private final Locator customerAdministratorInput;
+    private final Locator advancedOptionsLabel;
 
     public FindUsersPage(Page page) {
         super(page);
@@ -21,6 +23,8 @@ public class FindUsersPage extends BasePage {
         this.usernameInput = textFrame.locator("input[name='userName']");
         this.searchButton = textFrame.locator("button[id='findUsersBtn']");
         this.usersTable = textFrame.locator("#personTable");
+        this.customerAdministratorInput = textFrame.locator("input#customerAdministratorInput");
+        this.advancedOptionsLabel = textFrame.locator("div#advancedOptionsLabel");
     }
 
     /**
@@ -66,17 +70,67 @@ public class FindUsersPage extends BasePage {
     }
 
     /**
+     * Fill customer administrator input field
+     * This field has dropdown filtering functionality
+     * @param administratorName name of the administrator to fill
+     */
+    public FindUsersPage fillCustomerAdministrator(String administratorName) {
+        log.info("Filling customer administrator with: {}", administratorName);
+        customerAdministratorInput.fill(administratorName);
+        page.waitForTimeout(500); // Wait for dropdown filtering
+
+        // Click on selected dropdown item
+        log.debug("Clicking on selected dropdown item");
+        Locator selectedDropdownItem = textFrame.locator("#customerAdministrationDropdown .dropdown-item.selected");
+        selectedDropdownItem.click();
+        page.waitForTimeout(300);
+
+        log.info("Customer administrator filled and selected successfully");
+        return this;
+    }
+
+    /**
+     * Check if customer administrator input is visible
+     * @return true if visible
+     */
+    public boolean isCustomerAdministratorInputVisible() {
+        return customerAdministratorInput.isVisible();
+    }
+
+    /**
+     * Click on Advanced Options label to show advanced search options
+     * @return this page for chaining
+     */
+    public FindUsersPage clickAdvancedOptions() {
+        log.info("Clicking on Advanced Options");
+        advancedOptionsLabel.click();
+        page.waitForTimeout(500); // Wait for advanced options to expand
+        log.info("Advanced Options clicked");
+        return this;
+    }
+
+    /**
+     * Check if Advanced Options label is visible
+     * @return true if visible
+     */
+    public boolean isAdvancedOptionsVisible() {
+        return advancedOptionsLabel.isVisible();
+    }
+
+    /**
      * Click search button
      */
-    public void clickSearchButton() {
+    public FindUsersPage clickSearchButton() {
         page.waitForTimeout(500);
         searchButton.click();
+        waitForTableToHaveData();
+        return this;
     }
 
     /**
      * Search for user by username
      */
-    public FindUsersPage searchUser(String username) {
+    public FindUsersPage searchUserByUsername(String username) {
         log.info("Searching for user: {}", username);
         enterUsername(username);
         clickSearchButton();
@@ -111,7 +165,6 @@ public class FindUsersPage extends BasePage {
             log.info("Table data loaded successfully");
         } catch (Exception e) {
             log.error("Failed to load table data within 60 seconds", e);
-            log.error("Current URL: {}", page.url());
             throw new RuntimeException("Table data did not load", e);
         }
     }
@@ -207,6 +260,174 @@ public class FindUsersPage extends BasePage {
 
     public Locator getAllRows() {
         return usersTable.locator("tbody tr");
+    }
+
+    /**
+     * Check that table contains specific users by their usernames
+     * @param usernames list of usernames to check
+     * @return true if all users are found in the table
+     */
+    public boolean checkTableHasUsers(java.util.List<String> usernames) {
+        log.info("Checking if table contains {} users", usernames.size());
+
+        // Wait for table to have data
+        waitForTableToHaveData();
+
+        for (String username : usernames) {
+            boolean found = false;
+            Locator allRows = usersTable.locator("tbody tr");
+            int rowCount = allRows.count();
+
+            for (int i = 0; i < rowCount; i++) {
+                Locator row = allRows.nth(i);
+                Locator firstColumn = row.locator("td").first();
+                String usernameInTable = firstColumn.textContent().trim();
+
+                if (usernameInTable.equals(username)) {
+                    log.info("User '{}' found in table", username);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                log.error("User '{}' NOT found in table", username);
+                return false;
+            }
+        }
+
+        log.info("All {} users found in table", usernames.size());
+        return true;
+    }
+
+    /**
+     * Check that table contains specific users by their usernames (varargs version)
+     * @param usernames usernames to check
+     * @return true if all users are found in the table
+     */
+    public boolean checkTableHasUsers(String... usernames) {
+        return checkTableHasUsers(java.util.Arrays.asList(usernames));
+    }
+
+    /**
+     * Get all usernames from the table
+     * @return list of usernames in the table
+     */
+    public java.util.List<String> getAllUsernamesFromTable() {
+        log.info("Getting all usernames from table");
+        waitForTableToHaveData();
+
+        java.util.List<String> usernames = new java.util.ArrayList<>();
+        Locator allRows = usersTable.locator("tbody tr");
+        int rowCount = allRows.count();
+
+        for (int i = 0; i < rowCount; i++) {
+            Locator row = allRows.nth(i);
+            Locator firstColumn = row.locator("td").first();
+            String username = firstColumn.textContent().trim();
+            usernames.add(username);
+        }
+
+        log.info("Found {} users in table", usernames.size());
+        return usernames;
+    }
+
+    /**
+     * Check that table contains exact number of users with specific usernames
+     * @param usernames list of usernames to check
+     * @return true if table contains exactly these users (no more, no less)
+     */
+    public boolean checkTableHasExactUsers(java.util.List<String> usernames) {
+        log.info("Checking if table contains exactly {} users", usernames.size());
+
+        java.util.List<String> usernamesInTable = getAllUsernamesFromTable();
+
+        if (usernamesInTable.size() != usernames.size()) {
+            log.error("Table has {} users, but expected {}", usernamesInTable.size(), usernames.size());
+            return false;
+        }
+
+        for (String username : usernames) {
+            if (!usernamesInTable.contains(username)) {
+                log.error("User '{}' NOT found in table", username);
+                return false;
+            }
+        }
+
+        log.info("Table contains exactly the expected {} users", usernames.size());
+        return true;
+    }
+
+    /**
+     * Check that table shows "No data available in table" message
+     * Used to verify that no users were found (e.g., after deletion)
+     * @return true if "No data available" message is shown
+     */
+    public boolean isTableEmpty() {
+        log.info("Checking if table shows 'No data available' message");
+
+        try {
+            // Wait a bit for table to update after search/delete
+            page.waitForTimeout(1000);
+
+            Locator rows = usersTable.locator("tbody tr");
+
+            // Check if there's at least one row
+            if (rows.count() == 0) {
+                log.info("Table has no rows - empty");
+                return true;
+            }
+
+            // Check if first row contains "No data available in table" message
+            String firstRowText = rows.first().textContent().trim();
+            boolean isEmpty = firstRowText.contains("No data available in table");
+
+            if (isEmpty) {
+                log.info("Table shows 'No data available in table' message");
+            } else {
+                log.info("Table contains data: {}", firstRowText);
+            }
+
+            return isEmpty;
+        } catch (Exception e) {
+            log.error("Error checking if table is empty", e);
+            return false;
+        }
+    }
+
+    /**
+     * Wait for table to show "No data available in table" message
+     * Waits up to specified timeout for the message to appear
+     * @param timeoutMs timeout in milliseconds (default: 10000)
+     * @return true if message appeared within timeout
+     */
+    public boolean waitForTableToBeEmpty(int timeoutMs) {
+        log.info("Waiting for table to show 'No data available' message (timeout: {}ms)", timeoutMs);
+
+        try {
+            page.waitForCondition(() -> {
+                Locator rows = usersTable.locator("tbody tr");
+                if (rows.count() == 0) return true;
+
+                String firstRowText = rows.first().textContent();
+                return firstRowText.contains("No data available in table");
+            }, new Page.WaitForConditionOptions().setTimeout(timeoutMs));
+
+            log.info("Table is empty - 'No data available' message is shown");
+            return true;
+        } catch (Exception e) {
+            log.error("Table did not become empty within {}ms", timeoutMs);
+            return false;
+        }
+    }
+
+    /**
+     * Wait for table to show "No data available in table" message
+     * Uses default timeout of 10 seconds
+     * @return true if message appeared within timeout
+     */
+    public boolean waitForTableToBeEmpty() {
+        return waitForTableToBeEmpty(10000);
     }
 
 }

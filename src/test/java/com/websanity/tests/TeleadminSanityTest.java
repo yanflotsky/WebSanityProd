@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Epic("TeleAdmin Sanity Tests")
 @Feature("Account Settings/Applicatoin Settings functionality")
 public class TeleadminSanityTest extends BaseTest {
@@ -132,7 +133,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         menuPage
                 .clickFindUsersButton()
-                .searchUser(searchUsername)
+                .searchUserByUsername(searchUsername)
                 .checkThatUserWasFoundAndClickOnHim(searchUsername, updateUserPage);
 
         log.info("✅ Test completed successfully");
@@ -167,7 +168,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         menuPage
                 .clickFindUsersButton()
-                .searchUser(searchUsername)
+                .searchUserByUsername(searchUsername)
                 .checkThatUserWasFoundAndClickOnHim(searchUsername, updateUserPage)
                 .fillFirstName(paramsToUpdate.getFirstName())
                 .fillLastName(paramsToUpdate.getLastName())
@@ -229,7 +230,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .selectStatus(UserStatus.SUSPENDED)
                 .clickUpdateStatusButton()
@@ -283,7 +284,7 @@ public class TeleadminSanityTest extends BaseTest {
         log.info("Adding Enterprise Number: " + enterpriseNumber);
         menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .selectEnCountry(Country.ALL_COUNTRIES)
                 .selectIncomingProvider(Provider.CELLCOM)
@@ -341,7 +342,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickManageAllowedEmailDomainButton()
                 .fillDomain(domain)
@@ -380,7 +381,7 @@ public class TeleadminSanityTest extends BaseTest {
         //Create Source
         companyArchivePage = menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickCompanyArchiveManagementButton()
                 .clickAddNewSourceButton()
@@ -499,7 +500,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         adminsPortalPage = menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickCompanyAdminPortalSettingsButton();
 
@@ -574,7 +575,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         ApplicationsSettingPage applicationsSettingPage = menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickWhatsAppPhoneCaptureSettingsButton()
                 .clickSignatureButton()
@@ -623,7 +624,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         ApplicationsSettingPage applicationsSettingPage = menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickTelegramCaptureSettingsButton()
                 .clickSignatureButton()
@@ -672,7 +673,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         ApplicationsSettingPage applicationsSettingPage = menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickSignalCaptureSettingsButton()
                 .clickSignatureButton()
@@ -721,7 +722,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         ApplicationsSettingPage applicationsSettingPage = menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickEnterpriseNumberCaptureSettingsButton()
                 .clickSignatureButton()
@@ -767,7 +768,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         ApplicationsSettingPage applicationsSettingPage = menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickAndroidCaptureSettingsButton();
 
@@ -813,7 +814,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .selectStatus(UserStatus.DELETED)
                 .clickUpdateStatusButton()
