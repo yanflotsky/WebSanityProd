@@ -11,7 +11,7 @@ import com.websanity.enums.TimeZone;
 import com.websanity.models.UserParams;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
-public class TeleadminSignUpPage extends BasePage {
+public class SignUpPage extends BasePage {
 
     private final FrameLocator textFrame;
 
@@ -54,7 +54,7 @@ public class TeleadminSignUpPage extends BasePage {
     private final Locator successMessage;
 
 
-    public TeleadminSignUpPage(Page page) {
+    public SignUpPage(Page page) {
         super(page);
         this.textFrame = page.frameLocator("frame[name='text']");
         this.serviceLevelSelectBox = textFrame.locator("#type");
@@ -457,7 +457,7 @@ public class TeleadminSignUpPage extends BasePage {
      * @param user UserParams object containing all user data
      * @return TeleadminSignUpPage instance for method chaining
      */
-    public TeleadminSignUpPage registerNewUser(UserParams user) {
+    public SignUpPage registerNewUser(UserParams user) {
         log.info("=== Starting user registration ===");
 
         // Service Level & Admin

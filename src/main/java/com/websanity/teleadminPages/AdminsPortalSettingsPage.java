@@ -6,7 +6,7 @@ import com.websanity.BasePage;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class TeleadminAdminsPortalSettingsPage extends BasePage {
+public class AdminsPortalSettingsPage extends BasePage {
 
     private final Locator saveDownloadSettingsBtn;
     private final Locator saveAdminPortalSettingsBtn;
@@ -26,7 +26,7 @@ public class TeleadminAdminsPortalSettingsPage extends BasePage {
     private final Locator displayGlobalContactsCheckbox;
     private final Locator displayMessageQueryCheckbox;
 
-    public TeleadminAdminsPortalSettingsPage(Page page) {
+    public AdminsPortalSettingsPage(Page page) {
         super(page);
         this.saveDownloadSettingsBtn = page.locator("#saveDownloadSettingsBtn");
         this.saveAdminPortalSettingsBtn = page.locator("#saveAdminPortalSettingsBtn");
@@ -52,7 +52,7 @@ public class TeleadminAdminsPortalSettingsPage extends BasePage {
     /**
      * Click on All Items checkbox
      */
-    public TeleadminAdminsPortalSettingsPage clickAllItemsCheckbox() {
+    public AdminsPortalSettingsPage clickAllItemsCheckbox() {
         log.info("Clicking All Items checkbox");
         allItemsCheckbox.click();
         return this;
@@ -71,7 +71,7 @@ public class TeleadminAdminsPortalSettingsPage extends BasePage {
     /**
      * Click on Compose checkbox
      */
-    public TeleadminAdminsPortalSettingsPage clickComposeCheckbox() {
+    public AdminsPortalSettingsPage clickComposeCheckbox() {
         log.info("Clicking Compose checkbox");
         composeCheckbox.click();
         return this;
@@ -90,7 +90,7 @@ public class TeleadminAdminsPortalSettingsPage extends BasePage {
     /**
      * Click on Outbox checkbox
      */
-    public TeleadminAdminsPortalSettingsPage clickOutboxCheckbox() {
+    public AdminsPortalSettingsPage clickOutboxCheckbox() {
         log.info("Clicking Outbox checkbox");
         outboxCheckbox.click();
         return this;
@@ -109,7 +109,7 @@ public class TeleadminAdminsPortalSettingsPage extends BasePage {
     /**
      * Click on Sent Items checkbox
      */
-    public TeleadminAdminsPortalSettingsPage clickSentItemsCheckbox() {
+    public AdminsPortalSettingsPage clickSentItemsCheckbox() {
         log.info("Clicking Sent Items checkbox");
         sentItemsCheckbox.click();
         return this;
@@ -128,7 +128,7 @@ public class TeleadminAdminsPortalSettingsPage extends BasePage {
     /**
      * Click on Inbox checkbox
      */
-    public TeleadminAdminsPortalSettingsPage clickInboxCheckbox() {
+    public AdminsPortalSettingsPage clickInboxCheckbox() {
         log.info("Clicking Inbox checkbox");
         inboxCheckbox.click();
         return this;
@@ -147,7 +147,7 @@ public class TeleadminAdminsPortalSettingsPage extends BasePage {
     /**
      * Click on All Settings checkbox
      */
-    public TeleadminAdminsPortalSettingsPage clickAllSettingsCheckbox() {
+    public AdminsPortalSettingsPage clickAllSettingsCheckbox() {
         log.info("Clicking All Settings checkbox");
         allSettingsCheckbox.click();
         return this;
@@ -166,7 +166,7 @@ public class TeleadminAdminsPortalSettingsPage extends BasePage {
     /**
      * Click on Messenger App Settings checkbox
      */
-    public TeleadminAdminsPortalSettingsPage clickMessengerAppSettingsCheckbox() {
+    public AdminsPortalSettingsPage clickMessengerAppSettingsCheckbox() {
         log.info("Clicking Messenger App Settings checkbox");
         messengerAppSettingsCheckbox.click();
         return this;
@@ -185,7 +185,7 @@ public class TeleadminAdminsPortalSettingsPage extends BasePage {
     /**
      * Click on Advanced Settings checkbox
      */
-    public TeleadminAdminsPortalSettingsPage clickAdvancedSettingsCheckbox() {
+    public AdminsPortalSettingsPage clickAdvancedSettingsCheckbox() {
         log.info("Clicking Advanced Settings checkbox");
         advancedSettingsCheckbox.click();
         return this;
@@ -204,7 +204,7 @@ public class TeleadminAdminsPortalSettingsPage extends BasePage {
     /**
      * Click on Message Settings checkbox
      */
-    public TeleadminAdminsPortalSettingsPage clickMessageSettingsCheckbox() {
+    public AdminsPortalSettingsPage clickMessageSettingsCheckbox() {
         log.info("Clicking Message Settings checkbox");
         messageSettingsCheckbox.click();
         return this;
@@ -223,7 +223,7 @@ public class TeleadminAdminsPortalSettingsPage extends BasePage {
     /**
      * Click on Archive Management checkbox
      */
-    public TeleadminAdminsPortalSettingsPage clickArchiveManagementCheckbox() {
+    public AdminsPortalSettingsPage clickArchiveManagementCheckbox() {
         log.info("Clicking Archive Management checkbox");
         archiveManagementCheckbox.click();
         return this;
@@ -242,7 +242,7 @@ public class TeleadminAdminsPortalSettingsPage extends BasePage {
     /**
      * Click on Display My Contacts checkbox
      */
-    public TeleadminAdminsPortalSettingsPage clickDisplayMyContactsCheckbox() {
+    public AdminsPortalSettingsPage clickDisplayMyContactsCheckbox() {
         log.info("Clicking Display My Contacts checkbox");
         displayMyContactsCheckbox.click();
         return this;
@@ -261,7 +261,7 @@ public class TeleadminAdminsPortalSettingsPage extends BasePage {
     /**
      * Click on Display Global Contacts checkbox
      */
-    public TeleadminAdminsPortalSettingsPage clickDisplayGlobalContactsCheckbox() {
+    public AdminsPortalSettingsPage clickDisplayGlobalContactsCheckbox() {
         log.info("Clicking Display Global Contacts checkbox");
         displayGlobalContactsCheckbox.click();
         return this;
@@ -280,7 +280,7 @@ public class TeleadminAdminsPortalSettingsPage extends BasePage {
     /**
      * Click on Display Message Query checkbox
      */
-    public TeleadminAdminsPortalSettingsPage clickDisplayMessageQueryCheckbox() {
+    public AdminsPortalSettingsPage clickDisplayMessageQueryCheckbox() {
         log.info("Clicking Display Message Query checkbox");
         displayMessageQueryCheckbox.click();
         return this;
@@ -299,7 +299,7 @@ public class TeleadminAdminsPortalSettingsPage extends BasePage {
     /**
      * Click on Save Admin Portal Settings button
      */
-    public TeleadminAdminsPortalSettingsPage clickSaveAdminPortalSettingsBtn() {
+    public AdminsPortalSettingsPage clickSaveAdminPortalSettingsBtn() {
         log.info("Clicking Save Admin Portal Settings button");
         saveAdminPortalSettingsBtn.click();
         page.waitForTimeout(2000);

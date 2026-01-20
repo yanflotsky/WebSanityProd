@@ -23,6 +23,7 @@ public class UserParams {
     private String username;
     private String password;
     private String platformAccountId;
+    private String userID;
 
     // Location & Language
     private TimeZone timeZone;

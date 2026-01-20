@@ -4,8 +4,10 @@ import com.microsoft.playwright.FrameLocator;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.websanity.BasePage;
+import lombok.extern.slf4j.Slf4j;
 
-public class TeleadminMenuPage extends BasePage {
+@Slf4j
+public class MenuPage extends BasePage {
 
     private final FrameLocator frameMenu;
     private final FrameLocator frameText;
@@ -20,7 +22,7 @@ public class TeleadminMenuPage extends BasePage {
     private final Locator signOutButton;
     private final Locator usersTable;
 
-    public TeleadminMenuPage(Page page) {
+    public MenuPage(Page page) {
         super(page);
         this.frameMenu = page.frameLocator("frame[name='menu']");
         this.frameText = page.frameLocator("frame[name='text']");
@@ -38,16 +40,18 @@ public class TeleadminMenuPage extends BasePage {
      * Click on Sign Up button to navigate to user registration page
      * @return TeleadminSignUpPage instance for method chaining
      */
-    public TeleadminSignUpPage clickSignUpButton() {
+    public SignUpPage clickSignUpButton() {
         signUpButton.click();
-        return new TeleadminSignUpPage(page);
+        return new SignUpPage(page);
     }
 
     /**
      * Click on Sign Up From File button
      */
-    public void clickSignUpFromFileButton() {
+    public LFFPage clickSignUpFromFileButton() {
+        log.info("Click Sign Up Users From File Button");
         signUpFromFileButton.click();
+        return new LFFPage(page);
     }
 
     /**
@@ -60,19 +64,21 @@ public class TeleadminMenuPage extends BasePage {
     /**
      * Click on Delete Users From File button
      */
-    public void clickDeleteUsersFromFileButton() {
+    public DFFPage clickDeleteUsersFromFileButton() {
+        log.info("Click Delete Users From File Button");
         deleteUsersFromFileButton.click();
+        return new DFFPage(page);
     }
 
     /**
      * Click on Find Users button
      */
-    public TeleadminFindUsersPage clickFindUsersButton() {
+    public FindUsersPage clickFindUsersButton() {
         findUsersButton.click();
         usersTable.waitFor(new Locator.WaitForOptions()
                 .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE));
         page.waitForTimeout(1000);
-        return new TeleadminFindUsersPage(page);
+        return new FindUsersPage(page);
     }
 
     /**

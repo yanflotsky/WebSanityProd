@@ -6,7 +6,7 @@ import com.websanity.utils.SecureConfig;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class TeleadminLogInPage extends BasePage {
+public class LogInPage extends BasePage {
 
     String username = System.getProperty("teleadmin.username");
     String password = SecureConfig.decrypt(System.getProperty("teleadmin.password"));
@@ -16,11 +16,11 @@ public class TeleadminLogInPage extends BasePage {
     private static final String passwordInput = "input[name='password'][type='password']";
     private static final String logInBtn = "a[onclick='clickLogin();'][class='loginbtn']";
 
-    public TeleadminLogInPage(Page page) {
+    public LogInPage(Page page) {
         super(page);
     }
 
-    public TeleadminLogInPage open() {
+    public LogInPage open() {
         navigate(System.getProperty("env.url"));
         page.waitForLoadState();
         page.waitForTimeout(2000);
@@ -37,7 +37,7 @@ public class TeleadminLogInPage extends BasePage {
         page.click(logInBtn);
     }
 
-    public TeleadminFindUsersPage logInToTeleadmin() {
+    public FindUsersPage logInToTeleadmin() {
         log.info("Logging in as user: {}", System.getProperty("teleadmin.username"));
         enterUsername(username);
         page.waitForTimeout(500);
@@ -53,7 +53,7 @@ public class TeleadminLogInPage extends BasePage {
         page.waitForTimeout(2000);  // Additional wait for frames to load
 
         log.info("Login navigation completed");
-        return new TeleadminFindUsersPage(page);
+        return new FindUsersPage(page);
     }
 }
 

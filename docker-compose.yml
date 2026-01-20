@@ -62,9 +62,46 @@ services:
           memory: 1g
           cpus: '1'
 
+  teleadmin-lff-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: teleadmin-lff-tests
+    environment:
+      - MAVEN_OPTS=-Xmx2048m
+      - USE_DOCKER_SECRETS=true
+      - LFF_DIRECTORY=/app/test-data/lff
+    command: >
+      mvn test 
+      -Dtest=TeleadminLFFSanityTest 
+      -DisLocalRun=false
+      -Denv.url=${ENV_URL:-https://secure.telemessage.com}
+      -Dteleadmin.username=${TELEADMIN_USERNAME:-yanteleadmin}
+    volumes:
+      - ./target/allure-results-teleadmin-lff:/app/target/allure-results
+      - ./target/screenshots:/app/target/screenshots
+      - lff-data:/app/test-data/lff
+      - ./target/screenshots:/app/target/screenshots
+    secrets:
+      - teleadmin_password
+    networks:
+      - test-network
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+          cpus: '2'
+        reservations:
+          memory: 1g
+          cpus: '1'
+
 networks:
   test-network:
     driver: bridge
+
+volumes:
+  lff-data:
+    driver: local
 
 secrets:
   teleadmin_password:

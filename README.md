@@ -79,7 +79,7 @@ mvn clean test -DisLocalRun=true
 ```
 
 ### 🐳 Docker Execution (`isLocalRun=false`)
-- **Parallel execution** - 2 test classes in separate containers
+- **Parallel execution** - 3 test classes in separate containers
 - **Headless browser** - no UI, optimized for CI/CD
 - **Isolated environments** - no test interference
 - **Separate reports** - merged into single Allure report
@@ -100,9 +100,14 @@ services:
     - Runs: TeleadminSanityTest
     - Results: target/allure-results-teleadmin/
     - Resources: 2 CPU, 2GB RAM
+    
+  teleadmin-lff-tests:    # Container 3
+    - Runs: TeleadminLFFSanityTest
+    - Results: target/allure-results-teleadmin-lff/
+    - Resources: 2 CPU, 2GB RAM
 ```
 
-**Both containers run simultaneously**, cutting execution time in half.
+**All containers run simultaneously**, significantly reducing execution time.
 
 ## 🎯 Centralized Test Configuration
 
@@ -112,6 +117,7 @@ Add new test classes in **one place** (`TestsRunner.java`):
 private static final String[] TEST_CLASSES = {
     "AdminPortalSanityTest:admin-portal-tests:allure-results-admin",
     "TeleadminSanityTest:teleadmin-tests:allure-results-teleadmin",
+    "TeleadminLFFSanityTest:teleadmin-lff-tests:allure-results-teleadmin-lff",
     // "NewTest:new-service:allure-results-new"  // Add here
 };
 ```

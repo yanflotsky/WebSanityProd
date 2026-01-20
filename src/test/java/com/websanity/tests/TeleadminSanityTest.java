@@ -14,17 +14,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Epic("TeleAdmin Sanity Tests")
 @Feature("Account Settings/Applicatoin Settings functionality")
 public class TeleadminSanityTest extends BaseTest {
 
-    private static TeleadminLogInPage teleadminLogInPage;
-    private static TeleadminMenuPage teleadminMenuPage;
-    private static TeleadminFindUsersPage findUsersPage;
-    private static TeleadminUpdateUserPage updateUserPage;
-    private static TeleadminSignUpPage signUpPage;
-    private static TeleadminCompanyArchiveManagementPage companyArchivePage;
-    private static TeleadminAdminsPortalSettingsPage adminsPortalPage;
+    private static LogInPage logInPage;
+    private static MenuPage menuPage;
+    private static FindUsersPage findUsersPage;
+    private static UpdateUserPage updateUserPage;
+    private static SignUpPage signUpPage;
+    private static CompanyArchiveManagementPage companyArchivePage;
+    private static AdminsPortalSettingsPage adminsPortalPage;
 
     private static UserParams user;
 
@@ -33,14 +34,14 @@ public class TeleadminSanityTest extends BaseTest {
         log.info("🔧 Setting up Teleadmin session - performing login once for all tests...");
 
         // Initialize page objects
-        teleadminLogInPage = new TeleadminLogInPage(page);
-        teleadminMenuPage = new TeleadminMenuPage(page);
-        findUsersPage = new TeleadminFindUsersPage(page);
-        updateUserPage = new TeleadminUpdateUserPage(page);
-        signUpPage = new TeleadminSignUpPage(page);
+        logInPage = new LogInPage(page);
+        menuPage = new MenuPage(page);
+        findUsersPage = new FindUsersPage(page);
+        updateUserPage = new UpdateUserPage(page);
+        signUpPage = new SignUpPage(page);
 
         // Login once for all tests
-        teleadminLogInPage
+        logInPage
                 .open()
                 .logInToTeleadmin()
                 .waitForFindUsersPageToLoad();
@@ -103,7 +104,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         log.info("Starting test: Register new Pro Manager");
 
-        teleadminMenuPage
+        menuPage
                 .clickSignUpButton()
                 .registerNewUser(user)
                 .waitForSuccessMessage();
@@ -130,9 +131,9 @@ public class TeleadminSanityTest extends BaseTest {
 
         String searchUsername = user.getUsername();
 
-        teleadminMenuPage
+        menuPage
                 .clickFindUsersButton()
-                .searchUser(searchUsername)
+                .searchUserByUsername(searchUsername)
                 .checkThatUserWasFoundAndClickOnHim(searchUsername, updateUserPage);
 
         log.info("✅ Test completed successfully");
@@ -165,9 +166,9 @@ public class TeleadminSanityTest extends BaseTest {
 
         String searchUsername = user.getUsername();
 
-        teleadminMenuPage
+        menuPage
                 .clickFindUsersButton()
-                .searchUser(searchUsername)
+                .searchUserByUsername(searchUsername)
                 .checkThatUserWasFoundAndClickOnHim(searchUsername, updateUserPage)
                 .fillFirstName(paramsToUpdate.getFirstName())
                 .fillLastName(paramsToUpdate.getLastName())
@@ -227,9 +228,9 @@ public class TeleadminSanityTest extends BaseTest {
 
         String username = user.getUsername();
 
-        teleadminMenuPage
+        menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .selectStatus(UserStatus.SUSPENDED)
                 .clickUpdateStatusButton()
@@ -281,9 +282,9 @@ public class TeleadminSanityTest extends BaseTest {
 
         // Add Enterprise Number
         log.info("Adding Enterprise Number: " + enterpriseNumber);
-        teleadminMenuPage
+        menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .selectEnCountry(Country.ALL_COUNTRIES)
                 .selectIncomingProvider(Provider.CELLCOM)
@@ -339,9 +340,9 @@ public class TeleadminSanityTest extends BaseTest {
         String username = user.getUsername();
         String domain = "autod" + String.format("%05d", System.currentTimeMillis() % 100000) + ".com";
 
-        teleadminMenuPage
+        menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickManageAllowedEmailDomainButton()
                 .fillDomain(domain)
@@ -378,9 +379,9 @@ public class TeleadminSanityTest extends BaseTest {
         SourceType sourceType = SourceType.WHATSAPP_ARCHIVER;
 
         //Create Source
-        companyArchivePage = teleadminMenuPage
+        companyArchivePage = menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickCompanyArchiveManagementButton()
                 .clickAddNewSourceButton()
@@ -497,9 +498,9 @@ public class TeleadminSanityTest extends BaseTest {
 
         String username = user.getUsername();
 
-        adminsPortalPage = teleadminMenuPage
+        adminsPortalPage = menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickCompanyAdminPortalSettingsButton();
 
@@ -572,9 +573,9 @@ public class TeleadminSanityTest extends BaseTest {
         SignatureTextInheritance signatureTextInheritance = SignatureTextInheritance.MANUAL;
         String signatureText = "Auto signature text";
 
-        TeleadminApplicationsSettingPage applicationsSettingPage = teleadminMenuPage
+        ApplicationsSettingPage applicationsSettingPage = menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickWhatsAppPhoneCaptureSettingsButton()
                 .clickSignatureButton()
@@ -621,9 +622,9 @@ public class TeleadminSanityTest extends BaseTest {
         SignatureTextInheritance signatureTextInheritance = SignatureTextInheritance.MANUAL;
         String signatureText = "Auto signature text";
 
-        TeleadminApplicationsSettingPage applicationsSettingPage = teleadminMenuPage
+        ApplicationsSettingPage applicationsSettingPage = menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickTelegramCaptureSettingsButton()
                 .clickSignatureButton()
@@ -670,9 +671,9 @@ public class TeleadminSanityTest extends BaseTest {
         SignatureTextInheritance signatureTextInheritance = SignatureTextInheritance.MANUAL;
         String signatureText = "Auto signature text";
 
-        TeleadminApplicationsSettingPage applicationsSettingPage = teleadminMenuPage
+        ApplicationsSettingPage applicationsSettingPage = menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickSignalCaptureSettingsButton()
                 .clickSignatureButton()
@@ -719,9 +720,9 @@ public class TeleadminSanityTest extends BaseTest {
         SignatureTextInheritance signatureTextInheritance = SignatureTextInheritance.MANUAL;
         String signatureText = "Auto signature text";
 
-        TeleadminApplicationsSettingPage applicationsSettingPage = teleadminMenuPage
+        ApplicationsSettingPage applicationsSettingPage = menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickEnterpriseNumberCaptureSettingsButton()
                 .clickSignatureButton()
@@ -765,9 +766,9 @@ public class TeleadminSanityTest extends BaseTest {
 
         String username = user.getUsername();
 
-        TeleadminApplicationsSettingPage applicationsSettingPage = teleadminMenuPage
+        ApplicationsSettingPage applicationsSettingPage = menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickAndroidCaptureSettingsButton();
 
@@ -811,9 +812,9 @@ public class TeleadminSanityTest extends BaseTest {
 
         String username = user.getUsername();
 
-        teleadminMenuPage
+        menuPage
                 .clickFindUsersButton()
-                .searchUser(username)
+                .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .selectStatus(UserStatus.DELETED)
                 .clickUpdateStatusButton()

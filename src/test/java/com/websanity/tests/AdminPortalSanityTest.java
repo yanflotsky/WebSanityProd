@@ -8,6 +8,7 @@ import com.websanity.enums.TimeZone;
 import com.websanity.enums.UserTypes;
 import com.websanity.models.ContactParams;
 import com.websanity.models.UserParams;
+import com.websanity.utils.TestUsers;
 import io.qameta.allure.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -23,20 +24,14 @@ import org.junit.jupiter.api.*;
 @Feature("Admin Portal Features")
 public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
-    private AdminPortalUserManagementPage userManagementPage;
-    private AdminPortalComposeMessagePage composeMessagePage;
-    private AdminPortalSentItemsPage sentItemsPage;
-    private AdminPortalMyContactsPage myContactsPage;
-    private AdminPortalArchiveManagementPage archiveManagement;
-    private AdminPortalMessengerAppSettingsPage messengerAppSettingsPage;
+    private UserManagementPage userManagementPage;
+    private ComposeMessagePage composeMessagePage;
+    private SentItemsPage sentItemsPage;
+    private MyContactsPage myContactsPage;
+    private ArchiveManagementPage archiveManagement;
+    private MessengerAppSettingsPage messengerAppSettingsPage;
 
     private static final String randnum = String.format("%07d", System.currentTimeMillis() % 10000000);
-
-    private final UserParams managerParams = UserParams.builder()
-            .firstName("websanityfn")
-            .lastName("websanityln")
-            .username("websanityun")
-            .build();
 
     private final UserParams userParams = UserParams.builder()
             .firstName("wsfn"+randnum)
@@ -236,7 +231,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
         log.info("Verify Message Details for the sent message");
         Assertions.assertNotNull(sentItemsPage.getMessageDetailsDate(), "Sent date in message details should not be null or empty");
-        Assertions.assertEquals(managerParams.getFirstName() + " " + managerParams.getLastName(), sentItemsPage.getMessageDetailsFrom(), "Sender in message details is not correct");
+        Assertions.assertEquals(TestUsers.getAdminPortalSanityManager().getFirstName() + " " + TestUsers.getAdminPortalSanityManager().getLastName(), sentItemsPage.getMessageDetailsFrom(), "Sender in message details is not correct");
         Assertions.assertTrue(sentItemsPage.getMessageDetailsTo().contains(to), "'To' is not correct in Message Details. Actual: " + sentItemsPage.getMessageDetailsTo());
         Assertions.assertEquals(subject, sentItemsPage.getMessageDetailsSubject(), "Subject in Message Details is not correct");
         Assertions.assertEquals(messageText, sentItemsPage.getMessageDetailsText(), "Message text in Message Details is not correct");
