@@ -93,6 +93,9 @@ public class TestsRunner {
         // Clean previous results before running tests
         cleanAllureResults();
 
+        // Clean LFF directory before generating new files
+        cleanLFFDirectory();
+
         if (!runLocally) {
             System.out.println("⚠ Docker mode detected!");
             System.out.println("Test classes will run in parallel Docker containers.");
@@ -336,6 +339,20 @@ public class TestsRunner {
             System.err.println("Warning: Could not parse exit code for " + containerName + ": " + output);
             return 1;
         }
+    }
+
+    /**
+     * Cleans LFF directory before generating new Excel files.
+     */
+    private static void cleanLFFDirectory() {
+        System.out.println("Cleaning LFF directory...");
+        try {
+            com.websanity.utils.ExcelFileGenerator.cleanupLFFDirectory();
+            System.out.println("✅ LFF directory cleaned");
+        } catch (Exception e) {
+            System.err.println("⚠ Warning: Could not clean LFF directory: " + e.getMessage());
+        }
+        System.out.println("───────────────────────────────────────────────────────────");
     }
 
     /**

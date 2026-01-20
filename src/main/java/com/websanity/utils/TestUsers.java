@@ -10,10 +10,10 @@ import lombok.Getter;
 public class TestUsers {
 
     /**
-     * LFF Manager - used for LFF (Load From File) tests
+     * LFF_TELEADMIN_MANAGER - used for LFF (Load From File) tests
      */
     @Getter
-    private static final UserParams LFF_MANAGER = UserParams.builder()
+    private static final UserParams LFF_TELEADMIN_MANAGER = UserParams.builder()
             .username("websanitymanlff")
             .userID("951813470")
             .build();
@@ -48,7 +48,7 @@ public class TestUsers {
      */
     @Getter
     private static final UserParams SANITY_MANAGER = UserParams.builder()
-            .username("websanityman")
+            .username("websanityun")
             .firstName("websanityfn")
             .lastName("websanityln")
             .password("QAautoweb12345678!!")
@@ -57,8 +57,14 @@ public class TestUsers {
     /**
      * Get LFF Manager user data
      */
-    public static UserParams getLffManager() {
-        return LFF_MANAGER;
+    public static UserParams getLffTeleadminManager() {
+        return LFF_TELEADMIN_MANAGER;
+    }
+    /**
+     * Get LFF Manager user data
+     */
+    public static UserParams getBulkUploadManager() {
+        return LFF_TELEADMIN_MANAGER;
     }
 
     /**

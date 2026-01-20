@@ -24,7 +24,7 @@
         <!-- To encrypt: Open src/main/java/com/websanity/utils/PasswordEncryptor.java and run main() -->
         <teleadmin.password>RApg4UKShrGdWIH4GQEUIg==</teleadmin.password>
         <!-- Control local vs Docker execution: true = local without Allure, false = Docker with Allure -->
-        <isLocalRun>true</isLocalRun>
+        <isLocalRun>false</isLocalRun>
     </properties>
 
     <dependencies>

@@ -812,8 +812,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         String username = user.getUsername();
 
-        menuPage
-                .clickFindUsersButton()
+        menuPage.clickFindUsersButton()
                 .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .selectStatus(UserStatus.DELETED)
