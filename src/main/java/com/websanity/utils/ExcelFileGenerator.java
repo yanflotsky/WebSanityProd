@@ -1,8 +1,6 @@
 package com.websanity.utils;
 
 import com.websanity.enums.Country;
-import com.websanity.enums.Language;
-import com.websanity.enums.TimeZone;
 import com.websanity.models.UserParams;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
@@ -26,6 +24,7 @@ public class ExcelFileGenerator {
 
     private static final String FILE_PREFIX_LFF = "websanlff";
     private static final String FILE_PREFIX_DFF = "websandff";
+    private static final String FILE_PREFIX_BA = "websanba";
     private static final String ENV_LFF_DIRECTORY = "LFF_DIRECTORY";
     private static final String LOCAL_LFF_DIRECTORY = "src/test/resources/lff";
 
@@ -102,15 +101,11 @@ public class ExcelFileGenerator {
             Workbook workbook = new HSSFWorkbook();
             Sheet sheet = workbook.createSheet("Users");
 
-            // Create header style
-            CellStyle headerStyle = createHeaderStyle(workbook);
-
             // Create header row
             Row headerRow = sheet.createRow(0);
             for (int i = 0; i < HEADERS.length; i++) {
                 Cell cell = headerRow.createCell(i);
                 cell.setCellValue(HEADERS[i]);
-                cell.setCellStyle(headerStyle);
             }
 
             // Create data rows
@@ -247,24 +242,6 @@ public class ExcelFileGenerator {
     }
 
     /**
-     * Create header style
-     */
-    private static CellStyle createHeaderStyle(Workbook workbook) {
-        CellStyle style = workbook.createCellStyle();
-        Font font = workbook.createFont();
-        font.setBold(true);
-        font.setFontHeightInPoints((short) 11);
-        style.setFont(font);
-        style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderTop(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-        return style;
-    }
-
-    /**
      * Get full path to generated file
      */
     public static String getFullPath(String filename) {
@@ -339,14 +316,10 @@ public class ExcelFileGenerator {
             Workbook workbook = new HSSFWorkbook();
             Sheet sheet = workbook.createSheet("Users");
 
-            // Create header style
-            CellStyle headerStyle = createHeaderStyle(workbook);
-
             // Create header row with only "Username" column
             Row headerRow = sheet.createRow(0);
             Cell headerCell = headerRow.createCell(0);
             headerCell.setCellValue("Username");
-            headerCell.setCellStyle(headerStyle);
 
             // Create data rows
             int rowNum = 1;
@@ -372,6 +345,104 @@ public class ExcelFileGenerator {
         } catch (IOException e) {
             log.error("Error generating Delete From File Excel file", e);
             throw new RuntimeException("Failed to generate DFF Excel file: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Generate Excel file for UFF (Update From File) with simplified headers
+     * Headers: First Name, Last Name, Login, Password, Mobile Phone, Email Address, Unique Customer Code, UDID
+     * @param users list of UserParams objects
+     * @return filename of the generated Excel file
+     */
+    public static String generateExcelFileForBulkUpload(List<UserParams> users) {
+        log.info("Generating UFF Excel file for {} users", users.size());
+
+        // Headers for Update From File
+        String[] uffHeaders = {
+            "First Name",
+            "Last Name",
+            "Login",
+            "Password",
+            "Mobile Phone",
+            "Email Address",
+            "Unique Customer Code",
+            "UDID"
+        };
+
+        // Generate filename with timestamp
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        String filename = FILE_PREFIX_BA + timestamp + ".xls";
+        String outputDir = getOutputDirectory();
+        String fullPath = outputDir + "/" + filename;
+
+        try {
+            // Create directory if it doesn't exist
+            Path dirPath = Paths.get(outputDir);
+            if (!Files.exists(dirPath)) {
+                Files.createDirectories(dirPath);
+                log.info("Created directory: {}", outputDir);
+            }
+
+            // Create workbook and sheet
+            Workbook workbook = new HSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Users");
+
+            // Create header row
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < uffHeaders.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(uffHeaders[i]);
+            }
+
+            // Create data rows
+            int rowNum = 1;
+            for (UserParams user : users) {
+                Row row = sheet.createRow(rowNum++);
+                int colNum = 0;
+
+                // First Name
+                createCell(row, colNum++, user.getFirstName());
+
+                // Last Name
+                createCell(row, colNum++, user.getLastName());
+
+                // Login
+                createCell(row, colNum++, user.getUsername());
+
+                // Password
+                createCell(row, colNum++, user.getPassword());
+
+                // Mobile Phone
+                createCell(row, colNum++, formatMobilePhone(user));
+
+                // Email Address
+                createCell(row, colNum++, user.getEmail());
+
+                // Unique Customer Code
+                createCell(row, colNum++, user.getUniqueCustomerCode() != null ? user.getUniqueCustomerCode() : "");
+
+                // UDID
+                createCell(row, colNum++, user.getUdid() != null ? user.getUdid() : "");
+            }
+
+            // Auto-size columns
+            for (int i = 0; i < uffHeaders.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // Write to file
+            try (FileOutputStream fileOut = new FileOutputStream(fullPath)) {
+                workbook.write(fileOut);
+            }
+
+            workbook.close();
+
+            log.info("Update From File Excel file generated successfully: {}", filename);
+            return filename;
+
+        } catch (IOException e) {
+            log.error("Error generating Update From File Excel file", e);
+            throw new RuntimeException("Failed to generate UFF Excel file: " + e.getMessage(), e);
         }
     }
 

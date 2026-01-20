@@ -8,10 +8,13 @@ import com.websanity.enums.TimeZone;
 import com.websanity.enums.UserTypes;
 import com.websanity.models.ContactParams;
 import com.websanity.models.UserParams;
+import com.websanity.utils.ExcelFileGenerator;
 import com.websanity.utils.TestUsers;
 import io.qameta.allure.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
+
+import java.util.List;
 
 /**
  * Admin Portal tests with single login session
@@ -30,14 +33,17 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
     private MyContactsPage myContactsPage;
     private ArchiveManagementPage archiveManagement;
     private MessengerAppSettingsPage messengerAppSettingsPage;
+    private static List<UserParams> usersForUpload;
+    private static String lffFileName;
+    private static String dffFileName;
 
     private static final String randnum = String.format("%07d", System.currentTimeMillis() % 10000000);
 
     private final UserParams userParams = UserParams.builder()
-            .firstName("wsfn"+randnum)
-            .lastName("wsln"+randnum)
-            .username("wsprous"+randnum)
-            .email("ws"+randnum+"@gmail.com")
+            .firstName("wsfn" + randnum)
+            .lastName("wsln" + randnum)
+            .username("wsprous" + randnum)
+            .email("ws" + randnum + "@gmail.com")
             .mobileCountryCode(Country.ISRAEL)
             .mobileArea("58")
             .mobilePhone(randnum)
@@ -45,6 +51,23 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
             .userType(UserTypes.PROUSER)
             .build();
 
+    @BeforeAll
+    public static void setupBeforeAll() {
+        log.info("Setting up Admin Portal Bulk Actions tests - performing login");
+
+        // Generate Excel files
+        usersForUpload = ExcelFileGenerator.createSampleUsers(5);
+        lffFileName = ExcelFileGenerator.generateExcelFileForBulkUpload(usersForUpload);
+        dffFileName = ExcelFileGenerator.generateExcelFileForDFF(usersForUpload);
+
+        LogInPage loginPage = new LogInPage(page);
+
+        // Perform automatic login with MFA
+        menuPage = loginPage.loginToAdminPortalWithAutoUser()
+                .closePopUpsAfterLogin();
+
+        log.info("Login completed successfully");
+    }
 
     @Test
     @Order(1)
@@ -60,7 +83,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
                 .selectServiceLevel(userParams.getUserType())
                 .fillFirstName(userParams.getFirstName())
                 .fillLastName(userParams.getLastName())
-                .fillMobilePhone(userParams.getMobileCountryCode(),userParams.getMobileArea() + userParams.getMobilePhone())
+                .fillMobilePhone(userParams.getMobileCountryCode(), userParams.getMobileArea() + userParams.getMobilePhone())
                 .fillEmail(userParams.getEmail())
                 .fillUsername(userParams.getUsername())
                 .fillPassword(userParams.getPassword())
@@ -68,8 +91,8 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
         log.info("Check Summary Pop Up");
         Assertions.assertTrue(userManagementPage.isAddUserSummaryPopUpVisible(), "Add user summary popup should be visible");
-        Assertions.assertEquals("User was added successfully\n",userManagementPage.getAddUserSummaryPopUpSuccessUsersText(), "Text of summary popup is not correct");
-        Assertions.assertEquals("Users need to be assigned to an archive plan in order to archivemessages. Please navigate to the Archive Management section to complete this required step.",userManagementPage.getAssignedArchivePlanMessageText(), "Archive Management info in the summary popup is not correct");
+        Assertions.assertEquals("User was added successfully\n", userManagementPage.getAddUserSummaryPopUpSuccessUsersText(), "Text of summary popup is not correct");
+        Assertions.assertEquals("Users need to be assigned to an archive plan in order to archivemessages. Please navigate to the Archive Management section to complete this required step.", userManagementPage.getAssignedArchivePlanMessageText(), "Archive Management info in the summary popup is not correct");
 
         userManagementPage.clickCloseErrorsSummaryBtn();
 
@@ -78,7 +101,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
                 .fillSearchInp(userParams.getUsername())
                 .clickSearchBtn();
 
-        Assertions.assertEquals("Activated",userManagementPage.getFirstUserStatus(),"Status of the user is not correct");
+        Assertions.assertEquals("Activated", userManagementPage.getFirstUserStatus(), "Status of the user is not correct");
         Assertions.assertEquals(userParams.getUserType().getDisplayName(), userManagementPage.getFirstUserServiceLevel(), "Service Level in table doesn't match");
         Assertions.assertEquals(userParams.getFirstName(), userManagementPage.getFirstUserFirstName(), "First Name in table doesn't match");
         Assertions.assertEquals(userParams.getLastName(), userManagementPage.getFirstUserLastName(), "Last Name in table doesn't match");
@@ -100,12 +123,12 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
         log.info("User Management - Update User Details");
         String randnum = String.format("%07d", System.currentTimeMillis() % 10000000);
         UserParams userParamsForUpd = UserParams.builder()
-                .firstName("wsupdfn"+randnum)
-                .lastName("wsupdln"+randnum)
+                .firstName("wsupdfn" + randnum)
+                .lastName("wsupdln" + randnum)
                 .language(Language.HEBREW)
                 .timeZone(TimeZone.EUROPE_LONDON)
                 .country(Country.UNITED_KINGDOM)
-                .email("wsudp"+randnum+"@gmail.com")
+                .email("wsudp" + randnum + "@gmail.com")
                 .build();
 
         userManagementPage = menuPage.clickUserManagement()
@@ -169,8 +192,8 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
         log.info("Verify Success Message and Status in the table");
         Assertions.assertTrue(userManagementPage.isSuccessMsgVisible(), "Success message was not appeared");
-        Assertions.assertEquals("User(s) suspended successfully",userManagementPage.getSuccessMsgText(), "Text of the success message is not correct");
-        Assertions.assertEquals("Suspended",userManagementPage.getFirstUserStatus(),"Status of the user is not correct");
+        Assertions.assertEquals("User(s) suspended successfully", userManagementPage.getSuccessMsgText(), "Text of the success message is not correct");
+        Assertions.assertEquals("Suspended", userManagementPage.getFirstUserStatus(), "Status of the user is not correct");
 
         log.info("Activate User");
         userManagementPage = menuPage.clickUserManagement()
@@ -181,8 +204,8 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
         log.info("Verify Success Message and Status in the table");
         Assertions.assertTrue(userManagementPage.isSuccessMsgVisible(), "Success message was not appeared");
-        Assertions.assertEquals("User(s) activated successfully",userManagementPage.getSuccessMsgText(), "Text of the success message is not correct");
-        Assertions.assertEquals("Activated",userManagementPage.getFirstUserStatus(),"Status of the user is not correct");
+        Assertions.assertEquals("User(s) activated successfully", userManagementPage.getSuccessMsgText(), "Text of the success message is not correct");
+        Assertions.assertEquals("Activated", userManagementPage.getFirstUserStatus(), "Status of the user is not correct");
 
         log.info("✅ Test completed successfully");
     }
@@ -212,7 +235,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
         log.info("Verify Success Message");
         Assertions.assertTrue(composeMessagePage.isSuccessMsgVisible(), "Success message was not appeared");
         Assertions.assertEquals("Your message has been sent.\n" +
-                "Click here to view message delivery progress.",composeMessagePage.getSuccessMsgText(), "Text of the success message is not correct");
+                "Click here to view message delivery progress.", composeMessagePage.getSuccessMsgText(), "Text of the success message is not correct");
 
         page.waitForTimeout(20000); // Wait for 20 seconds to ensure message appears in Sent Items
 
@@ -237,7 +260,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
         Assertions.assertEquals(messageText, sentItemsPage.getMessageDetailsText(), "Message text in Message Details is not correct");
 
         sentItemsPage.clickMessageStatusBtn()
-               .waitForRecipientTableToLoad();
+                .waitForRecipientTableToLoad();
 
         log.info("Verify Message Status Table for the sent message");
         Assertions.assertEquals(to, sentItemsPage.getRecipientNumberFromMessageStatusTable().replace("-", ""), "Recipient number from status table not correct");
@@ -274,7 +297,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
                 .mobileCountry(Country.ISRAEL)
                 .mobileTelephone("58" + contactRandNum)
                 .homeCountry(Country.UNITED_STATES)
-                .homeTelephone("607"+contactRandNum)
+                .homeTelephone("607" + contactRandNum)
                 .businessCountry(Country.BELARUS)
                 .businessTelephone("296299929")
                 .businessExt("321")
@@ -303,7 +326,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
         log.info("Verify success message after creating contact");
         Assertions.assertTrue(myContactsPage.isSuccessMsgVisible(), "Success message was not appeared after creating contact");
-        Assertions.assertEquals("Contact was created successfully.",myContactsPage.getSuccessMsgText(), "Text of the success message is not correct");
+        Assertions.assertEquals("Contact was created successfully.", myContactsPage.getSuccessMsgText(), "Text of the success message is not correct");
 
         log.info("Go back to My Contacts and search for created contact");
         myContactsPage = menuPage.clickMyContacts()
@@ -395,7 +418,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
         log.info("Verifying success message appears");
         Assertions.assertTrue(archiveManagement.isSuccessMessageVisible(), "Success message should be visible");
-        Assertions.assertEquals("Success!1 users were assigned to the WhatsApp Phone Capture to Generic SMTP Archiver archive plan!",archiveManagement.getSuccessMessageText(), "Success message should contain 'Success!'");
+        Assertions.assertEquals("Success!1 users were assigned to the WhatsApp Phone Capture to Generic SMTP Archiver archive plan!", archiveManagement.getSuccessMessageText(), "Success message should contain 'Success!'");
 
         log.info("Verifying 'Users Assigned To This Plan' counter'");
         Assertions.assertEquals("1", archiveManagement.getNumOfAssignedUsersCounter(), "Number of Assigned Users should be '1' after assignment");
@@ -403,7 +426,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
         archiveManagement.fillSearchInput(userParams.getUsername())
                 .clickSearchButton();
 
-        log.info("Verifying there is no "+userParams.getUsername()+" in Assign Action table anymore");
+        log.info("Verifying there is no " + userParams.getUsername() + " in Assign Action table anymore");
         Assertions.assertTrue(archiveManagement.isAssignActionUsersTableEmpty(), "Assign Action Users table should not contain assigned users");
 
         archiveManagement = menuPage.clickArchiveManagement()
@@ -427,12 +450,12 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
         log.info("Verifying success message appears");
         Assertions.assertTrue(archiveManagement.isSuccessMessageVisible(), "Success message should be visible");
-        Assertions.assertEquals("Success!1 users were unassigned to the WhatsApp Phone Capture to Generic SMTP Archiver archive plan!",archiveManagement.getSuccessMessageText(), "Success message should contain 'Success!'");
+        Assertions.assertEquals("Success!1 users were unassigned to the WhatsApp Phone Capture to Generic SMTP Archiver archive plan!", archiveManagement.getSuccessMessageText(), "Success message should contain 'Success!'");
 
         archiveManagement.fillSearchInput(userParams.getUsername())
                 .clickSearchButton();
 
-        log.info("Verifying there is no "+userParams.getUsername()+" in Assign Action table anymore");
+        log.info("Verifying there is no " + userParams.getUsername() + " in Assign Action table anymore");
         Assertions.assertTrue(archiveManagement.isUnassignActionUsersTableEmpty(), "Unassign Action Users table should not contain assigned users");
 
         log.info("Verifying 'Users Assigned To This Plan' counter'");
@@ -543,5 +566,61 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
     }
 
+
+    @Test
+    @Order(9)
+    @Story("User Management - Bulk Actions")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("User Management - Bulk Upload Users")
+    void bulkAdd() {
+
+        log.info("User Management - Bulk Upload Users");
+
+        userManagementPage = menuPage.clickUserManagement()
+                .clickBulkActionsBtn()
+                .clickAddUsersBtn()
+                .selectBulkActionsServiceLevel(UserTypes.PROUSER)
+                .uploadFile(ExcelFileGenerator.getFullPath(lffFileName))
+                .clickAddBtnInBulkUpload();
+
+        log.info("Verify Pop Up Summary");
+        Assertions.assertTrue(userManagementPage.isBulkUploadSummaryContains("5 users were imported and created successfully"), "Expected success message: '5 users were imported and created successfully'");
+
+        userManagementPage.clickCloseErrorsSummaryBtn();
+
+        log.info("Verify all uploaded users exist in the table");
+        Assertions.assertTrue(userManagementPage.areUsersExistInTable(usersForUpload.stream().map(UserParams::getUsername).toList()), "All uploaded users should exist in the table");
+
+        log.info("✅ Test completed successfully");
+
+    }
+
+    @Test
+    @Order(10)
+    @Story("User Management - Bulk Actions")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("User Management - Bulk Delete Users")
+    void bulkDelete() {
+
+        log.info("User Management - Bulk Delete Users");
+
+        log.info("Before starting the test, ensure that all checkboxes in Messenger App Settings are unchecked");
+        userManagementPage = menuPage.clickUserManagement()
+                .clickBulkActionsBtn()
+                .clickDeleteUsersBtn()
+                .uploadFile(ExcelFileGenerator.getFullPath(dffFileName))
+                .clickDeleteBtnInBulkUpload();
+
+        log.info("Verify Pop Up Summary");
+        Assertions.assertTrue(userManagementPage.isBulkUploadSummaryContains("Success! 5 users deleted successfully"), "Expected success message: '5 users were imported and created successfully'");
+
+        userManagementPage.clickCloseErrorsSummaryBtn();
+
+        log.info("Verify all uploaded users are not exist in the table anymore");
+        Assertions.assertTrue(userManagementPage.isOnlyOneManagerInTable(), "Table still have users");
+
+        log.info("✅ Test completed successfully");
+
+    }
 }
 
