@@ -13,7 +13,8 @@ import java.util.Date;
 @Slf4j
 public class LogInPage extends BasePage {
 
-    private static final String MANAGER_PORTAL_URL = "https://secure.telemessage.com/members";
+    // Admin Portal URL is loaded from Maven profile (env.url + /members)
+    private static final String MANAGER_PORTAL_URL = System.getProperty("admin.portal.url");
 
     private final Locator usernameInput;
     private final Locator passwordInput;
@@ -134,10 +135,7 @@ public class LogInPage extends BasePage {
     public MenuPage loginToAdminPortalWithAutoUser() {
 
         log.info("Starting login with MFA for user: {}", TestUsers.getAdminPortalSanityManager().getUsername());
-
-        // Navigate to Manager Portal
         page.navigate(MANAGER_PORTAL_URL);
-
         fillUsername(TestUsers.getAdminPortalSanityManager().getUsername());
         fillPassword(TestUsers.getAdminPortalSanityManager().getPassword());
         clickSignIn();
@@ -163,7 +161,7 @@ public class LogInPage extends BasePage {
         // We wait for the URL to change away from the Auth0 login pages
         try {
             page.waitForURL(url -> !url.contains("auth.telemessage.com"),
-                new Page.WaitForURLOptions().setTimeout(30000));
+                new Page.WaitForURLOptions().setTimeout(60000)); // Увеличен до 60 секунд
             log.info("Navigation completed, URL: {}", page.url());
         } catch (Exception e) {
             log.error("Navigation timeout or error after MFA. Current URL: {}", page.url());

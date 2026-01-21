@@ -18,13 +18,9 @@
         <junit.version>5.10.1</junit.version>
         <allure.version>2.25.0</allure.version>
         <aspectj.version>1.9.21</aspectj.version>
-        <env.url>https://secure.telemessage.com</env.url>
-        <teleadmin.username>yanteleadmin</teleadmin.username>
-        <!-- AES-256 encrypted password (machine-specific) - Run PasswordEncryptor to generate -->
-        <!-- To encrypt: Open src/main/java/com/websanity/utils/PasswordEncryptor.java and run main() -->
-        <teleadmin.password>RApg4UKShrGdWIH4GQEUIg==</teleadmin.password>
         <!-- Control local vs Docker execution: true = local without Allure, false = Docker with Allure -->
-        <isLocalRun>false</isLocalRun>
+        <isLocalRun>true</isLocalRun>
+        <!-- Environment-specific properties (env.url, credentials) are defined in Maven profiles below -->
     </properties>
 
     <dependencies>
@@ -167,9 +163,13 @@
                     </excludes>
                     <systemPropertyVariables>
                         <env.url>${env.url}</env.url>
+                        <teleadmin.url>${teleadmin.url}</teleadmin.url>
+                        <admin.portal.url>${admin.portal.url}</admin.portal.url>
                         <teleadmin.username>${teleadmin.username}</teleadmin.username>
                         <teleadmin.password>${teleadmin.password}</teleadmin.password>
                         <isLocalRun>${isLocalRun}</isLocalRun>
+                        <lff.manager.username>${lff.manager.username}</lff.manager.username>
+                        <lff.manager.userid>${lff.manager.userid}</lff.manager.userid>
                     </systemPropertyVariables>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
@@ -202,5 +202,87 @@
             </plugin>
         </plugins>
     </build>
+
+    <!-- ════════════════════════════════════════════════════════════════════════════ -->
+    <!-- Maven Profiles for different environments                                     -->
+    <!-- ════════════════════════════════════════════════════════════════════════════ -->
+    <!-- Usage:                                                                        -->
+    <!--   mvn test -P PROD      (Production - default)                               -->
+    <!--   mvn test -P DEV       (Development)                                        -->
+    <!--   mvn test -P TEST      (Test environment)                                   -->
+    <!--   mvn test -P UAT       (User Acceptance Testing)                            -->
+    <!-- ════════════════════════════════════════════════════════════════════════════ -->
+    <profiles>
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <!-- PROD Profile (Default)                                                  -->
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <profile>
+            <id>PROD</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env.url>https://secure.telemessage.com</env.url>
+                <teleadmin.url>https://secure.telemessage.com/memberLogin.html</teleadmin.url>
+                <admin.portal.url>https://secure.telemessage.com/members</admin.portal.url>
+                <teleadmin.username>yanteleadmin</teleadmin.username>
+                <teleadmin.password>RApg4UKShrGdWIH4GQEUIg==</teleadmin.password>
+                <!-- Test Users for PROD environment -->
+                <lff.manager.username>websanitymanlff</lff.manager.username>
+                <lff.manager.userid>951813470</lff.manager.userid>
+            </properties>
+        </profile>
+
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <!-- DEV Profile (Development)                                               -->
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <profile>
+            <id>DEV</id>
+            <properties>
+                <env.url>https://rnd.telemessage.co.il</env.url>
+                <teleadmin.url>https://rnd.telemessage.co.il/memberLogin.html</teleadmin.url>
+                <admin.portal.url>https://rnd.telemessage.co.il/members</admin.portal.url>
+                <teleadmin.username>teleadmin</teleadmin.username>
+                <teleadmin.password>Oda6Do5X9FDdIsVTLtbRZg==</teleadmin.password>
+                <!-- Test Users for DEV environment -->
+                <lff.manager.username>websanitymanlff</lff.manager.username>
+                <lff.manager.userid>65579366850</lff.manager.userid>
+            </properties>
+        </profile>
+
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <!-- TEST Profile (Test Environment)                                         -->
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <profile>
+            <id>TEST</id>
+            <properties>
+                <env.url>https://qa.telemessage.com</env.url>
+                <teleadmin.url>https://qa.telemessage.com/memberLogin.html</teleadmin.url>
+                <admin.portal.url>https://qa.telemessage.com/members</admin.portal.url>
+                <teleadmin.username>teleadmin</teleadmin.username>
+                <teleadmin.password>Pnr+zJWkh0eGDboBUVKjyg==</teleadmin.password>
+                <!-- Test Users for TEST environment -->
+                <lff.manager.username>websanitymanlff</lff.manager.username>
+                <lff.manager.userid>165360797</lff.manager.userid>
+            </properties>
+        </profile>
+
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <!-- UAT Profile (User Acceptance Testing)                                   -->
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <profile>
+            <id>UAT</id>
+            <properties>
+                <env.url>https://integration.telemessage.co.il</env.url>
+                <teleadmin.url>https://integration.telemessage.co.il/memberLogin.html</teleadmin.url>
+                <admin.portal.url>https://integration.telemessage.co.il/members</admin.portal.url>
+                <teleadmin.username>teleadmin</teleadmin.username>
+                <teleadmin.password>7f+9lqzsxZHiI18s22ZJsg==</teleadmin.password>
+                <!-- Test Users for UAT environment -->
+                <lff.manager.username>websanitymanlff</lff.manager.username>
+                <lff.manager.userid>3872218</lff.manager.userid>
+            </properties>
+        </profile>
+    </profiles>
 </project>
 

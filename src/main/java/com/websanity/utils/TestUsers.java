@@ -11,36 +11,19 @@ public class TestUsers {
 
     /**
      * LFF_TELEADMIN_MANAGER - used for LFF (Load From File) tests
+     * Values are loaded from Maven profiles via System properties
      */
-    @Getter
-    private static final UserParams LFF_TELEADMIN_MANAGER = UserParams.builder()
-            .username("websanitymanlff")
-            .userID("951813470")
-            .build();
-
+    public static UserParams getLffTeleadminManager() {
+        return UserParams.builder()
+                .username(System.getProperty("lff.manager.username"))
+                .userID(System.getProperty("lff.manager.userid"))
+                .build();
+    }
     /**
-     * LFF Test Users - users that are imported via LFF for testing
+     * Get Bulk Upload Manager user data (same as LFF Manager)
      */
-    public static class LFFUsers {
-        public static final String USER_1 = "websanlffus1";
-        public static final String USER_2 = "websanlffus2";
-        public static final String USER_3 = "websanlffus3";
-        public static final String USER_4 = "websanlffus4";
-        public static final String USER_5 = "websanlffus5";
-
-        /**
-         * Get all LFF test usernames as array
-         */
-        public static String[] getAllUsernames() {
-            return new String[]{USER_1, USER_2, USER_3, USER_4, USER_5};
-        }
-
-        /**
-         * Get all LFF test usernames as list
-         */
-        public static java.util.List<String> usernamesForLFFList() {
-            return java.util.Arrays.asList(getAllUsernames());
-        }
+    public static UserParams getBulkUploadManager() {
+        return getLffTeleadminManager();
     }
 
     /**
@@ -54,18 +37,6 @@ public class TestUsers {
             .password("QAautoweb12345678!!")
             .build();
 
-    /**
-     * Get LFF Manager user data
-     */
-    public static UserParams getLffTeleadminManager() {
-        return LFF_TELEADMIN_MANAGER;
-    }
-    /**
-     * Get LFF Manager user data
-     */
-    public static UserParams getBulkUploadManager() {
-        return LFF_TELEADMIN_MANAGER;
-    }
 
     /**
      * Get Sanity Manager user data

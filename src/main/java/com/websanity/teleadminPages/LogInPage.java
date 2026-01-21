@@ -21,7 +21,7 @@ public class LogInPage extends BasePage {
     }
 
     public LogInPage open() {
-        navigate(System.getProperty("env.url"));
+        navigate(System.getProperty("teleadmin.url"));
         page.waitForLoadState();
         page.waitForTimeout(2000);
         page.locator(logInBtn).waitFor(); // Wait for page to fully load

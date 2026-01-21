@@ -14,6 +14,7 @@ services:
       -Dtest=AdminPortalSanityTest 
       -DisLocalRun=false
       -Denv.url=${ENV_URL:-https://secure.telemessage.com}
+      -Dteleadmin.url=${TELEADMIN_URL:-https://secure.telemessage.com/memberLogin.html}
       -Dteleadmin.username=${TELEADMIN_USERNAME:-yanteleadmin}
     volumes:
       - ./target/allure-results-admin:/app/target/allure-results
@@ -45,6 +46,7 @@ services:
       -Dtest=TeleadminSanityTest 
       -DisLocalRun=false
       -Denv.url=${ENV_URL:-https://secure.telemessage.com}
+      -Dteleadmin.url=${TELEADMIN_URL:-https://secure.telemessage.com/memberLogin.html}
       -Dteleadmin.username=${TELEADMIN_USERNAME:-yanteleadmin}
     volumes:
       - ./target/allure-results-teleadmin:/app/target/allure-results
@@ -76,6 +78,7 @@ services:
       -Dtest=TeleadminLFFSanityTest 
       -DisLocalRun=false
       -Denv.url=${ENV_URL:-https://secure.telemessage.com}
+      -Dteleadmin.url=${TELEADMIN_URL:-https://secure.telemessage.com/memberLogin.html}
       -Dteleadmin.username=${TELEADMIN_USERNAME:-yanteleadmin}
     volumes:
       - ./target/allure-results-teleadmin-lff:/app/target/allure-results
