@@ -8,7 +8,7 @@ public class PasswordEncryptor {
 
     public static void main(String[] args) {
         // Your plain text password
-        String plainPassword = "123123123123";
+        String plainPassword = "mmm";
 
         // Encrypt it
         String encryptedPassword = SecureConfig.encrypt(plainPassword);

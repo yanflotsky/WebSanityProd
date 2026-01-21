@@ -147,9 +147,16 @@ Configure in `docker-compose.yml` or create a `.env` file:
 
 ```env
 ENV_URL=https://secure.telemessage.com
+TELEADMIN_URL=https://secure.telemessage.com/memberLogin.html
 TELEADMIN_USERNAME=yanteleadmin
 TELEADMIN_PASSWORD=RApg4UKShrGdWIH4GQEUIg==
 ```
+
+**Variable Descriptions:**
+- `ENV_URL` - Base URL of the environment (used for API calls and general navigation)
+- `TELEADMIN_URL` - Specific URL for Teleadmin login page (e.g., `/memberLogin.html`)
+- `TELEADMIN_USERNAME` - Username for Teleadmin authentication
+- `TELEADMIN_PASSWORD` - Encrypted password for Teleadmin authentication
 
 ## Allure Reports
 
