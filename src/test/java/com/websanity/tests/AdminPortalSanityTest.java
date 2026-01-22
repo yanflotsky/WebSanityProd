@@ -87,7 +87,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
                 .fillEmail(userParams.getEmail())
                 .fillUsername(userParams.getUsername())
                 .fillPassword(userParams.getPassword())
-                .clickSaveBtn();
+                .clickSaveBtnAndWaitSummaryPopUp();
 
         log.info("Check Summary Pop Up");
         Assertions.assertTrue(userManagementPage.isAddUserSummaryPopUpVisible(), "Add user summary popup should be visible");
@@ -113,69 +113,9 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
     }
 
+
     @Test
     @Order(2)
-    @Story("User Management")
-    @Severity(SeverityLevel.CRITICAL)
-    @Description("User Management - Update User Details")
-    void updateUserDetails() {
-
-        log.info("User Management - Update User Details");
-        String randnum = String.format("%07d", System.currentTimeMillis() % 10000000);
-        UserParams userParamsForUpd = UserParams.builder()
-                .firstName("wsupdfn" + randnum)
-                .lastName("wsupdln" + randnum)
-                .language(Language.SPANISH_SPAIN)
-                .timeZone(TimeZone.EUROPE_LONDON)
-                .country(Country.UNITED_KINGDOM)
-                .email("wsudp" + randnum + "@gmail.com")
-                .build();
-
-        userManagementPage = menuPage.clickUserManagement()
-                .fillSearchInp(userParams.getUsername())
-                .clickSearchBtn()
-                .clickFirstUserUsername()
-                .fillFirstName(userParamsForUpd.getFirstName())
-                .fillLastName(userParamsForUpd.getLastName())
-                .selectLanguage(userParamsForUpd.getLanguage())
-                .selectCountry(userParamsForUpd.getCountry())
-                .selectTimeZone(userParamsForUpd.getTimeZone())
-                .fillEmail(userParamsForUpd.getEmail())
-                .clickSaveBtn();
-
-        log.info("Search for edited user and verify data in table");
-        userManagementPage = menuPage.clickUserManagement()
-                .fillSearchInp(userParams.getUsername())
-                .clickSearchBtn();
-
-        Assertions.assertEquals(userParamsForUpd.getFirstName(), userManagementPage.getFirstUserFirstName(), "First Name in table doesn't match");
-        Assertions.assertEquals(userParamsForUpd.getLastName(), userManagementPage.getFirstUserLastName(), "Last Name in table doesn't match");
-        Assertions.assertEquals(userParamsForUpd.getEmail(), userManagementPage.getFirstUserEmail(), "Email in table doesn't match");
-
-        userManagementPage = menuPage.clickUserManagement()
-                .fillSearchInp(userParams.getUsername())
-                .clickSearchBtn()
-                .clickFirstUserUsername();
-
-        Assertions.assertEquals(userParamsForUpd.getLanguage(), userManagementPage.getSelectedLanguage(), "Language selected is not correct");
-        Assertions.assertEquals(userParamsForUpd.getCountry(), userManagementPage.getSelectedCountry(), "Country selected is not correct");
-        Assertions.assertEquals(userParamsForUpd.getTimeZone(), userManagementPage.getSelectedTimeZone(), "TimeZone selected is not correct");
-
-        // Update userParams with new values for next tests
-        userParams.setFirstName(userParamsForUpd.getFirstName());
-        userParams.setLastName(userParamsForUpd.getLastName());
-        userParams.setEmail(userParamsForUpd.getEmail());
-        userParams.setLanguage(userParamsForUpd.getLanguage());
-        userParams.setCountry(userParamsForUpd.getCountry());
-        userParams.setTimeZone(userParamsForUpd.getTimeZone());
-
-        log.info("✅ Test completed successfully");
-
-    }
-
-
-    @Test
-    @Order(3)
     @Story("User Management")
     @Severity(SeverityLevel.CRITICAL)
     @Description("User Management - Change User Status")
@@ -212,7 +152,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
 
     @Test
-    @Order(4)
+    @Order(3)
     @Story("Compose Message and Sent Items")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Compose Message/Sent Items - Send Message")
@@ -280,7 +220,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
 
     @Test
-    @Order(5)
+    @Order(4)
     @Story("My Contacts")
     @Severity(SeverityLevel.NORMAL)
     @Description("My Contacts - Add Local Contact")
@@ -376,7 +316,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
     }
 
     @Test
-    @Order(6)
+    @Order(5)
     @Story("Archive Management")
     @Severity(SeverityLevel.NORMAL)
     @Description("Archive Management - Assign/Unassign user to Archive Plan")
@@ -466,7 +406,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
     }
 
     @Test
-    @Order(7)
+    @Order(6)
     @Story("Settings")
     @Severity(SeverityLevel.NORMAL)
     @Description("Messenger App Settings - Security Options")
@@ -543,7 +483,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
     }
 
     @Test
-    @Order(8)
+    @Order(7)
     @Story("User Management")
     @Severity(SeverityLevel.CRITICAL)
     @Description("User Management - Delete User")
@@ -566,6 +506,65 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
     }
 
+    @Test
+    @Order(8)
+    @Story("User Management")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("User Management - Update User Details")
+    void updateUserDetails() {
+
+        log.info("User Management - Update User Details");
+        String randnum = String.format("%07d", System.currentTimeMillis() % 10000000);
+        UserParams userParamsForUpd = UserParams.builder()
+                .firstName("wsupdfn" + randnum)
+                .lastName("wsupdln" + randnum)
+                .language(Language.SPANISH_SPAIN)
+                .timeZone(TimeZone.EUROPE_LONDON)
+                .country(Country.UNITED_KINGDOM)
+                .email("wsudp" + randnum + "@gmail.com")
+                .build();
+
+        userManagementPage = menuPage.clickUserManagement()
+                .fillSearchInp(userParams.getUsername())
+                .clickSearchBtn()
+                .clickFirstUserUsername()
+                .fillFirstName(userParamsForUpd.getFirstName())
+                .fillLastName(userParamsForUpd.getLastName())
+                .selectLanguage(userParamsForUpd.getLanguage())
+                .selectCountry(userParamsForUpd.getCountry())
+                .selectTimeZone(userParamsForUpd.getTimeZone())
+                .fillEmail(userParamsForUpd.getEmail())
+                .clickSaveBtn();
+
+        log.info("Search for edited user and verify data in table");
+        userManagementPage = menuPage.clickUserManagement()
+                .fillSearchInp(userParams.getUsername())
+                .clickSearchBtn();
+
+        Assertions.assertEquals(userParamsForUpd.getFirstName(), userManagementPage.getFirstUserFirstName(), "First Name in table doesn't match");
+        Assertions.assertEquals(userParamsForUpd.getLastName(), userManagementPage.getFirstUserLastName(), "Last Name in table doesn't match");
+        Assertions.assertEquals(userParamsForUpd.getEmail(), userManagementPage.getFirstUserEmail(), "Email in table doesn't match");
+
+        userManagementPage = menuPage.clickUserManagement()
+                .fillSearchInp(userParams.getUsername())
+                .clickSearchBtn()
+                .clickFirstUserUsername();
+
+        Assertions.assertEquals(userParamsForUpd.getLanguage(), userManagementPage.getSelectedLanguage(), "Language selected is not correct");
+        Assertions.assertEquals(userParamsForUpd.getCountry(), userManagementPage.getSelectedCountry(), "Country selected is not correct");
+        Assertions.assertEquals(userParamsForUpd.getTimeZone(), userManagementPage.getSelectedTimeZone(), "TimeZone selected is not correct");
+
+        // Update userParams with new values for next tests
+        userParams.setFirstName(userParamsForUpd.getFirstName());
+        userParams.setLastName(userParamsForUpd.getLastName());
+        userParams.setEmail(userParamsForUpd.getEmail());
+        userParams.setLanguage(userParamsForUpd.getLanguage());
+        userParams.setCountry(userParamsForUpd.getCountry());
+        userParams.setTimeZone(userParamsForUpd.getTimeZone());
+
+        log.info("✅ Test completed successfully");
+
+    }
 
     @Test
     @Order(9)
