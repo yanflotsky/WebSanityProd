@@ -135,7 +135,7 @@ public class LogInPage extends BasePage {
     public MenuPage loginToAdminPortalWithAutoUser() {
 
         log.info("Starting login with MFA for user: {}", TestUsers.getAdminPortalSanityManager().getUsername());
-        page.navigate(MANAGER_PORTAL_URL);
+        navigate(MANAGER_PORTAL_URL);
         fillUsername(TestUsers.getAdminPortalSanityManager().getUsername());
         fillPassword(TestUsers.getAdminPortalSanityManager().getPassword());
         clickSignIn();

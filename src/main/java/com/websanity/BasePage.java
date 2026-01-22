@@ -20,7 +20,10 @@ public abstract class BasePage {
     }
 
     public void navigate(String url) {
-        page.navigate(url);
+        // Use DOMCONTENTLOADED wait state - works better with redirects and automation masking
+        page.navigate(url, new Page.NavigateOptions()
+                .setWaitUntil(com.microsoft.playwright.options.WaitUntilState.DOMCONTENTLOADED)
+                .setTimeout(60000));
     }
 
     public String getTitle() {

@@ -125,7 +125,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
         UserParams userParamsForUpd = UserParams.builder()
                 .firstName("wsupdfn" + randnum)
                 .lastName("wsupdln" + randnum)
-                .language(Language.HEBREW)
+                .language(Language.SPANISH_SPAIN)
                 .timeZone(TimeZone.EUROPE_LONDON)
                 .country(Country.UNITED_KINGDOM)
                 .email("wsudp" + randnum + "@gmail.com")

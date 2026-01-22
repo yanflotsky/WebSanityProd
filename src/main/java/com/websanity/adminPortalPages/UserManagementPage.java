@@ -318,7 +318,10 @@ public class UserManagementPage extends BasePage {
     public UserManagementPage clickSaveBtn() {
         log.info("Clicking Save button");
         saveBtn.click();
-        page.waitForTimeout(1000);
+        log.info("Waiting for Add User Summary popup to appear");
+        addUserSummaryPopUp.waitFor(new Locator.WaitForOptions()
+                .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE)
+                .setTimeout(30000));
         return this;
     }
 
