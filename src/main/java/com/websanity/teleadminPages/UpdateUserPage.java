@@ -59,6 +59,9 @@ public class UpdateUserPage extends BasePage {
     private final Locator voiceMailNoRadio;
     private final Locator updateFlavorsButton;
     private final Locator incomingCallsToMobileCheckbox;
+    private final Locator updateOneTimePinSendButton;
+    private final Locator oneTimePinMobileCheckbox;
+    private final Locator oneTimePinEmailCheckbox;
 
     public UpdateUserPage(Page page) {
         super(page);
@@ -110,6 +113,9 @@ public class UpdateUserPage extends BasePage {
         this.voiceMailNoRadio = textFrame.locator("#voice_mail_off");
         this.updateFlavorsButton = textFrame.locator("a#updateRestrictionsData[onclick*='updateAppTextAndVoice']");
         this.incomingCallsToMobileCheckbox = textFrame.locator("#forward_to_pstn");
+        this.updateOneTimePinSendButton = textFrame.locator("a#updateOptData[onclick*='updateOneTimePinSend']");
+        this.oneTimePinMobileCheckbox = textFrame.locator("#oneTimePinMobileCheckbox");
+        this.oneTimePinEmailCheckbox = textFrame.locator("#oneTimePinEmailCheckbox");
     }
 
     /**
@@ -1051,6 +1057,101 @@ public class UpdateUserPage extends BasePage {
      */
     public boolean isIncomingCallsToMobileChecked() {
         return incomingCallsToMobileCheckbox.isChecked();
+    }
+
+    /**
+     * Click on Update One Time Pin Send button
+     */
+    public UpdateUserPage clickUpdateOneTimePinSendButton() {
+        log.info("Clicking Update One Time Pin Send button");
+        updateOneTimePinSendButton.click();
+        return this;
+    }
+
+    /**
+     * Click on One Time Pin Mobile checkbox to toggle it
+     */
+    public UpdateUserPage clickOneTimePinMobileCheckbox() {
+        log.info("Clicking One Time Pin Mobile checkbox");
+        oneTimePinMobileCheckbox.click();
+        return this;
+    }
+
+    /**
+     * Check the One Time Pin Mobile checkbox (ensures it's checked)
+     */
+    public UpdateUserPage checkOneTimePinMobileCheckbox() {
+        log.info("Checking One Time Pin Mobile checkbox");
+        oneTimePinMobileCheckbox.check();
+        return this;
+    }
+
+    /**
+     * Uncheck the One Time Pin Mobile checkbox (ensures it's unchecked)
+     */
+    public UpdateUserPage uncheckOneTimePinMobileCheckbox() {
+        log.info("Unchecking One Time Pin Mobile checkbox");
+        oneTimePinMobileCheckbox.uncheck();
+        return this;
+    }
+
+    /**
+     * Check if One Time Pin Mobile checkbox is checked
+     * @return true if checkbox is checked
+     */
+    public boolean isOneTimePinMobileChecked() {
+        return oneTimePinMobileCheckbox.isChecked();
+    }
+
+    /**
+     * Check if One Time Pin Mobile checkbox is enabled
+     * @return true if checkbox is enabled
+     */
+    public boolean isOneTimePinMobileEnabled() {
+        return oneTimePinMobileCheckbox.isEnabled();
+    }
+
+    /**
+     * Click on One Time Pin Email checkbox to toggle it
+     */
+    public UpdateUserPage clickOneTimePinEmailCheckbox() {
+        log.info("Clicking One Time Pin Email checkbox");
+        oneTimePinEmailCheckbox.click();
+        return this;
+    }
+
+    /**
+     * Check the One Time Pin Email checkbox (ensures it's checked)
+     */
+    public UpdateUserPage checkOneTimePinEmailCheckbox() {
+        log.info("Checking One Time Pin Email checkbox");
+        oneTimePinEmailCheckbox.check();
+        return this;
+    }
+
+    /**
+     * Uncheck the One Time Pin Email checkbox (ensures it's unchecked)
+     */
+    public UpdateUserPage uncheckOneTimePinEmailCheckbox() {
+        log.info("Unchecking One Time Pin Email checkbox");
+        oneTimePinEmailCheckbox.uncheck();
+        return this;
+    }
+
+    /**
+     * Check if One Time Pin Email checkbox is checked
+     * @return true if checkbox is checked
+     */
+    public boolean isOneTimePinEmailChecked() {
+        return oneTimePinEmailCheckbox.isChecked();
+    }
+
+    /**
+     * Check if One Time Pin Email checkbox is enabled
+     * @return true if checkbox is enabled
+     */
+    public boolean isOneTimePinEmailEnabled() {
+        return oneTimePinEmailCheckbox.isEnabled();
     }
 
 }
