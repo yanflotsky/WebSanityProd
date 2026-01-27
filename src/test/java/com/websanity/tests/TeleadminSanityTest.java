@@ -4,6 +4,7 @@ import com.websanity.BaseTest;
 import com.websanity.enums.*;
 import com.websanity.models.UserParams;
 import com.websanity.teleadminPages.*;
+import com.websanity.utils.APIs;
 import io.qameta.allure.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -296,6 +297,11 @@ public class TeleadminSanityTest extends BaseTest {
         Assertions.assertFalse(updateUserPage.isIncomingCallsToMobileEnabled(), "'Incoming Calls To Mobile' should not be enabled");
         Assertions.assertFalse(updateUserPage.isIncomingCallsToMobileChecked(), "'Incoming Calls To Mobile' should not be checked");
 
+        //Check GetAppSettings
+        Assertions.assertEquals("true",APIs.getValueFromMobileCaptureGetAppSettingsByName("APP_TEXT_SUPPORT",user.getUsername(), user.getPassword(), "","524288"), "GetAppSettings 'APP_TEXT_SUPPORT' not correct");
+        Assertions.assertEquals("false",APIs.getValueFromMobileCaptureGetAppSettingsByName("VOICE_CALL_SUPPORT",user.getUsername(), user.getPassword(), "","524288"), "GetAppSettings 'VOICE_CALL_SUPPORT' not correct");
+        Assertions.assertEquals("false",APIs.getValueFromMobileCaptureGetAppSettingsByName("VOICE_MAIL",user.getUsername(), user.getPassword(), "","524288"), "GetAppSettings 'VOICE_MAIL' not correct");
+
         log.info("Select 'App Text Support' No");
 
         updateUserPage.clickAppTextSupportRadio(YesNo.NO)
@@ -322,6 +328,11 @@ public class TeleadminSanityTest extends BaseTest {
         Assertions.assertFalse(updateUserPage.isIncomingCallsToMobileEnabled(), "'Incoming Calls To Mobile' should not be enabled");
         Assertions.assertFalse(updateUserPage.isIncomingCallsToMobileChecked(), "'Incoming Calls To Mobile' should not be checked");
 
+        //Check GetAppSettings
+        Assertions.assertEquals("false",APIs.getValueFromMobileCaptureGetAppSettingsByName("APP_TEXT_SUPPORT",user.getUsername(), user.getPassword(), "","524288"), "GetAppSettings 'APP_TEXT_SUPPORT' not correct");
+        Assertions.assertEquals("false",APIs.getValueFromMobileCaptureGetAppSettingsByName("VOICE_CALL_SUPPORT",user.getUsername(), user.getPassword(), "","524288"), "GetAppSettings 'VOICE_CALL_SUPPORT' not correct");
+        Assertions.assertEquals("false",APIs.getValueFromMobileCaptureGetAppSettingsByName("VOICE_MAIL",user.getUsername(), user.getPassword(), "","524288"), "GetAppSettings 'VOICE_MAIL' not correct");
+
         log.info("Select 'Voice Call Support' Yes");
 
         updateUserPage.clickVoiceCallSupportRadio(YesNo.YES)
@@ -347,6 +358,11 @@ public class TeleadminSanityTest extends BaseTest {
         //Incoming Calls To Mobile: Not Enabled and Not Checked
         Assertions.assertFalse(updateUserPage.isIncomingCallsToMobileEnabled(), "'Incoming Calls To Mobile' should not be enabled");
         Assertions.assertFalse(updateUserPage.isIncomingCallsToMobileChecked(), "'Incoming Calls To Mobile' should not be checked");
+
+        //Check GetAppSettings
+        Assertions.assertEquals("false",APIs.getValueFromMobileCaptureGetAppSettingsByName("APP_TEXT_SUPPORT",user.getUsername(), user.getPassword(), "","524288"), "GetAppSettings 'APP_TEXT_SUPPORT' not correct");
+        Assertions.assertEquals("true",APIs.getValueFromMobileCaptureGetAppSettingsByName("VOICE_CALL_SUPPORT",user.getUsername(), user.getPassword(), "","524288"), "GetAppSettings 'VOICE_CALL_SUPPORT' not correct");
+        Assertions.assertEquals("true",APIs.getValueFromMobileCaptureGetAppSettingsByName("VOICE_MAIL",user.getUsername(), user.getPassword(), "","524288"), "GetAppSettings 'VOICE_MAIL' not correct");
 
         log.info("Select 'App Text Support' Yes and Incoming calls To Mobile - Yes");
 
@@ -375,6 +391,11 @@ public class TeleadminSanityTest extends BaseTest {
         Assertions.assertTrue(updateUserPage.isIncomingCallsToMobileEnabled(), "'Incoming Calls To Mobile' should be enabled");
         Assertions.assertTrue(updateUserPage.isIncomingCallsToMobileChecked(), "'Incoming Calls To Mobile' should be checked");
 
+        //Check GetAppSettings
+        Assertions.assertEquals("true",APIs.getValueFromMobileCaptureGetAppSettingsByName("APP_TEXT_SUPPORT",user.getUsername(), user.getPassword(), "","524288"), "GetAppSettings 'APP_TEXT_SUPPORT' not correct");
+        Assertions.assertEquals("true",APIs.getValueFromMobileCaptureGetAppSettingsByName("VOICE_CALL_SUPPORT",user.getUsername(), user.getPassword(), "","524288"), "GetAppSettings 'VOICE_CALL_SUPPORT' not correct");
+        Assertions.assertEquals("true",APIs.getValueFromMobileCaptureGetAppSettingsByName("VOICE_MAIL",user.getUsername(), user.getPassword(), "","524288"), "GetAppSettings 'VOICE_MAIL' not correct");
+
         log.info("Select 'Voice Mail' No and Incoming calls To Mobile - No");
 
         updateUserPage.clickVoiceMailRadio(YesNo.NO)
@@ -401,6 +422,11 @@ public class TeleadminSanityTest extends BaseTest {
         //Incoming Calls To Mobile: Enabled and Not Checked
         Assertions.assertTrue(updateUserPage.isIncomingCallsToMobileEnabled(), "'Incoming Calls To Mobile' should be enabled");
         Assertions.assertFalse(updateUserPage.isIncomingCallsToMobileChecked(), "'Incoming Calls To Mobile' should not be checked");
+
+        //Check GetAppSettings
+        Assertions.assertEquals("true",APIs.getValueFromMobileCaptureGetAppSettingsByName("APP_TEXT_SUPPORT",user.getUsername(), user.getPassword(), "","524288"), "GetAppSettings 'APP_TEXT_SUPPORT' not correct");
+        Assertions.assertEquals("true",APIs.getValueFromMobileCaptureGetAppSettingsByName("VOICE_CALL_SUPPORT",user.getUsername(), user.getPassword(), "","524288"), "GetAppSettings 'VOICE_CALL_SUPPORT' not correct");
+        Assertions.assertEquals("false",APIs.getValueFromMobileCaptureGetAppSettingsByName("VOICE_MAIL",user.getUsername(), user.getPassword(), "","524288"), "GetAppSettings 'VOICE_MAIL' not correct");
 
         log.info("✅ Test completed successfully");
 
