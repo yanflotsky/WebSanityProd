@@ -5,6 +5,8 @@ import com.microsoft.playwright.Page;
 import com.websanity.BasePage;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.mail.Message;
+
 @Slf4j
 public class MenuPage extends BasePage {
 
@@ -246,12 +248,12 @@ public class MenuPage extends BasePage {
     /**
      * Click on Message Settings in dropdown
      */
-    public MenuPage clickMessageSettings() {
+    public MessageSettingsPage clickMessageSettings() {
         log.info("Clicking Message Settings");
         messageSettingsBtn.click();
         waitForLoadingToDisappear();
         page.waitForTimeout(1000);
-        return this;
+        return new MessageSettingsPage(page);
     }
 
     /**

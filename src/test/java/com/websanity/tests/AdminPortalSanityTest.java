@@ -33,6 +33,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
     private MyContactsPage myContactsPage;
     private ArchiveManagementPage archiveManagement;
     private MessengerAppSettingsPage messengerAppSettingsPage;
+    private MessageSettingsPage messageSettingsPage;
     private static List<UserParams> usersForUpload;
     private static String lffFileName;
     private static String dffFileName;
@@ -414,7 +415,6 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
         log.info("Messenger App Settings - Security Options");
 
-        log.info("Before starting the test, ensure that all checkboxes in Messenger App Settings are unchecked");
         messengerAppSettingsPage = menuPage.clickSettings()
                 .clickMessengerAppSettings()
                 .disableAllCheckboxes();
@@ -484,6 +484,49 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
     @Test
     @Order(7)
+    @Story("Settings")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Message Settings - Default Message Type")
+    void messageSettingsDefaultMessType() {
+
+        log.info("Message Settings - Default Message Type");
+
+        messageSettingsPage = menuPage.clickSettings().clickMessageSettings();
+
+        // Test SMS Text Messages Only
+        verifyRadioButtonSelection(
+                () -> messageSettingsPage.clickSmsTextMessagesOnlyRadio(),
+                () -> messageSettingsPage.isSmsTextMessagesOnlySelected(),
+                "SMS Text Messages Only should be selected"
+        );
+
+        // Test IP Push Notifications
+        verifyRadioButtonSelection(
+                () -> messageSettingsPage.clickIpPushNotificationsRadio(),
+                () -> messageSettingsPage.isIpPushNotificationsSelected(),
+                "IP Push Notifications... should be selected"
+        );
+
+        // Test SMS Fallback
+        verifyRadioButtonSelection(
+                () -> messageSettingsPage.clickSmsFallbackRadio(),
+                () -> messageSettingsPage.isSmsFallbackSelected(),
+                "SMS Fallback... should be selected"
+        );
+
+        // Test Registered Users IP Others SMS
+        verifyRadioButtonSelection(
+                () -> messageSettingsPage.clickRegisteredUsersIpOthersSmsRadio(),
+                () -> messageSettingsPage.isRegisteredUsersIpOthersSmsSelected(),
+                "Registered users will receive IP push notifications... should be selected"
+        );
+
+        log.info("✅ Test completed successfully");
+
+    }
+
+    @Test
+    @Order(8)
     @Story("User Management")
     @Severity(SeverityLevel.CRITICAL)
     @Description("User Management - Delete User")
@@ -507,7 +550,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
     }
 
     @Test
-    @Order(8)
+    @Order(9)
     @Story("User Management")
     @Severity(SeverityLevel.CRITICAL)
     @Description("User Management - Update User Details")
@@ -567,7 +610,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
     }
 
     @Test
-    @Order(9)
+    @Order(10)
     @Story("User Management - Bulk Actions")
     @Severity(SeverityLevel.CRITICAL)
     @Description("User Management - Bulk Upload Users")
@@ -595,7 +638,7 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
     }
 
     @Test
-    @Order(10)
+    @Order(11)
     @Story("User Management - Bulk Actions")
     @Severity(SeverityLevel.NORMAL)
     @Description("User Management - Bulk Delete Users")
@@ -621,5 +664,19 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
         log.info("✅ Test completed successfully");
 
     }
+
+    private void verifyRadioButtonSelection(Runnable clickAction, java.util.function.BooleanSupplier selectionCheck, String assertionMessage) {
+
+        messageSettingsPage.waitForSuccessMsgNotVisible();
+        clickAction.run();
+        messageSettingsPage.clickSaveBtn()
+                .waitForSuccessMsgVisible();
+
+        Assertions.assertTrue(messageSettingsPage.isSuccessMsgVisible(), "Success message should be visible after saving settings");
+        Assertions.assertEquals("User preferences were updated\n", messageSettingsPage.getSuccessMsgText(), "Success message text is incorrect");
+        Assertions.assertTrue(selectionCheck.getAsBoolean(), assertionMessage);
+
+    }
+
 }
 

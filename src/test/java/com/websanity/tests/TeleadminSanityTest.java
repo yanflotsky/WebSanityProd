@@ -25,6 +25,7 @@ public class TeleadminSanityTest extends BaseTest {
     private static UpdateUserPage updateUserPage;
     private static SignUpPage signUpPage;
     private static CompanyArchiveManagementPage companyArchivePage;
+    private static ApplicationsSettingPage applicationsSettingPage;
     private static AdminsPortalSettingsPage adminsPortalPage;
 
     private static UserParams user;
@@ -41,8 +42,7 @@ public class TeleadminSanityTest extends BaseTest {
         signUpPage = new SignUpPage(page);
 
         // Login once for all tests
-        logInPage
-                .open()
+        logInPage.open()
                 .logInToTeleadmin()
                 .waitForFindUsersPageToLoad();
 
@@ -104,8 +104,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         log.info("Starting test: Register new Pro Manager");
 
-        menuPage
-                .clickSignUpButton()
+        menuPage.clickSignUpButton()
                 .registerNewUser(user)
                 .waitForSuccessMessage();
 
@@ -131,8 +130,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         String searchUsername = user.getUsername();
 
-        menuPage
-                .clickFindUsersButton()
+        menuPage.clickFindUsersButton()
                 .searchUserByUsername(searchUsername)
                 .checkThatUserWasFoundAndClickOnHim(searchUsername, updateUserPage);
 
@@ -166,8 +164,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         String searchUsername = user.getUsername();
 
-        menuPage
-                .clickFindUsersButton()
+        menuPage.clickFindUsersButton()
                 .searchUserByUsername(searchUsername)
                 .checkThatUserWasFoundAndClickOnHim(searchUsername, updateUserPage)
                 .fillFirstName(paramsToUpdate.getFirstName())
@@ -186,7 +183,7 @@ public class TeleadminSanityTest extends BaseTest {
         assertTrue(updateUserPage.isUpdateSuccessMessageVisible(), "Update success message should be visible");
 
         log.info("Verifying update success message text");
-        assertEquals("User profile was updated successfully.", updateUserPage.getUpdateSuccessMessageText(),
+        assertEquals("User profile was updated successfully.", updateUserPage.getSuccessMessageText(),
                 "Update success message text should match");
 
         log.info("Verifying all updated field values");
@@ -218,7 +215,7 @@ public class TeleadminSanityTest extends BaseTest {
 
     @Test
     @Order(4)
-    @Story("User Status Management")
+    @Story("Account Management")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Suspend and Activate user, verifying status changes and success messages")
     void suspendAndActivateUser() {
@@ -228,8 +225,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         String username = user.getUsername();
 
-        menuPage
-                .clickFindUsersButton()
+        menuPage.clickFindUsersButton()
                 .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .selectStatus(UserStatus.SUSPENDED)
@@ -265,11 +261,154 @@ public class TeleadminSanityTest extends BaseTest {
 
         log.info("✅ Test completed successfully");
 
-
     }
 
     @Test
     @Order(5)
+    @Story("Account Management")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Check flavors (App Text Support, Voice Call Support, Voice Mail)")
+    void flavors() {
+        //Successfully updated App Text And voice Call Support - success message
+        log.info("Check flavors (App Text Support, Voice Call Support, Voice Mail)");
+
+        String username = user.getUsername();
+
+        updateUserPage = menuPage.clickFindUsersButton()
+                .searchUserByUsername(username)
+                .checkThatUserWasFoundAndClickOnHim(username, updateUserPage);
+
+        log.info("Check that 'App Text Support' radiobutton is selected by default and 'Voice Call Support', 'Voice Mail' are not selected, and 'Incoming Call To Mobile' is not enabled");
+
+        //App Text Support: Yes
+        Assertions.assertTrue(updateUserPage.isAppTextSupportYesSelected(), "'App Text Support' Yes radiobutton should be selected");
+        Assertions.assertFalse(updateUserPage.isAppTextSupportNoSelected(), "'App Text Support' No radiobutton should not be selected");
+
+        //Voice Call Support:  No
+        Assertions.assertFalse(updateUserPage.isVoiceCallSupportYesSelected(), "'Voice Call Support' Yes radiobutton should not be selected");
+        Assertions.assertTrue(updateUserPage.isVoiceCallSupportNoSelected(), "'Voice Call Support' No radiobutton should be selected");
+
+        //Voice Mail: No
+        Assertions.assertFalse(updateUserPage.isVoiceMailYesSelected(), "'Voice mail' Yes radiobutton should not be selected");
+        Assertions.assertTrue(updateUserPage.isVoiceMailNoSelected(), "'Voice Mail' No radiobutton should be selected");
+
+        //Incoming Calls To Mobile: Not Enabled and Not checked
+        Assertions.assertFalse(updateUserPage.isIncomingCallsToMobileEnabled(), "'Incoming Calls To Mobile' should not be enabled");
+        Assertions.assertFalse(updateUserPage.isIncomingCallsToMobileChecked(), "'Incoming Calls To Mobile' should not be checked");
+
+        log.info("Select 'App Text Support' No");
+
+        updateUserPage.clickAppTextSupportRadio(YesNo.NO)
+                .clickUpdateFlavorsButton()
+                .waitForUpdateSuccessMessage();
+
+        //Check success message
+        Assertions.assertTrue(updateUserPage.isUpdateSuccessMessageVisible(), "Success message should be visible after updating flavors");
+        Assertions.assertEquals("Successfully updated App Text And voice Call Support", updateUserPage.getSuccessMessageText(), "Success message text should be empty after updating flavors");
+
+        //App Text Support: No
+        Assertions.assertFalse(updateUserPage.isAppTextSupportYesSelected(), "'App Text Support' Yes radiobutton should not be selected");
+        Assertions.assertTrue(updateUserPage.isAppTextSupportNoSelected(), "'App Text Support' No radiobutton should be selected");
+
+        //Voice Call Support:  No
+        Assertions.assertFalse(updateUserPage.isVoiceCallSupportYesSelected(), "'Voice Call Support' Yes radiobutton should not be selected");
+        Assertions.assertTrue(updateUserPage.isVoiceCallSupportNoSelected(), "'Voice Call Support' No radiobutton should be selected");
+
+        //Voice Mail: No
+        Assertions.assertFalse(updateUserPage.isVoiceMailYesSelected(), "'Voice mail' Yes radiobutton should not be selected");
+        Assertions.assertTrue(updateUserPage.isVoiceMailNoSelected(), "'Voice Mail' No radiobutton should be selected");
+
+        //Incoming Calls To Mobile: Not Enabled and Not Checked
+        Assertions.assertFalse(updateUserPage.isIncomingCallsToMobileEnabled(), "'Incoming Calls To Mobile' should not be enabled");
+        Assertions.assertFalse(updateUserPage.isIncomingCallsToMobileChecked(), "'Incoming Calls To Mobile' should not be checked");
+
+        log.info("Select 'Voice Call Support' Yes");
+
+        updateUserPage.clickVoiceCallSupportRadio(YesNo.YES)
+                .clickUpdateFlavorsButton()
+                .waitForUpdateSuccessMessage();
+
+        //Check success message
+        Assertions.assertTrue(updateUserPage.isUpdateSuccessMessageVisible(), "Success message should be visible after updating flavors");
+        Assertions.assertEquals("Successfully updated App Text And voice Call Support", updateUserPage.getSuccessMessageText(), "Success message text should be empty after updating flavors");
+
+        //App Text Support: No
+        Assertions.assertFalse(updateUserPage.isAppTextSupportYesSelected(), "'App Text Support' Yes radiobutton should not be selected");
+        Assertions.assertTrue(updateUserPage.isAppTextSupportNoSelected(), "'App Text Support' No radiobutton should be selected");
+
+        //Voice Call Support:  Yes
+        Assertions.assertTrue(updateUserPage.isVoiceCallSupportYesSelected(), "'Voice Call Support' Yes radiobutton should be selected");
+        Assertions.assertFalse(updateUserPage.isVoiceCallSupportNoSelected(), "'Voice Call Support' No radiobutton should not be selected");
+
+        //Voice Mail: Yes
+        Assertions.assertTrue(updateUserPage.isVoiceMailYesSelected(), "'Voice mail' Yes radiobutton should be selected");
+        Assertions.assertFalse(updateUserPage.isVoiceMailNoSelected(), "'Voice Mail' No radiobutton should not be selected");
+
+        //Incoming Calls To Mobile: Not Enabled and Not Checked
+        Assertions.assertFalse(updateUserPage.isIncomingCallsToMobileEnabled(), "'Incoming Calls To Mobile' should not be enabled");
+        Assertions.assertFalse(updateUserPage.isIncomingCallsToMobileChecked(), "'Incoming Calls To Mobile' should not be checked");
+
+        log.info("Select 'App Text Support' Yes and Incoming calls To Mobile - Yes");
+
+        updateUserPage.clickAppTextSupportRadio(YesNo.YES)
+                .clickIncomingCallsToMobileCheckbox()
+                .clickUpdateFlavorsButton()
+                .waitForUpdateSuccessMessage();
+
+        //Check success message
+        Assertions.assertTrue(updateUserPage.isUpdateSuccessMessageVisible(), "Success message should be visible after updating flavors");
+        Assertions.assertEquals("Successfully updated App Text And voice Call Support", updateUserPage.getSuccessMessageText(), "Success message text should be empty after updating flavors");
+
+        //App Text Support: Yes
+        Assertions.assertTrue(updateUserPage.isAppTextSupportYesSelected(), "'App Text Support' Yes radiobutton should be selected");
+        Assertions.assertFalse(updateUserPage.isAppTextSupportNoSelected(), "'App Text Support' No radiobutton should not be selected");
+
+        //Voice Call Support:  Yes
+        Assertions.assertTrue(updateUserPage.isVoiceCallSupportYesSelected(), "'Voice Call Support' Yes radiobutton should be selected");
+        Assertions.assertFalse(updateUserPage.isVoiceCallSupportNoSelected(), "'Voice Call Support' No radiobutton should not be selected");
+
+        //Voice Mail: Yes
+        Assertions.assertTrue(updateUserPage.isVoiceMailYesSelected(), "'Voice mail' Yes radiobutton should be selected");
+        Assertions.assertFalse(updateUserPage.isVoiceMailNoSelected(), "'Voice Mail' No radiobutton should not be selected");
+
+        //Incoming Calls To Mobile: Enabled and Checked
+        Assertions.assertTrue(updateUserPage.isIncomingCallsToMobileEnabled(), "'Incoming Calls To Mobile' should be enabled");
+        Assertions.assertTrue(updateUserPage.isIncomingCallsToMobileChecked(), "'Incoming Calls To Mobile' should be checked");
+
+        log.info("Select 'Voice Mail' No and Incoming calls To Mobile - No");
+
+        updateUserPage.clickVoiceMailRadio(YesNo.NO)
+                .clickIncomingCallsToMobileCheckbox()
+                .clickUpdateFlavorsButton()
+                .waitForUpdateSuccessMessage();
+
+        //Check success message
+        Assertions.assertTrue(updateUserPage.isUpdateSuccessMessageVisible(), "Success message should be visible after updating flavors");
+        Assertions.assertEquals("Successfully updated App Text And voice Call Support", updateUserPage.getSuccessMessageText(), "Success message text should be empty after updating flavors");
+
+        //App Text Support: Yes
+        Assertions.assertTrue(updateUserPage.isAppTextSupportYesSelected(), "'App Text Support' Yes radiobutton should be selected");
+        Assertions.assertFalse(updateUserPage.isAppTextSupportNoSelected(), "'App Text Support' No radiobutton should not be selected");
+
+        //Voice Call Support:  Yes
+        Assertions.assertTrue(updateUserPage.isVoiceCallSupportYesSelected(), "'Voice Call Support' Yes radiobutton should be selected");
+        Assertions.assertFalse(updateUserPage.isVoiceCallSupportNoSelected(), "'Voice Call Support' No radiobutton should not be selected");
+
+        //Voice Mail: No
+        Assertions.assertFalse(updateUserPage.isVoiceMailYesSelected(), "'Voice mail' Yes radiobutton should not be selected");
+        Assertions.assertTrue(updateUserPage.isVoiceMailNoSelected(), "'Voice Mail' No radiobutton should be selected");
+
+        //Incoming Calls To Mobile: Enabled and Not Checked
+        Assertions.assertTrue(updateUserPage.isIncomingCallsToMobileEnabled(), "'Incoming Calls To Mobile' should be enabled");
+        Assertions.assertFalse(updateUserPage.isIncomingCallsToMobileChecked(), "'Incoming Calls To Mobile' should not be checked");
+
+        log.info("✅ Test completed successfully");
+
+
+    }
+
+    @Test
+    @Order(6)
     @Story("Enterprise Numbers Management")
     @Severity(SeverityLevel.NORMAL)
     @Description("Add and Remove Enterprise Number for user, verifying success messages and EN details")
@@ -282,8 +421,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         // Add Enterprise Number
         log.info("Adding Enterprise Number: " + enterpriseNumber);
-        menuPage
-                .clickFindUsersButton()
+        menuPage.clickFindUsersButton()
                 .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .selectEnCountry(Country.ALL_COUNTRIES)
@@ -309,8 +447,7 @@ public class TeleadminSanityTest extends BaseTest {
         log.info("Enterprise Number added successfully. Now removing it...");
 
         // Remove Enterprise Number
-        updateUserPage
-                .clickEnDeleteCheckbox()
+        updateUserPage.clickEnDeleteCheckbox()
                 .clickEnUpdateButton()
                 .waitForEnSuccessMessage();
 
@@ -329,7 +466,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     @Story("Allowed Domains Management")
     @Severity(SeverityLevel.NORMAL)
     @Description("Add allowed email domain for user and verify success message and domain presence")
@@ -340,8 +477,7 @@ public class TeleadminSanityTest extends BaseTest {
         String username = user.getUsername();
         String domain = "autod" + String.format("%05d", System.currentTimeMillis() % 100000) + ".com";
 
-        menuPage
-                .clickFindUsersButton()
+        menuPage.clickFindUsersButton()
                 .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickManageAllowedEmailDomainButton()
@@ -366,7 +502,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     @Story("Company Archive Management")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Create Source, Destination, and Plan in Company Archive Management and verify all details")
@@ -379,8 +515,7 @@ public class TeleadminSanityTest extends BaseTest {
         SourceType sourceType = SourceType.WHATSAPP_ARCHIVER;
 
         //Create Source
-        companyArchivePage = menuPage
-                .clickFindUsersButton()
+        companyArchivePage = menuPage.clickFindUsersButton()
                 .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickCompanyArchiveManagementButton()
@@ -409,8 +544,7 @@ public class TeleadminSanityTest extends BaseTest {
         String storageDescription = "Generic SMTP " + String.format("%07d", System.currentTimeMillis() % 10000000);
         String email = "trainem" + String.format("%07d", System.currentTimeMillis() % 10000000) + "@gmail.com";
 
-        companyArchivePage
-                .clickAddNewPolicyButton()
+        companyArchivePage.clickAddNewPolicyButton()
                 .selectStorage(Storage.GENERIC_SMTP_ARCHIVER)
                 .fillStorageDescription(storageDescription)
                 .selectPersonalArchive(YesNo.NO)
@@ -437,8 +571,7 @@ public class TeleadminSanityTest extends BaseTest {
         //Create Plan
         String planDescription = "AutoPlan " + String.format("%07d", System.currentTimeMillis() % 10000000);
 
-        companyArchivePage
-                .clickAddNewPlanButton()
+        companyArchivePage.clickAddNewPlanButton()
                 .selectSourcePolicy(sourcePolicyId)
                 .selectPolicyId(storagePolicyId)
                 .fillPlanDescription(planDescription)
@@ -465,8 +598,7 @@ public class TeleadminSanityTest extends BaseTest {
         log.info("Plan ID: " + planId);
 
         // Assign user to the plan
-        companyArchivePage
-                .clickFirstPlanRowManageUsersButton()
+        companyArchivePage.clickFirstPlanRowManageUsersButton()
                 .fillAssignUsersSearch(user.getUsername())
                 .clickFirstUserCheckbox()
                 .waitForAssignUsersApplyButtonEnabled()
@@ -475,8 +607,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         log.info("Verifying that user has been assigned to the archive plan");
 
-        companyArchivePage
-                .clickFirstPlanRowManageUsersButton()
+        companyArchivePage.clickFirstPlanRowManageUsersButton()
                 .fillAssignUsersSearch(user.getUsername());
 
         log.info("Verifying that user checkbox is checked");
@@ -488,7 +619,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(8)
+    @Order(9)
     @Story("Company Portal Settings Management")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify Company Portal Settings checkboxes, enable them, save, and verify persistence")
@@ -498,8 +629,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         String username = user.getUsername();
 
-        adminsPortalPage = menuPage
-                .clickFindUsersButton()
+        adminsPortalPage = menuPage.clickFindUsersButton()
                 .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickCompanyAdminPortalSettingsButton();
@@ -521,8 +651,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         // Click on checkboxes to enable them
         log.info("Clicking on checkboxes to enable them");
-        adminsPortalPage
-                .clickAllItemsCheckbox()
+        adminsPortalPage.clickAllItemsCheckbox()
                 .clickInboxCheckbox()
                 .clickAllSettingsCheckbox()
                 .clickDisplayMyContactsCheckbox()
@@ -560,7 +689,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(9)
+    @Order(10)
     @Story("Application Settings")
     @Severity(SeverityLevel.NORMAL)
     @Description("WhatsApp Settings - Signature - User Level")
@@ -573,8 +702,7 @@ public class TeleadminSanityTest extends BaseTest {
         SignatureTextInheritance signatureTextInheritance = SignatureTextInheritance.MANUAL;
         String signatureText = "Auto signature text";
 
-        ApplicationsSettingPage applicationsSettingPage = menuPage
-                .clickFindUsersButton()
+        applicationsSettingPage = menuPage.clickFindUsersButton()
                 .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickWhatsAppPhoneCaptureSettingsButton()
@@ -609,7 +737,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(10)
+    @Order(11)
     @Story("Application Settings")
     @Severity(SeverityLevel.NORMAL)
     @Description("Telegram Settings - Signature - User Level")
@@ -622,8 +750,7 @@ public class TeleadminSanityTest extends BaseTest {
         SignatureTextInheritance signatureTextInheritance = SignatureTextInheritance.MANUAL;
         String signatureText = "Auto signature text";
 
-        ApplicationsSettingPage applicationsSettingPage = menuPage
-                .clickFindUsersButton()
+        applicationsSettingPage = menuPage.clickFindUsersButton()
                 .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickTelegramCaptureSettingsButton()
@@ -658,7 +785,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(11)
+    @Order(12)
     @Story("Application Settings")
     @Severity(SeverityLevel.NORMAL)
     @Description("Signal Settings - Signature - User Level")
@@ -671,8 +798,7 @@ public class TeleadminSanityTest extends BaseTest {
         SignatureTextInheritance signatureTextInheritance = SignatureTextInheritance.MANUAL;
         String signatureText = "Auto signature text";
 
-        ApplicationsSettingPage applicationsSettingPage = menuPage
-                .clickFindUsersButton()
+        applicationsSettingPage = menuPage.clickFindUsersButton()
                 .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickSignalCaptureSettingsButton()
@@ -707,7 +833,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(12)
+    @Order(13)
     @Story("Application Settings")
     @Severity(SeverityLevel.NORMAL)
     @Description("Enterprise Number Capture Settings - Signature - User Level")
@@ -720,8 +846,7 @@ public class TeleadminSanityTest extends BaseTest {
         SignatureTextInheritance signatureTextInheritance = SignatureTextInheritance.MANUAL;
         String signatureText = "Auto signature text";
 
-        ApplicationsSettingPage applicationsSettingPage = menuPage
-                .clickFindUsersButton()
+        applicationsSettingPage = menuPage.clickFindUsersButton()
                 .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickEnterpriseNumberCaptureSettingsButton()
@@ -756,7 +881,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(13)
+    @Order(14)
     @Story("Application Settings")
     @Severity(SeverityLevel.NORMAL)
     @Description("Android Capture Settings - RCS Support Checkbox")
@@ -766,8 +891,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         String username = user.getUsername();
 
-        ApplicationsSettingPage applicationsSettingPage = menuPage
-                .clickFindUsersButton()
+        applicationsSettingPage = menuPage.clickFindUsersButton()
                 .searchUserByUsername(username)
                 .checkThatUserWasFoundAndClickOnHim(username, updateUserPage)
                 .clickAndroidCaptureSettingsButton();
@@ -802,7 +926,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(14)
+    @Order(15)
     @Story("Delete User")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Delete user via Update User Page, verifying success messages and deleted status")
