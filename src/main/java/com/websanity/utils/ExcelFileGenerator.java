@@ -447,6 +447,175 @@ public class ExcelFileGenerator {
     }
 
     /**
+     * Generate Excel file for updating multiple users with all update parameters
+     * @param usersToUpdate List of UserParams containing the usernames of the users to update
+     * @param paramsToUpdate List of UserParams containing the new values to update (must match size of usersToUpdate)
+     * @return filename of the generated Excel file
+     */
+    public static String generateExcelFileForUFF(List<UserParams> usersToUpdate, List<UserParams> paramsToUpdate) {
+        if (usersToUpdate.size() != paramsToUpdate.size()) {
+            throw new IllegalArgumentException("usersToUpdate and paramsToUpdate lists must have the same size");
+        }
+
+        log.info("Generating Excel file for updating {} users", usersToUpdate.size());
+
+        // Headers for user update
+        String[] updateHeaders = {
+                "Login",
+                "Mobile Phone",
+                "Email Address",
+                "First Name",
+                "Last Name",
+                "Password",
+                "Product",
+                "Assign To Plan",
+                "Language",
+                "Billing Type",
+                "Billing Reoccurring",
+                "Company",
+                "Time Zone",
+                "Country",
+                "App Text Support",
+                "Voice Call Support",
+                "Enterprise Setting",
+                "Enterprise Number",
+                "WhatsApp API",
+                "Add To Global Address Book",
+                "Unique Customer Code",
+                "UDID",
+                "Forward Inbox To",
+                "Send Outgoing Messages Via Provider"
+        };
+
+        // Generate filename with timestamp
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        String filename = "websanupdate" + timestamp + ".xls";
+        String outputDir = getOutputDirectory();
+        String fullPath = outputDir + "/" + filename;
+
+        try {
+            // Create directory if it doesn't exist
+            Path dirPath = Paths.get(outputDir);
+            if (!Files.exists(dirPath)) {
+                Files.createDirectories(dirPath);
+                log.info("Created directory: {}", outputDir);
+            }
+
+            // Create workbook and sheet
+            Workbook workbook = new HSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Users");
+
+            // Create header row
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < updateHeaders.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(updateHeaders[i]);
+            }
+
+            // Create data rows for each user
+            int rowNum = 1;
+            for (int userIndex = 0; userIndex < usersToUpdate.size(); userIndex++) {
+                UserParams userToUpdate = usersToUpdate.get(userIndex);
+                UserParams paramsToUpdateForUser = paramsToUpdate.get(userIndex);
+
+                Row row = sheet.createRow(rowNum++);
+                int colNum = 0;
+
+                // Login - from userToUpdate
+                createCell(row, colNum++, userToUpdate.getUsername());
+
+                // Mobile Phone - from paramsToUpdate
+                createCell(row, colNum++, formatMobilePhone(paramsToUpdateForUser));
+
+                // Email Address - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getEmail());
+
+                // First Name - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getFirstName());
+
+                // Last Name - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getLastName());
+
+                // Password - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getPassword());
+
+                // Product - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getUserType() != null ? paramsToUpdateForUser.getUserType().getDisplayName() : "");
+
+                // Assign To Plan - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getAssignToPlan() != null ? paramsToUpdateForUser.getAssignToPlan() : "");
+
+                // Language - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getLanguage() != null ? paramsToUpdateForUser.getLanguage().name() : "");
+
+                // Billing Type - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getBillingType() != null ? paramsToUpdateForUser.getBillingType() : "");
+
+                // Billing Reoccurring - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getBillingReoccurring() != null ? paramsToUpdateForUser.getBillingReoccurring() : "");
+
+                // Company - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getCompany());
+
+                // Time Zone - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getTimeZone() != null ? paramsToUpdateForUser.getTimeZone().name() : "");
+
+                // Country - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getCountry() != null ? paramsToUpdateForUser.getCountry().getDisplayName() : "");
+
+                // App Text Support - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getAppTextSupport() != null ? paramsToUpdateForUser.getAppTextSupport() : "");
+
+                // Voice Call Support - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getVoiceCallSupport() != null ? paramsToUpdateForUser.getVoiceCallSupport() : "");
+
+                // Enterprise Setting - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getEnterpriseSetting() != null ? paramsToUpdateForUser.getEnterpriseSetting() : "");
+
+                // Enterprise Number - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getEnterpriseNumber() != null ? paramsToUpdateForUser.getEnterpriseNumber() : "");
+
+                // WhatsApp API - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getWhatsAppApi() != null ? paramsToUpdateForUser.getWhatsAppApi() : "");
+
+                // Add To Global Address Book - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getAddToGlobalAddressBook() != null ? paramsToUpdateForUser.getAddToGlobalAddressBook().toString() : "");
+
+                // Unique Customer Code - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getUniqueCustomerCode() != null ? paramsToUpdateForUser.getUniqueCustomerCode() : "");
+
+                // UDID - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getUdid() != null ? paramsToUpdateForUser.getUdid() : "");
+
+                // Forward Inbox To - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getForwardInboxTo() != null ? paramsToUpdateForUser.getForwardInboxTo() : "");
+
+                // Send Outgoing Messages Via Provider - from paramsToUpdate
+                createCell(row, colNum++, paramsToUpdateForUser.getSendOutgoingMessagesViaProvider() != null ? paramsToUpdateForUser.getSendOutgoingMessagesViaProvider() : "");
+            }
+
+            // Auto-size columns
+            for (int i = 0; i < updateHeaders.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // Write to file
+            try (FileOutputStream fileOut = new FileOutputStream(fullPath)) {
+                workbook.write(fileOut);
+            }
+
+            workbook.close();
+
+            log.info("User update Excel file generated successfully: {}", filename);
+            return filename;
+
+        } catch (IOException e) {
+            log.error("Error generating user update Excel file", e);
+            throw new RuntimeException("Failed to generate user update Excel file: " + e.getMessage(), e);
+        }
+    }
+
+    /**
      * Create sample users for testing
      */
     public static List<UserParams> createSampleUsers(int count) {
