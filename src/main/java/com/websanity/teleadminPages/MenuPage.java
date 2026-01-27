@@ -74,6 +74,7 @@ public class MenuPage extends BasePage {
      * Click on Find Users button
      */
     public FindUsersPage clickFindUsersButton() {
+        log.info("Click 'Find Users' Button");
         findUsersButton.click();
         usersTable.waitFor(new Locator.WaitForOptions()
                 .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE));

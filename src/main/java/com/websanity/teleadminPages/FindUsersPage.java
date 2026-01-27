@@ -12,6 +12,8 @@ public class FindUsersPage extends BasePage {
 
     private final FrameLocator textFrame;
     private final Locator usernameInput;
+    private final Locator mobileInput;
+    private final Locator emailInput;
     private final Locator  searchButton;
     private final Locator usersTable;
     private final Locator customerAdministratorInput;
@@ -20,8 +22,10 @@ public class FindUsersPage extends BasePage {
     public FindUsersPage(Page page) {
         super(page);
         this.textFrame = page.frameLocator("frame[name='text']");
-        this.usernameInput = textFrame.locator("input[name='userName']");
-        this.searchButton = textFrame.locator("button[id='findUsersBtn']");
+        this.usernameInput = textFrame.locator("#userName");
+        this.mobileInput = textFrame.locator("#phoneNumber");
+        this.emailInput = textFrame.locator("#email");
+        this.searchButton = textFrame.locator("#findUsersBtn");
         this.usersTable = textFrame.locator("#personTable");
         this.customerAdministratorInput = textFrame.locator("input#customerAdministratorInput");
         this.advancedOptionsLabel = textFrame.locator("div#advancedOptionsLabel");
@@ -70,6 +74,20 @@ public class FindUsersPage extends BasePage {
     }
 
     /**
+     * Enter mobile number into search field
+     */
+    public void enterMobileNumber(String mobileNumber) {
+        mobileInput.fill(mobileNumber);
+    }
+
+    /**
+     * Enter email into search field
+     */
+    public void enterEmail(String email) {
+        emailInput.fill(email);
+    }
+
+    /**
      * Fill customer administrator input field
      * This field has dropdown filtering functionality
      * @param administratorName name of the administrator to fill
@@ -105,7 +123,6 @@ public class FindUsersPage extends BasePage {
         log.info("Clicking on Advanced Options");
         advancedOptionsLabel.click();
         page.waitForTimeout(500); // Wait for advanced options to expand
-        log.info("Advanced Options clicked");
         return this;
     }
 
@@ -121,6 +138,7 @@ public class FindUsersPage extends BasePage {
      * Click search button
      */
     public FindUsersPage clickSearchButton() {
+        log.info("Clicking 'Search' Button");
         page.waitForTimeout(500);
         searchButton.click();
         waitForTableToHaveData();
@@ -133,6 +151,34 @@ public class FindUsersPage extends BasePage {
     public FindUsersPage searchUserByUsername(String username) {
         log.info("Searching for user: {}", username);
         enterUsername(username);
+        clickSearchButton();
+
+        // Wait for search to complete (increased for Docker)
+        page.waitForTimeout(1500);
+        return this;
+    }
+
+    /**
+     * Search for user by mobile number
+     */
+    public FindUsersPage searchUserByMobileNumber(String mobileNumber) {
+        log.info("Searching for user by mobile", mobileNumber);
+        clickAdvancedOptions();
+        enterMobileNumber(mobileNumber);
+        clickSearchButton();
+
+        // Wait for search to complete (increased for Docker)
+        page.waitForTimeout(1500);
+        return this;
+    }
+
+    /**
+     * Search for user by email
+     */
+    public FindUsersPage searchUserByEmail(String email) {
+        log.info("Searching for user by email", email);
+        clickAdvancedOptions();
+        enterEmail(email);
         clickSearchButton();
 
         // Wait for search to complete (increased for Docker)
