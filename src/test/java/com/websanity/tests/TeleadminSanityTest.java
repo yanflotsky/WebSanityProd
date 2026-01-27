@@ -132,6 +132,14 @@ public class TeleadminSanityTest extends BaseTest {
         String searchUsername = user.getUsername();
 
         menuPage.clickFindUsersButton()
+                .searchUserByMobileNumber((user.getMobileCountryCode().getDialingCode() + user.getMobileArea() + user.getMobilePhone()).replace("+", ""))
+                .checkThatUserWasFoundAndClickOnHim(searchUsername, updateUserPage);
+
+        menuPage.clickFindUsersButton()
+                .searchUserByEmail(user.getEmail())
+                .checkThatUserWasFoundAndClickOnHim(searchUsername, updateUserPage);
+
+        menuPage.clickFindUsersButton()
                 .searchUserByUsername(searchUsername)
                 .checkThatUserWasFoundAndClickOnHim(searchUsername, updateUserPage);
 
