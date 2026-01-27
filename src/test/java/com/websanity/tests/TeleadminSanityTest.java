@@ -120,7 +120,7 @@ public class TeleadminSanityTest extends BaseTest {
 
     }
 
-    /*@Test
+    @Test
     @Order(2)
     @Story("Find User")
     @Severity(SeverityLevel.CRITICAL)
@@ -262,7 +262,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         log.info("✅ Test completed successfully");
 
-    }*/
+    }
 
     @Test
     @Order(5)
@@ -433,7 +433,7 @@ public class TeleadminSanityTest extends BaseTest {
 
     }
 
-    /*@Test
+    @Test
     @Order(6)
     @Story("Enterprise Numbers Management")
     @Severity(SeverityLevel.NORMAL)
@@ -949,7 +949,7 @@ public class TeleadminSanityTest extends BaseTest {
 
         log.info("✅ Test completed successfully");
 
-    }*/
+    }
 
     @Test
     @Order(15)
