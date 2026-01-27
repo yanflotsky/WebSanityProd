@@ -525,32 +525,10 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
 
     }
 
+
+
     @Test
     @Order(8)
-    @Story("User Management")
-    @Severity(SeverityLevel.CRITICAL)
-    @Description("User Management - Delete User")
-    void deleteUser() {
-
-        log.info("User Management - Delete User");
-
-        userManagementPage = menuPage.clickUserManagement()
-                .fillSearchInp(userParams.getUsername())
-                .clickSearchBtn()
-                .clickFirstUserCheckbox()
-                .clickDeleteBtn()
-                .clickConfirmYesBtn()
-                .fillSearchInp(userParams.getUsername())
-                .clickSearchBtn();
-
-        Assertions.assertTrue(userManagementPage.isContentTableEmpty(), "Content table should be empty after deleting user");
-
-        log.info("✅ Test completed successfully");
-
-    }
-
-    @Test
-    @Order(9)
     @Story("User Management")
     @Severity(SeverityLevel.CRITICAL)
     @Description("User Management - Update User Details")
@@ -604,6 +582,30 @@ public class AdminPortalSanityTest extends AdminPortalBaseTest {
         userParams.setLanguage(userParamsForUpd.getLanguage());
         userParams.setCountry(userParamsForUpd.getCountry());
         userParams.setTimeZone(userParamsForUpd.getTimeZone());
+
+        log.info("✅ Test completed successfully");
+
+    }
+
+    @Test
+    @Order(9)
+    @Story("User Management")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("User Management - Delete User")
+    void deleteUser() {
+
+        log.info("User Management - Delete User");
+
+        userManagementPage = menuPage.clickUserManagement()
+                .fillSearchInp(userParams.getUsername())
+                .clickSearchBtn()
+                .clickFirstUserCheckbox()
+                .clickDeleteBtn()
+                .clickConfirmYesBtn()
+                .fillSearchInp(userParams.getUsername())
+                .clickSearchBtn();
+
+        Assertions.assertTrue(userManagementPage.isContentTableEmpty(), "Content table should be empty after deleting user");
 
         log.info("✅ Test completed successfully");
 
