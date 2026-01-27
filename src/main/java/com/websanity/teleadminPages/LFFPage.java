@@ -146,7 +146,7 @@ public class LFFPage extends BasePage {
      * @return this page for chaining
      */
     public LFFPage selectExclusiveAdmin(String value) {
-        log.info("Selecting exclusive admin with value: {}", value);
+        log.info("Selecting Customer Administrator with value: {}", value);
         exclusiveAdminSelect.selectOption(value);
 
         // Wait for storage plan table to become visible after exclusive admin selection
@@ -230,7 +230,7 @@ public class LFFPage extends BasePage {
         log.info("Waiting for import result text to be visible");
         importResultText.waitFor(new Locator.WaitForOptions()
                 .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE)
-                .setTimeout(10000));
+                .setTimeout(20000));
         log.info("Import result text is now visible");
         return this;
     }

@@ -27,11 +27,14 @@ public class TeleadminLFFSanityTest extends BaseTest {
     private static MenuPage menuPage;
     private static FindUsersPage findUsersPage;
     private static LFFPage lffPage;
+    private static UFFPage uffPage;
     private static DFFPage dffPage;
     private static UserParams manager;
     private static List<UserParams> usersForLff;
+    private static List<UserParams> userParamsForUff;
     private static String lffFileName;
     private static String dffFileName;
+    private static String uffFileName;
 
     @BeforeAll
     static void setUpAll() {
@@ -50,8 +53,11 @@ public class TeleadminLFFSanityTest extends BaseTest {
 
         // Generate Excel files
         usersForLff = ExcelFileGenerator.createSampleUsers(5);
+        userParamsForUff = ExcelFileGenerator.createSampleUsers(5);
+
         lffFileName = ExcelFileGenerator.generateExcelFileForLFF(usersForLff);
         dffFileName = ExcelFileGenerator.generateExcelFileForDFF(usersForLff);
+        uffFileName = ExcelFileGenerator.generateExcelFileForUFF(usersForLff, userParamsForUff);
 
         // Login once for all tests
         logInPage
@@ -106,8 +112,7 @@ public class TeleadminLFFSanityTest extends BaseTest {
                 .selectUserType(UserTypes.PROUSER)
                 .selectExclusiveAdmin(manager.getUserID());
 
-        Assertions.assertEquals(TestUsers.StoragePlans.WEBSAN_PLAN_1, lffPage.getPlanDescriptionFromFirstRow(),
-                "Plan description in Storage Plans table is wrong");
+        Assertions.assertEquals(TestUsers.StoragePlans.WEBSAN_PLAN_1, lffPage.getPlanDescriptionFromFirstRow(), "Plan description in Storage Plans table is wrong");
 
         lffPage.uploadFile(ExcelFileGenerator.getFullPath(lffFileName))
                 .clickAddBtn()
@@ -131,25 +136,27 @@ public class TeleadminLFFSanityTest extends BaseTest {
 
     //RETURN DEVELOPING AFTER https://smarsh.atlassian.net/browse/SST-36674 will be fixed
 
-    /*@Test
+    @Test
     @Order(2)
     @Story("Update Users From File")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("LFF - Update users from file")
+    @Description("UFF - Update users from file")
     void updateUsersFromFile() {
         log.info("Test: Update Users From File");
 
-        String filePath = TestDataFileUtils.getUpdateUsersFile();
-        log.info("Using file: {}", filePath);
+        uffPage = menuPage.clickUpdateUsersFromFileButton()
+                .selectExclusiveAdmin(manager.getUserID());
 
-        // updatePage.uploadFile(filePath)
-        //          .clickSubmit()
-        //          .waitForSuccessMessage();
-        //
-        // Assertions.assertTrue(updatePage.isSuccessMessageVisible());
+        Assertions.assertEquals(TestUsers.StoragePlans.WEBSAN_PLAN_1, uffPage.getPlanDescriptionFromFirstRow(), "Plan description in Storage Plans table is wrong");
+
+        uffPage.uploadFile(ExcelFileGenerator.getFullPath(uffFileName))
+                .clickUpdateButton()
+                .waitForImportResultText();
+
+        Assertions.assertTrue(uffPage.getImportResultText().contains("5 users were updated successfully."), "Import Result text is wrong. Actual text is: " + uffPage.getImportResultText());
 
         log.info("Update Users From File test - TO BE IMPLEMENTED");
-    }*/
+    }
 
     @Test
     @Order(3)

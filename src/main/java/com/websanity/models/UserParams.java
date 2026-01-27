@@ -57,6 +57,16 @@ public class UserParams {
     private String udid;
     private Boolean sendWelcomeMessageEmail;
     private Boolean sendWelcomeMessageMobile;
+    private String assignToPlan;
+    private String billingType;
+    private String billingReoccurring;
+    private String appTextSupport;
+    private String voiceCallSupport;
+    private String enterpriseSetting;
+    private String enterpriseNumber;
+    private String whatsAppApi;
+    private String forwardInboxTo;
+    private String sendOutgoingMessagesViaProvider;
 
     /**
      * Create minimal user with only required fields

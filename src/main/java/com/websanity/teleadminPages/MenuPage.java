@@ -57,8 +57,10 @@ public class MenuPage extends BasePage {
     /**
      * Click on Update Users From File button
      */
-    public void clickUpdateUsersFromFileButton() {
+    public UFFPage clickUpdateUsersFromFileButton() {
+        log.info("Click Update Users From File Button");
         updateUsersFromFileButton.click();
+        return new UFFPage(page);
     }
 
     /**
