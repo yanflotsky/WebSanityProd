@@ -276,9 +276,57 @@ public class TeleadminSanityTest extends BaseTest {
     @Order(5)
     @Story("Account Management")
     @Severity(SeverityLevel.CRITICAL)
+    @Description("Account Settings - Send One Time Pin to Settings")
+    void sendOTPtoSettings() {
+
+        log.info("Account Settings - Send One Time Pin to Settings");
+
+        String username = user.getUsername();
+
+        updateUserPage = menuPage.clickFindUsersButton()
+                .searchUserByUsername(username)
+                .checkThatUserWasFoundAndClickOnHim(username, updateUserPage);
+
+        log.info("Check that in 'Send One Time Pin to' settings - 'Mobile' and 'Email' are ON by default");
+        Assertions.assertTrue(updateUserPage.isOneTimePinMobileChecked(), "'Mobile' checkbox should be selected by default");
+        Assertions.assertTrue(updateUserPage.isOneTimePinEmailChecked(), "'Email' checkbox should be selected by default");
+
+        updateUserPage.uncheckOneTimePinMobileCheckbox()
+                .clickUpdateOneTimePinSendButton()
+                .waitForUpdateSuccessMessage();
+
+        //Check success message
+        Assertions.assertTrue(updateUserPage.isUpdateSuccessMessageVisible(), "Success message should be visible after updating One Time Pin to settings");
+        Assertions.assertEquals("Successfully updated one time pin send option", updateUserPage.getSuccessMessageText(), "Success message text should be empty after updating One Time Pin to settings");
+
+        log.info("Check that 'Mobile' - OFF and 'Email' - ON");
+        Assertions.assertFalse(updateUserPage.isOneTimePinMobileChecked(), "'Mobile' checkbox should not be selected");
+        Assertions.assertTrue(updateUserPage.isOneTimePinEmailChecked(), "'Email' checkbox should be selected");
+
+        updateUserPage.checkOneTimePinMobileCheckbox()
+                .uncheckOneTimePinEmailCheckbox()
+                .clickUpdateOneTimePinSendButton()
+                .waitForUpdateSuccessMessage();
+
+        //Check success message
+        Assertions.assertTrue(updateUserPage.isUpdateSuccessMessageVisible(), "Success message should be visible after updating One Time Pin to settings");
+        Assertions.assertEquals("Successfully updated one time pin send option", updateUserPage.getSuccessMessageText(), "Success message text should be empty after updating One Time Pin to settings");
+
+        log.info("Check that 'Mobile' - ON and 'Email' - OFF");
+        Assertions.assertTrue(updateUserPage.isOneTimePinMobileChecked(), "'Mobile' checkbox should be selected");
+        Assertions.assertFalse(updateUserPage.isOneTimePinEmailChecked(), "'Email' checkbox should not be selected");
+
+        log.info("✅ Test completed successfully");
+
+    }
+
+    @Test
+    @Order(6)
+    @Story("Account Management")
+    @Severity(SeverityLevel.CRITICAL)
     @Description("Check flavors (App Text Support, Voice Call Support, Voice Mail)")
     void flavors() {
-        //Successfully updated App Text And voice Call Support - success message
+
         log.info("Check flavors (App Text Support, Voice Call Support, Voice Mail)");
 
         String username = user.getUsername();
@@ -442,7 +490,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     @Story("Enterprise Numbers Management")
     @Severity(SeverityLevel.NORMAL)
     @Description("Add and Remove Enterprise Number for user, verifying success messages and EN details")
@@ -500,7 +548,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     @Story("Allowed Domains Management")
     @Severity(SeverityLevel.NORMAL)
     @Description("Add allowed email domain for user and verify success message and domain presence")
@@ -536,7 +584,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(8)
+    @Order(9)
     @Story("Company Archive Management")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Create Source, Destination, and Plan in Company Archive Management and verify all details")
@@ -653,7 +701,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(9)
+    @Order(10)
     @Story("Company Portal Settings Management")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify Company Portal Settings checkboxes, enable them, save, and verify persistence")
@@ -723,7 +771,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(10)
+    @Order(11)
     @Story("Application Settings")
     @Severity(SeverityLevel.NORMAL)
     @Description("WhatsApp Settings - Signature - User Level")
@@ -771,7 +819,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(11)
+    @Order(12)
     @Story("Application Settings")
     @Severity(SeverityLevel.NORMAL)
     @Description("Telegram Settings - Signature - User Level")
@@ -819,7 +867,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(12)
+    @Order(13)
     @Story("Application Settings")
     @Severity(SeverityLevel.NORMAL)
     @Description("Signal Settings - Signature - User Level")
@@ -867,7 +915,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(13)
+    @Order(14)
     @Story("Application Settings")
     @Severity(SeverityLevel.NORMAL)
     @Description("Enterprise Number Capture Settings - Signature - User Level")
@@ -915,7 +963,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(14)
+    @Order(15)
     @Story("Application Settings")
     @Severity(SeverityLevel.NORMAL)
     @Description("Android Capture Settings - RCS Support Checkbox")
@@ -960,7 +1008,7 @@ public class TeleadminSanityTest extends BaseTest {
     }
 
     @Test
-    @Order(15)
+    @Order(16)
     @Story("Delete User")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Delete user via Update User Page, verifying success messages and deleted status")
