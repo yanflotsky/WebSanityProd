@@ -4,6 +4,7 @@ import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import com.websanity.BasePage;
 import com.websanity.enums.UserStatus;
+import com.websanity.enums.YesNo;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -50,6 +51,14 @@ public class UpdateUserPage extends BasePage {
     private final Locator addDomainButton;
     private final Locator updateArchivingDomainButton;
     private final Locator domain0Input;
+    private final Locator appTextSupportYesRadio;
+    private final Locator appTextSupportNoRadio;
+    private final Locator voiceCallSupportYesRadio;
+    private final Locator voiceCallSupportNoRadio;
+    private final Locator voiceMailYesRadio;
+    private final Locator voiceMailNoRadio;
+    private final Locator updateFlavorsButton;
+    private final Locator incomingCallsToMobileCheckbox;
 
     public UpdateUserPage(Page page) {
         super(page);
@@ -93,6 +102,14 @@ public class UpdateUserPage extends BasePage {
         this.addDomainButton = textFrame.locator("a[onclick*='addAllowedDomain()'] img");
         this.updateArchivingDomainButton = textFrame.locator("a[onclick*='submitDomain()'] img");
         this.domain0Input = textFrame.locator("#domain0");
+        this.appTextSupportYesRadio = textFrame.locator("#app_text_support_on");
+        this.appTextSupportNoRadio = textFrame.locator("#app_text_support_off");
+        this.voiceCallSupportYesRadio = textFrame.locator("#voice_call_support_on");
+        this.voiceCallSupportNoRadio = textFrame.locator("#voice_call_support_off");
+        this.voiceMailYesRadio = textFrame.locator("#voice_mail_on");
+        this.voiceMailNoRadio = textFrame.locator("#voice_mail_off");
+        this.updateFlavorsButton = textFrame.locator("a#updateRestrictionsData[onclick*='updateAppTextAndVoice']");
+        this.incomingCallsToMobileCheckbox = textFrame.locator("#forward_to_pstn");
     }
 
     /**
@@ -416,7 +433,7 @@ public class UpdateUserPage extends BasePage {
      * Get the text of the update success message
      * @return success message text
      */
-    public String getUpdateSuccessMessageText() {
+    public String getSuccessMessageText() {
         return successMessage.textContent().trim();
     }
 
@@ -875,6 +892,165 @@ public class UpdateUserPage extends BasePage {
      */
     public String getDomain0Value() {
         return domain0Input.inputValue();
+    }
+
+    /**
+     * Click on App Text Support radio button (Yes or No)
+     * @param yesNo YES or NO enum value
+     */
+    public UpdateUserPage clickAppTextSupportRadio(YesNo yesNo) {
+        log.info("Clicking App Text Support {} radio button", yesNo.getDisplayName());
+        switch (yesNo) {
+            case YES:
+                appTextSupportYesRadio.click();
+                break;
+            case NO:
+                appTextSupportNoRadio.click();
+                break;
+        }
+        return this;
+    }
+
+    /**
+     * Check if App Text Support Yes radio button is selected
+     * @return true if radio button is checked
+     */
+    public boolean isAppTextSupportYesSelected() {
+        return appTextSupportYesRadio.isChecked();
+    }
+
+    /**
+     * Check if App Text Support No radio button is selected
+     * @return true if radio button is checked
+     */
+    public boolean isAppTextSupportNoSelected() {
+        return appTextSupportNoRadio.isChecked();
+    }
+
+    /**
+     * Click on Voice Call Support radio button (Yes or No)
+     * @param yesNo YES or NO enum value
+     */
+    public UpdateUserPage clickVoiceCallSupportRadio(YesNo yesNo) {
+        log.info("Clicking Voice Call Support {} radio button", yesNo.getDisplayName());
+        switch (yesNo) {
+            case YES:
+                voiceCallSupportYesRadio.click();
+                break;
+            case NO:
+                voiceCallSupportNoRadio.click();
+                break;
+        }
+        return this;
+    }
+
+    /**
+     * Check if Voice Call Support On radio button is selected
+     * @return true if radio button is checked
+     */
+    public boolean isVoiceCallSupportYesSelected() {
+        return voiceCallSupportYesRadio.isChecked();
+    }
+
+    /**
+     * Check if Voice Call Support Off radio button is selected
+     * @return true if radio button is checked
+     */
+    public boolean isVoiceCallSupportNoSelected() {
+        return voiceCallSupportNoRadio.isChecked();
+    }
+
+    /**
+     * Click on Voice Mail radio button (Yes or No)
+     * @param yesNo YES or NO enum value
+     */
+    public UpdateUserPage clickVoiceMailRadio(YesNo yesNo) {
+        log.info("Clicking Voice Mail {} radio button", yesNo.getDisplayName());
+        switch (yesNo) {
+            case YES:
+                voiceMailYesRadio.click();
+                break;
+            case NO:
+                voiceMailNoRadio.click();
+                break;
+        }
+        return this;
+    }
+
+    /**
+     * Check if Voice Mail On radio button is selected
+     * @return true if radio button is checked
+     */
+    public boolean isVoiceMailYesSelected() {
+        return voiceMailYesRadio.isChecked();
+    }
+
+    /**
+     * Check if Voice Mail Off radio button is selected
+     * @return true if radio button is checked
+     */
+    public boolean isVoiceMailNoSelected() {
+        return voiceMailNoRadio.isChecked();
+    }
+
+    /**
+     * Click on Update Restrictions Data button (Update App Text and Voice settings)
+     */
+    public UpdateUserPage clickUpdateFlavorsButton() {
+        log.info("Clicking Update Flavors button");
+        updateFlavorsButton.click();
+        return this;
+    }
+
+    /**
+     * Click on Forward to PSTN checkbox to toggle it
+     */
+    public UpdateUserPage clickIncomingCallsToMobileCheckbox() {
+        log.info("Clicking Incoming Calls To Mobile checkbox");
+        incomingCallsToMobileCheckbox.click();
+        return this;
+    }
+
+    /**
+     * Check the Forward to PSTN checkbox (ensures it's checked)
+     */
+    public UpdateUserPage checkForwardToPstnCheckbox() {
+        log.info("Checking Forward to PSTN checkbox");
+        incomingCallsToMobileCheckbox.check();
+        return this;
+    }
+
+    /**
+     * Uncheck the Forward to PSTN checkbox (ensures it's unchecked)
+     */
+    public UpdateUserPage uncheckForwardToPstnCheckbox() {
+        log.info("Unchecking Forward to PSTN checkbox");
+        incomingCallsToMobileCheckbox.uncheck();
+        return this;
+    }
+
+    /**
+     * Check if Forward to PSTN checkbox is checked
+     * @return true if checkbox is checked
+     */
+    public boolean isForwardToPstnChecked() {
+        return incomingCallsToMobileCheckbox.isChecked();
+    }
+
+    /**
+     * Check if Incoming Calls To Mobile checkbox is enabled
+     * @return true if checkbox is enabled
+     */
+    public boolean isIncomingCallsToMobileEnabled() {
+        return incomingCallsToMobileCheckbox.isEnabled();
+    }
+
+    /**
+     * Check if Incoming Calls To Mobile checkbox is enabled
+     * @return true if checkbox is enabled
+     */
+    public boolean isIncomingCallsToMobileChecked() {
+        return incomingCallsToMobileCheckbox.isChecked();
     }
 
 }
